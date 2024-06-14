@@ -51,6 +51,7 @@ class ProfileSettingViewController: UIViewController {
     }()
     
     lazy var loginButton = PointButton(title: "완료")
+    let profileImg = UIImage.profileImgArray.randomElement()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +128,7 @@ class ProfileSettingViewController: UIViewController {
     }
     
     func setUI() {
-        profileImgView.image = UIImage(named: "profile_0")
+        profileImgView.image = UIImage(named: profileImg)
         setProfileImgButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
         setProfileImgSub.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
     }
