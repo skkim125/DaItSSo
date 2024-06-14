@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		04266FC12C1B3735007C8197 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FC02C1B3735007C8197 /* AppDelegate.swift */; };
 		04266FC32C1B3735007C8197 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FC22C1B3735007C8197 /* SceneDelegate.swift */; };
-		04266FC52C1B3735007C8197 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FC42C1B3735007C8197 /* ViewController.swift */; };
 		04266FCA2C1B3736007C8197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04266FC92C1B3736007C8197 /* Assets.xcassets */; };
 		04266FCD2C1B3736007C8197 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 04266FCC2C1B3736007C8197 /* Base */; };
 		04266FD62C1B3800007C8197 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04266FD52C1B3800007C8197 /* SnapKit */; };
@@ -21,13 +20,19 @@
 		04266FE52C1B390B007C8197 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE42C1B390B007C8197 /* Resource.swift */; };
 		04266FE72C1B3926007C8197 /* PointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE62C1B3926007C8197 /* PointButton.swift */; };
 		04266FE92C1B3939007C8197 /* ProfileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE82C1B3939007C8197 /* ProfileButton.swift */; };
+		04266FEF2C1B3B85007C8197 /* SelectProfileImgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FEE2C1B3B85007C8197 /* SelectProfileImgViewController.swift */; };
+		04266FF12C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FF02C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift */; };
+		04266FF42C1B3E03007C8197 /* IdProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FF32C1B3E03007C8197 /* IdProtocol.swift */; };
+		04266FFA2C1B4263007C8197 /* ProfileSubButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FF92C1B4263007C8197 /* ProfileSubButton.swift */; };
+		04266FFC2C1B48E0007C8197 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */; };
+		042670002C1B4CE0007C8197 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FFF2C1B4CE0007C8197 /* Enum.swift */; };
+		042670022C1C162D007C8197 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670012C1C162D007C8197 /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		04266FBD2C1B3735007C8197 /* DaItSSo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DaItSSo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04266FC02C1B3735007C8197 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04266FC22C1B3735007C8197 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		04266FC42C1B3735007C8197 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		04266FC92C1B3736007C8197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04266FCC2C1B3736007C8197 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04266FCE2C1B3736007C8197 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -36,6 +41,13 @@
 		04266FE42C1B390B007C8197 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		04266FE62C1B3926007C8197 /* PointButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointButton.swift; sourceTree = "<group>"; };
 		04266FE82C1B3939007C8197 /* ProfileButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButton.swift; sourceTree = "<group>"; };
+		04266FEE2C1B3B85007C8197 /* SelectProfileImgViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImgViewController.swift; sourceTree = "<group>"; };
+		04266FF02C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImgCollectionViewCell.swift; sourceTree = "<group>"; };
+		04266FF32C1B3E03007C8197 /* IdProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdProtocol.swift; sourceTree = "<group>"; };
+		04266FF92C1B4263007C8197 /* ProfileSubButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSubButton.swift; sourceTree = "<group>"; };
+		04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		04266FFF2C1B4CE0007C8197 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
+		042670012C1C162D007C8197 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,12 +88,15 @@
 				04266FC02C1B3735007C8197 /* AppDelegate.swift */,
 				04266FC22C1B3735007C8197 /* SceneDelegate.swift */,
 				04266FE22C1B38B4007C8197 /* OnBoardingViewController.swift */,
-				04266FE02C1B3897007C8197 /* ProfileSettingViewController.swift */,
+				042670012C1C162D007C8197 /* MainViewController.swift */,
+				04266FF22C1B3DE1007C8197 /* ProfileSetting */,
 				04266FC92C1B3736007C8197 /* Assets.xcassets */,
 				04266FCB2C1B3736007C8197 /* LaunchScreen.storyboard */,
 				04266FCE2C1B3736007C8197 /* Info.plist */,
-				04266FC42C1B3735007C8197 /* ViewController.swift */,
+				04266FF32C1B3E03007C8197 /* IdProtocol.swift */,
+				04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */,
 				04266FEC2C1B397D007C8197 /* Resource */,
+				04266FFF2C1B4CE0007C8197 /* Enum.swift */,
 			);
 			path = DaItSSo;
 			sourceTree = "<group>";
@@ -99,8 +114,19 @@
 			children = (
 				04266FE62C1B3926007C8197 /* PointButton.swift */,
 				04266FE82C1B3939007C8197 /* ProfileButton.swift */,
+				04266FF92C1B4263007C8197 /* ProfileSubButton.swift */,
 			);
 			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		04266FF22C1B3DE1007C8197 /* ProfileSetting */ = {
+			isa = PBXGroup;
+			children = (
+				04266FE02C1B3897007C8197 /* ProfileSettingViewController.swift */,
+				04266FEE2C1B3B85007C8197 /* SelectProfileImgViewController.swift */,
+				04266FF02C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift */,
+			);
+			path = ProfileSetting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,9 +211,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04266FF12C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift in Sources */,
+				04266FF42C1B3E03007C8197 /* IdProtocol.swift in Sources */,
 				04266FE72C1B3926007C8197 /* PointButton.swift in Sources */,
-				04266FC52C1B3735007C8197 /* ViewController.swift in Sources */,
+				04266FFC2C1B48E0007C8197 /* UserDefaultsManager.swift in Sources */,
+				042670002C1B4CE0007C8197 /* Enum.swift in Sources */,
+				04266FFA2C1B4263007C8197 /* ProfileSubButton.swift in Sources */,
 				04266FC12C1B3735007C8197 /* AppDelegate.swift in Sources */,
+				04266FEF2C1B3B85007C8197 /* SelectProfileImgViewController.swift in Sources */,
+				042670022C1C162D007C8197 /* MainViewController.swift in Sources */,
 				04266FE92C1B3939007C8197 /* ProfileButton.swift in Sources */,
 				04266FC32C1B3735007C8197 /* SceneDelegate.swift in Sources */,
 				04266FE52C1B390B007C8197 /* Resource.swift in Sources */,

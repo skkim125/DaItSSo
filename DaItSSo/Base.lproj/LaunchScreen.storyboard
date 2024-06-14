@@ -40,7 +40,7 @@
                                     <constraint firstAttribute="width" secondItem="Ue6-Sb-cm1" secondAttribute="height" multiplier="1:1" id="VSt-So-Qy9"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DaItSo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPD-vm-NGe">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DaItSSo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPD-vm-NGe">
                                 <rect key="frame" x="30" y="99" width="333" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="YrH-1F-Mp6"/>

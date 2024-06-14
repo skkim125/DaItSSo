@@ -9,17 +9,17 @@ import UIKit
 
 class OnBoardingViewController: UIViewController {
     
-    let appNameLabel = {
+    private let appNameLabel = {
         let label = UILabel()
-        label.text = "DaItSo"
-        label.textColor = UIColor.mainColor
+        label.text = "DaItSSo"
+        label.textColor = UIColor.appMainColor
         label.font = .systemFont(ofSize: 50, weight: .heavy)
         label.textAlignment = .center
         
         return label
     }()
     
-    let appImageView = {
+    private let appImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "launch")
         imgView.contentMode = .scaleAspectFill
@@ -27,7 +27,7 @@ class OnBoardingViewController: UIViewController {
         return imgView
     }()
     
-    let startButton = PointButton(title: "시작하기")
+    private let startButton = PointButton(title: "시작하기")
     
     
     override func viewDidLoad() {
@@ -40,13 +40,13 @@ class OnBoardingViewController: UIViewController {
         startButton.addTarget(self, action: #selector(goLoginView), for: .touchUpInside)
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         view.addSubview(appNameLabel)
         view.addSubview(appImageView)
         view.addSubview(startButton)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         appNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(40)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(30)
@@ -67,7 +67,7 @@ class OnBoardingViewController: UIViewController {
     }
     
     
-    @objc func goLoginView() {
+    @objc private func goLoginView() {
         let vc = ProfileSettingViewController()
         
         navigationController?.pushViewController(vc, animated: true)

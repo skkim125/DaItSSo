@@ -14,7 +14,7 @@ class PointButton: UIButton {
         setTitle(title, for: .normal)
         titleLabel?.font = .systemFont(ofSize: 16, weight: .heavy)
         setTitleColor(UIColor.appWhite, for: .normal)
-        backgroundColor = UIColor.mainColor
+        backgroundColor = UIColor.appMainColor
         layer.cornerRadius = 30
     }
     
