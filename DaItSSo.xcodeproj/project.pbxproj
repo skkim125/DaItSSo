@@ -28,6 +28,16 @@
 		042670002C1B4CE0007C8197 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FFF2C1B4CE0007C8197 /* Enum.swift */; };
 		042670022C1C162D007C8197 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670012C1C162D007C8197 /* MainViewController.swift */; };
 		042670042C1C18CD007C8197 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 042670032C1C18CD007C8197 /* .gitignore */; };
+		042670062C1C1941007C8197 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670052C1C1941007C8197 /* APIKey.swift */; };
+		042670082C1C2079007C8197 /* DividerLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670072C1C2079007C8197 /* DividerLine.swift */; };
+		0426700D2C1C2729007C8197 /* RecentSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426700C2C1C2729007C8197 /* RecentSearchTableViewCell.swift */; };
+		0426700F2C1C2A77007C8197 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426700E2C1C2A77007C8197 /* SearchResultViewController.swift */; };
+		042670122C1C2C4D007C8197 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670112C1C2C4D007C8197 /* TabViewController.swift */; };
+		042670142C1C2CD7007C8197 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670132C1C2CD7007C8197 /* SettingViewController.swift */; };
+		042670192C1C3747007C8197 /* Shopping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670182C1C3747007C8197 /* Shopping.swift */; };
+		0426701C2C1C3A47007C8197 /* SearchResultCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426701B2C1C3A47007C8197 /* SearchResultCollectionViewCell.swift */; };
+		0426701E2C1C4A7B007C8197 /* SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426701D2C1C4A7B007C8197 /* SortButton.swift */; };
+		042670202C1C60AA007C8197 /* SearchResultDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426701F2C1C60AA007C8197 /* SearchResultDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +60,16 @@
 		04266FFF2C1B4CE0007C8197 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		042670012C1C162D007C8197 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		042670032C1C18CD007C8197 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		042670052C1C1941007C8197 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		042670072C1C2079007C8197 /* DividerLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerLine.swift; sourceTree = "<group>"; };
+		0426700C2C1C2729007C8197 /* RecentSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchTableViewCell.swift; sourceTree = "<group>"; };
+		0426700E2C1C2A77007C8197 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		042670112C1C2C4D007C8197 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		042670132C1C2CD7007C8197 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		042670182C1C3747007C8197 /* Shopping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shopping.swift; sourceTree = "<group>"; };
+		0426701B2C1C3A47007C8197 /* SearchResultCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCollectionViewCell.swift; sourceTree = "<group>"; };
+		0426701D2C1C4A7B007C8197 /* SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortButton.swift; sourceTree = "<group>"; };
+		0426701F2C1C60AA007C8197 /* SearchResultDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,19 +107,16 @@
 		04266FBF2C1B3735007C8197 /* DaItSSo */ = {
 			isa = PBXGroup;
 			children = (
-				04266FED2C1B3985007C8197 /* CustomViews */,
 				04266FC02C1B3735007C8197 /* AppDelegate.swift */,
 				04266FC22C1B3735007C8197 /* SceneDelegate.swift */,
-				04266FE22C1B38B4007C8197 /* OnBoardingViewController.swift */,
-				04266FF22C1B3DE1007C8197 /* ProfileSetting */,
-				042670012C1C162D007C8197 /* MainViewController.swift */,
+				04266FED2C1B3985007C8197 /* CustomViews */,
+				042670162C1C33F7007C8197 /* AppOnBoarding */,
+				042670172C1C3416007C8197 /* AppMain */,
 				04266FC92C1B3736007C8197 /* Assets.xcassets */,
 				04266FCB2C1B3736007C8197 /* LaunchScreen.storyboard */,
 				04266FCE2C1B3736007C8197 /* Info.plist */,
-				04266FF32C1B3E03007C8197 /* IdProtocol.swift */,
-				04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */,
 				04266FEC2C1B397D007C8197 /* Resource */,
-				04266FFF2C1B4CE0007C8197 /* Enum.swift */,
+				0426701A2C1C388D007C8197 /* Data */,
 			);
 			path = DaItSSo;
 			sourceTree = "<group>";
@@ -107,7 +124,9 @@
 		04266FEC2C1B397D007C8197 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				04266FF32C1B3E03007C8197 /* IdProtocol.swift */,
 				04266FE42C1B390B007C8197 /* Resource.swift */,
+				04266FFF2C1B4CE0007C8197 /* Enum.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -117,7 +136,9 @@
 			children = (
 				04266FE62C1B3926007C8197 /* PointButton.swift */,
 				04266FE82C1B3939007C8197 /* ProfileButton.swift */,
+				042670072C1C2079007C8197 /* DividerLine.swift */,
 				04266FF92C1B4263007C8197 /* ProfileSubButton.swift */,
+				0426701D2C1C4A7B007C8197 /* SortButton.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -130,6 +151,63 @@
 				04266FF02C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift */,
 			);
 			path = ProfileSetting;
+			sourceTree = "<group>";
+		};
+		042670092C1C214A007C8197 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				042670012C1C162D007C8197 /* MainViewController.swift */,
+				0426700C2C1C2729007C8197 /* RecentSearchTableViewCell.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		042670102C1C2A82007C8197 /* SearchResult */ = {
+			isa = PBXGroup;
+			children = (
+				0426700E2C1C2A77007C8197 /* SearchResultViewController.swift */,
+				0426701B2C1C3A47007C8197 /* SearchResultCollectionViewCell.swift */,
+				0426701F2C1C60AA007C8197 /* SearchResultDetailViewController.swift */,
+			);
+			path = SearchResult;
+			sourceTree = "<group>";
+		};
+		042670152C1C2E0E007C8197 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				042670132C1C2CD7007C8197 /* SettingViewController.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		042670162C1C33F7007C8197 /* AppOnBoarding */ = {
+			isa = PBXGroup;
+			children = (
+				04266FE22C1B38B4007C8197 /* OnBoardingViewController.swift */,
+				04266FF22C1B3DE1007C8197 /* ProfileSetting */,
+			);
+			path = AppOnBoarding;
+			sourceTree = "<group>";
+		};
+		042670172C1C3416007C8197 /* AppMain */ = {
+			isa = PBXGroup;
+			children = (
+				042670112C1C2C4D007C8197 /* TabViewController.swift */,
+				042670092C1C214A007C8197 /* Main */,
+				042670102C1C2A82007C8197 /* SearchResult */,
+				042670152C1C2E0E007C8197 /* Setting */,
+			);
+			path = AppMain;
+			sourceTree = "<group>";
+		};
+		0426701A2C1C388D007C8197 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				042670052C1C1941007C8197 /* APIKey.swift */,
+				042670182C1C3747007C8197 /* Shopping.swift */,
+				04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,20 +293,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				042670202C1C60AA007C8197 /* SearchResultDetailViewController.swift in Sources */,
+				0426701E2C1C4A7B007C8197 /* SortButton.swift in Sources */,
 				04266FF12C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift in Sources */,
 				04266FF42C1B3E03007C8197 /* IdProtocol.swift in Sources */,
 				04266FE72C1B3926007C8197 /* PointButton.swift in Sources */,
 				04266FFC2C1B48E0007C8197 /* UserDefaultsManager.swift in Sources */,
+				042670062C1C1941007C8197 /* APIKey.swift in Sources */,
 				042670002C1B4CE0007C8197 /* Enum.swift in Sources */,
 				04266FFA2C1B4263007C8197 /* ProfileSubButton.swift in Sources */,
+				042670192C1C3747007C8197 /* Shopping.swift in Sources */,
 				04266FC12C1B3735007C8197 /* AppDelegate.swift in Sources */,
 				04266FEF2C1B3B85007C8197 /* SelectProfileImgViewController.swift in Sources */,
+				0426700D2C1C2729007C8197 /* RecentSearchTableViewCell.swift in Sources */,
+				0426700F2C1C2A77007C8197 /* SearchResultViewController.swift in Sources */,
 				042670022C1C162D007C8197 /* MainViewController.swift in Sources */,
 				04266FE92C1B3939007C8197 /* ProfileButton.swift in Sources */,
+				042670082C1C2079007C8197 /* DividerLine.swift in Sources */,
 				04266FC32C1B3735007C8197 /* SceneDelegate.swift in Sources */,
+				042670142C1C2CD7007C8197 /* SettingViewController.swift in Sources */,
 				04266FE52C1B390B007C8197 /* Resource.swift in Sources */,
 				04266FE12C1B3897007C8197 /* ProfileSettingViewController.swift in Sources */,
 				04266FE32C1B38B4007C8197 /* OnBoardingViewController.swift in Sources */,
+				042670122C1C2C4D007C8197 /* TabViewController.swift in Sources */,
+				0426701C2C1C3A47007C8197 /* SearchResultCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

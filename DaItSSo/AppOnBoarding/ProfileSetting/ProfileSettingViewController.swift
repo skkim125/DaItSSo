@@ -24,12 +24,7 @@ class ProfileSettingViewController: UIViewController {
         return tf
     }()
     
-    private lazy var dividerLine = {
-        let view = UIView()
-        view.backgroundColor = .appLightGray
-        
-        return view
-    }()
+    private lazy var dividerLine = DividerLine(color: UIColor.appLightGray)
     
     private lazy var checkNicknameLabel = {
         let label = UILabel()
