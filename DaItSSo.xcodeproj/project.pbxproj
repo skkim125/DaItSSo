@@ -27,6 +27,7 @@
 		04266FFC2C1B48E0007C8197 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */; };
 		042670002C1B4CE0007C8197 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FFF2C1B4CE0007C8197 /* Enum.swift */; };
 		042670022C1C162D007C8197 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670012C1C162D007C8197 /* MainViewController.swift */; };
+		042670042C1C18CD007C8197 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 042670032C1C18CD007C8197 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		04266FFF2C1B4CE0007C8197 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		042670012C1C162D007C8197 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		042670032C1C18CD007C8197 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 		04266FB42C1B3735007C8197 = {
 			isa = PBXGroup;
 			children = (
+				042670032C1C18CD007C8197 /* .gitignore */,
 				04266FBF2C1B3735007C8197 /* DaItSSo */,
 				04266FBE2C1B3735007C8197 /* Products */,
 			);
@@ -88,8 +91,8 @@
 				04266FC02C1B3735007C8197 /* AppDelegate.swift */,
 				04266FC22C1B3735007C8197 /* SceneDelegate.swift */,
 				04266FE22C1B38B4007C8197 /* OnBoardingViewController.swift */,
-				042670012C1C162D007C8197 /* MainViewController.swift */,
 				04266FF22C1B3DE1007C8197 /* ProfileSetting */,
+				042670012C1C162D007C8197 /* MainViewController.swift */,
 				04266FC92C1B3736007C8197 /* Assets.xcassets */,
 				04266FCB2C1B3736007C8197 /* LaunchScreen.storyboard */,
 				04266FCE2C1B3736007C8197 /* Info.plist */,
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04266FCA2C1B3736007C8197 /* Assets.xcassets in Resources */,
+				042670042C1C18CD007C8197 /* .gitignore in Resources */,
 				04266FCD2C1B3736007C8197 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
