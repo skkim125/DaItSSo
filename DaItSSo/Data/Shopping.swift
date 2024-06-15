@@ -20,7 +20,18 @@ struct Item: Codable {
     let link: String
 }
 
-struct Save: Codable {
-    let item: Item
-    let save: Bool
+struct MyShopping: Codable {
+    var item: Item
+    var addDate: String
+    var save: Bool
+    
+    var addDateStr: Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        
+        let convertDate = dateFormatter.date(from: addDate)!
+        
+        return convertDate
+    }
 }

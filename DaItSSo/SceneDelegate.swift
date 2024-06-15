@@ -19,10 +19,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
-        let vc = SearchResultViewController()
-        let nav = UINavigationController(rootViewController: vc)
+        if UserDefaultsManager.shared.isStart {
+            let vc = TabViewController()
+            
+            window?.rootViewController = vc
+        } else {
+            let vc = OnBoardingViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            
+            window?.rootViewController = nav
+        }
         
-        window?.rootViewController = TabViewController()
         window?.makeKeyAndVisible()
     }
 

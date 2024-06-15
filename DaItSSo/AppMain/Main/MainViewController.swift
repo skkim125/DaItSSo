@@ -74,6 +74,9 @@ class MainViewController: UIViewController {
         view.addSubview(emptyImageView)
         view.addSubview(emptyLabel)
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(keyboarDismiss))
+        view.addGestureRecognizer(tapGesture)
+        
         return view
     }()
     
@@ -108,19 +111,20 @@ class MainViewController: UIViewController {
     }()
     
     var recentSearchArray: [String] = []
+    var nickName = UserDefaultsManager.shared.nickname
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        
         configureHierarchy()
         configureLayout()
         configureNavigationbar()
     }
     
     func configureNavigationbar() {
-        navigationItem.title = "닉네임's DaItSSo"
+        navigationItem.title = "\(nickName)'s DaItSSo"
+        print(nickName)
     }
     
     func configureHierarchy() {
@@ -210,7 +214,7 @@ class MainViewController: UIViewController {
         searchBar.text = nil
     }
     
-    func keyboarDismiss() {
+    @objc func keyboarDismiss() {
         view.endEditing(true)
     }
     

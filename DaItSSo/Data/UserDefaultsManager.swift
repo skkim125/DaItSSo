@@ -8,22 +8,73 @@
 import Foundation
 
 class UserDefaultsManager {
+    
+    private init() { }
+    
     static let shared = UserDefaultsManager()
-    let userdefaults = UserDefaults.standard
+    let defaults = UserDefaults.standard
     
-    func saveNickname(nickname: String) {
-        userdefaults.setValue(nickname, forKey: "nickname")
+    enum Key: String, CaseIterable {
+        case nickname, profile, editProfile, recentSearchArr, myShopping, isFirst
     }
     
-    func saveProfile(profile: String) {
-        userdefaults.setValue(profile, forKey: "profile")
+    var nickname: String {
+        get {
+            return defaults.string(forKey: Key.nickname.rawValue) ?? ""
+        }
+        set {
+            defaults.setValue(newValue, forKey: "\(Key.nickname.rawValue)")
+        }
     }
     
-    func saveRecentSearch(array: [String]) {
-        userdefaults.setValue(array, forKey: "recentSearchArr")
+    var profile: String {
+        get {
+            return defaults.string(forKey: Key.profile.rawValue) ?? ""
+        }
+        set {
+            defaults.setValue(newValue, forKey: "\(Key.profile.rawValue)")
+        }
     }
     
-    func isFirst(bool: Bool) {
-        userdefaults.setValue(bool, forKey: "first")
+    var editProfile: String {
+        get {
+            return defaults.string(forKey: Key.editProfile.rawValue) ?? ""
+        }
+        set {
+            defaults.setValue(newValue, forKey: "\(Key.editProfile.rawValue)")
+        }
+    }
+    
+    var recentSearchArr: [String] {
+        get {
+            return defaults.array(forKey: Key.recentSearchArr.rawValue)! as! [String]/* ?? [] as! [String]*/
+        }
+        set {
+            defaults.setValue(newValue, forKey: "\(Key.recentSearchArr.rawValue)")
+        }
+    }
+    
+    var myShopping: [MyShopping] {
+        get {
+            return defaults.array(forKey: Key.myShopping.rawValue)! as! [MyShopping]
+        }
+        set {
+            defaults.setValue(newValue, forKey: "\(Key.myShopping.rawValue)")
+        }
+    }
+    
+    var isStart: Bool {
+        get {
+            return defaults.bool(forKey: Key.isFirst.rawValue)
+        }
+        set {
+            defaults.setValue(newValue, forKey: "\(Key.isFirst.rawValue)")
+        }
+    }
+    
+    func removeValue(keys: [Key]) {
+        keys.forEach { key in
+            defaults.removeObject(forKey: key.rawValue)
+        }
     }
 }

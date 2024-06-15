@@ -58,3 +58,22 @@ enum SortType: String {
         }
     }
 }
+
+enum Setting: String, CaseIterable {
+    case myProfile
+    case myShopping = "나의 장바구니 목록"
+    case qna = "자주 묻는 질문"
+    case inquire = "1:1 문의하기"
+    case alarm = "알림 설정"
+    case deleteId = "탈퇴하기"
+}
+
+
+enum ProfileViewType: String {
+    case first = "PROFILE SETTING"
+    case edit = "EDIT PROFILE"
+}
+
+enum ProfileImg: String, CaseIterable {
+    case profile_0, profile_1, profile_2, profile_3, profile_4, profile_5, profile_6, profile_7, profile_8, profile_9, profile_10, profile_11
+}

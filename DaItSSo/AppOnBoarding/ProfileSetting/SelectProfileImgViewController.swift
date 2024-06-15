@@ -36,6 +36,7 @@ class SelectProfileImgViewController: UIViewController {
         return layout
     }
     
+    var profileViewType: ProfileViewType?
     var selectedProfile: String?
 
     override func viewDidLoad() {
@@ -45,7 +46,7 @@ class SelectProfileImgViewController: UIViewController {
         configureNavigationBar()
         configureHierarchy()
         configureLayout()
-        mainViewUI()
+        profileImgViewUI()
     }
     
     func configureNavigationBar() {
@@ -54,9 +55,15 @@ class SelectProfileImgViewController: UIViewController {
     }
     
     @objc private func backButtonTapped() {
-        if let img = selectedProfile {
-            UserDefaultsManager.shared.userdefaults.set(img, forKey: "profile")
-            print(UserDefaultsManager.shared.userdefaults.string(forKey: "profile"))
+        if let type = profileViewType {
+            switch type {
+            case .first:
+                if let img = selectedProfile {
+                    UserDefaultsManager.shared.profile = img
+                }
+            case .edit:
+                break
+            }
         }
         navigationController?.popViewController(animated: true)
     }
@@ -91,9 +98,27 @@ class SelectProfileImgViewController: UIViewController {
         }
     }
     
-    func mainViewUI() {
+    func profileImgViewUI() {
         if let profile = selectedProfile {
             profileImgView.image = UIImage(named: profile)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if let type = profileViewType {
+            switch type {
+            case .first:
+                if let profile = selectedProfile {
+                    UserDefaultsManager.shared.profile = profile
+                }
+            case .edit:
+                if let profile = selectedProfile {
+                    UserDefaultsManager.shared.editProfile = profile
+                    print(#function, UserDefaultsManager.shared.editProfile)
+                }
+            }
         }
     }
 }
@@ -140,7 +165,6 @@ extension SelectProfileImgViewController: UICollectionViewDelegate, UICollection
             cell.configureCellUI(image: img, profileType: .unSelected)
             print("선택되지 않은 셀 = \(indexPath.item)")
         }
-        
         
         collectionView.reloadData()
     }
