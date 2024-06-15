@@ -19,3 +19,8 @@ struct Item: Codable {
     let lprice: String
     let link: String
 }
+
+struct Save: Codable {
+    let item: Item
+    let save: Bool
+}

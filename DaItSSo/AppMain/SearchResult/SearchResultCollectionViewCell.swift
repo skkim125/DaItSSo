@@ -46,11 +46,24 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    lazy var selectProductButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "handbag.fill"), for: .normal)
+        button.layer.cornerRadius = 5
+        button.clipsToBounds = true
+        button.addTarget(self, action: #selector(selectProductButtonClicked), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    lazy var isShopping = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         configureHierarchy()
         configureLayout()
+        configureSelectButtonUI()
     }
     
     required init?(coder: NSCoder) {
@@ -63,12 +76,19 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(shoppingMallNameLabel)
         contentView.addSubview(shoppingTitleLabel)
         contentView.addSubview(shoppingPriceLabel)
+        contentView.addSubview(selectProductButton)
     }
     
     func configureLayout() {
         shoppingImg.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(contentView.safeAreaLayoutGuide)
             make.height.equalTo(contentView.snp.width).multipliedBy(1.2)
+        }
+        
+        selectProductButton.snp.makeConstraints { make in
+            make.bottom.equalTo(shoppingImg.snp.bottom).inset(10)
+            make.trailing.equalTo(shoppingImg.snp.trailing).inset(10)
+            make.size.equalTo(30)
         }
         
         shoppingMallNameLabel.snp.makeConstraints { make in
@@ -95,9 +115,23 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         shoppingImg.kf.setImage(with: url)
         shoppingMallNameLabel.text = item.mallName
         shoppingTitleLabel.text = String.removeTag(title: item.title)
-        shoppingPriceLabel.text = "\(Int.formatInt(int: item.lprice))원"
+        shoppingPriceLabel.text = "\(String.formatInt(int: item.lprice))원"
     }
     
+    func configureSelectButtonUI() {
+        if isShopping {
+            selectProductButton.backgroundColor = .appWhite
+            selectProductButton.imageView?.tintColor = .appBlack
+        } else {
+            selectProductButton.backgroundColor = .appBlack.withAlphaComponent(0.3)
+            selectProductButton.imageView?.tintColor = .white
+        }
+    }
+    
+    @objc func selectProductButtonClicked() {
+        isShopping.toggle()
+        configureSelectButtonUI()
+    }
 }
 
 extension String {

@@ -16,10 +16,57 @@ class MainViewController: UIViewController {
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "브랜드, 상품 등을 입력하세요"
         searchBar.delegate = self
+        searchBar.autocapitalizationType = .none
+        searchBar.autocorrectionType = .no
+        
         return searchBar
     }()
     
     private lazy var dividerLine = DividerLine(color: UIColor.appLightGray)
+    
+    lazy var stackView = {
+        let view = UIView()
+        view.addSubview(recentSearchLabel)
+        view.addSubview(removeAllButton)
+        
+        return view
+    }()
+    
+    lazy var recentSearchLabel = {
+        let label = UILabel()
+        label.text = "최근 검색"
+        label.textColor = .appBlack
+        label.font = .boldSystemFont(ofSize: 15)
+        
+        return label
+    }()
+    
+    lazy var removeAllButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("전체 삭제", for: .normal)
+        button.setTitleColor(UIColor.appMainColor, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
+        button.addTarget(self, action: #selector(removeAllButtonClicked), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    @objc func removeAllButtonClicked() {
+        let alert = UIAlertController(title: "정말로 전체 삭제하시겠습니까?", message: "최근 검색어 목록이 모두 삭제됩니다.", preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        
+        let removeAll = UIAlertAction(title: "전체 삭제", style: .destructive) {_ in 
+            self.recentSearchArray.removeAll()
+            self.recentSearchTableView.reloadData()
+            self.showView()
+        }
+        
+        alert.addAction(cancel)
+        alert.addAction(removeAll)
+        
+        present(alert, animated: true)
+    }
     
     lazy var noRecentSearchView = {
         let view = UIView()
@@ -50,13 +97,17 @@ class MainViewController: UIViewController {
     
     lazy var recentSearchTableView = {
         let tv = UITableView()
-        tv.backgroundColor = .appMainColor
+        tv.backgroundColor = .appWhite
+        tv.delegate = self
+        tv.dataSource = self
+        tv.register(RecentSearchTableViewCell.self, forCellReuseIdentifier: RecentSearchTableViewCell.id)
+        tv.rowHeight = 40
+        tv.separatorStyle = .none
         
         return tv
     }()
     
     var recentSearchArray: [String] = []
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +117,6 @@ class MainViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureNavigationbar()
-        showView()
     }
     
     func configureNavigationbar() {
@@ -77,13 +127,15 @@ class MainViewController: UIViewController {
         // MARK: addSubView()
         view.addSubview(searchBar)
         view.addSubview(dividerLine)
+        view.addSubview(stackView)
         view.addSubview(noRecentSearchView)
         view.addSubview(recentSearchTableView)
     }
     
     func configureLayout() {
         searchBar.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(10)
             make.height.equalTo(40)
         }
         
@@ -92,6 +144,7 @@ class MainViewController: UIViewController {
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(1)
         }
+        
         noRecentSearchView.snp.makeConstraints { make in
             make.top.equalTo(dividerLine.snp.bottom)
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -109,51 +162,121 @@ class MainViewController: UIViewController {
             make.height.equalTo(30)
         }
         
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(dividerLine.snp.bottom).offset(10)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(30)
+        }
+        
+        recentSearchLabel.snp.makeConstraints { make in
+            make.leading.equalTo(stackView.snp.leading).offset(20)
+            make.width.equalTo(60)
+            make.height.equalTo(stackView)
+        }
+        
+        removeAllButton.snp.makeConstraints { make in
+            make.trailing.equalTo(stackView.snp.trailing).inset(20)
+            make.size.equalTo(recentSearchLabel)
+        }
+        
         recentSearchTableView.snp.makeConstraints { make in
-            make.top.equalTo(dividerLine.snp.bottom)
+            make.top.equalTo(stackView.snp.bottom).offset(10)
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        showView()
+        recentSearchTableView.reloadData()
     }
     
     func showView() {
         if recentSearchArray.isEmpty {
             noRecentSearchView.isHidden = false
+            stackView.isHidden = true
             recentSearchTableView.isHidden = true
         }  else {
             noRecentSearchView.isHidden = true
+            stackView.isHidden = false
             recentSearchTableView.isHidden = false
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        keyboarDismiss()
+        searchBar.text = nil
+    }
+    
+    func keyboarDismiss() {
+        view.endEditing(true)
+    }
+    
+}
+
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return recentSearchArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: RecentSearchTableViewCell.id, for: indexPath) as! RecentSearchTableViewCell
+        let data = recentSearchArray[indexPath.row]
+        cell.configureCellUI(search: data)
+        cell.deleteButton.addTarget(self, action: #selector(deleteButtonClicked(_:)), for: .touchUpInside)
+        
+        return cell
+    }
+    
+    @objc func deleteButtonClicked(_ sender: UIButton) {
+        let point = sender.convert(CGPoint.zero, to: recentSearchTableView)
+        guard let indexPath = recentSearchTableView.indexPathForRow(at: point) else { return }
+        recentSearchArray.remove(at: indexPath.row)
+        recentSearchTableView.deleteRows(at: [indexPath], with: .none)
+        recentSearchTableView.reloadData()
+        
+        if recentSearchArray.isEmpty {
+            showView()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! RecentSearchTableViewCell
+        
+        if let text = cell.recentSearchLabel.text {
+            let result: [String] = recentSearchArray.filter { $0 == text }
+            if result.isEmpty {
+                recentSearchArray.append(text)
+            }
+            
+            let vc = SearchResultViewController()
+            vc.searchText = text
+            vc.selectedSortButtonUI(button: vc.simSortButton)
+            
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
 }
 
-//extension MainViewController: UITableViewDelegate, UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        <#code#>
-//    }
-//    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        <#code#>
-//    }
-//    
-//    
-//}
-
 extension MainViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print(#function)
-        guard let text = searchBar.text else {
-            return
+        if let text = searchBar.text {
+            let result: [String] = recentSearchArray.filter { $0 == text }
+            if result.isEmpty {
+                recentSearchArray.append(text)
+            }
+            
+            let vc = SearchResultViewController()
+            vc.searchText = text
+            vc.selectedSortButtonUI(button: vc.simSortButton)
+            keyboarDismiss()
+            navigationController?.pushViewController(vc, animated: true)
         }
-        recentSearchArray.append(text)
-        print(recentSearchArray)
-        
-        let vc = SearchResultViewController()
-        vc.searchText = text
-        vc.selectedSortButtonUI(button: vc.simSortButton)
-        
-        navigationController?.pushViewController(vc, animated: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

@@ -16,6 +16,7 @@ class SearchResultViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
         cv.delegate = self
         cv.dataSource = self
+        cv.prefetchDataSource = self
         cv.register(SearchResultCollectionViewCell.self, forCellWithReuseIdentifier: SearchResultCollectionViewCell.id)
         
         return cv
@@ -53,7 +54,8 @@ class SearchResultViewController: UIViewController {
     var shopping: Shopping = Shopping(total: 0, items: [])
     var results: [Item] = []
     var searchText: String?
-    var start = 1
+    var sort: SortType = .sim
+    var page = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,8 +146,8 @@ class SearchResultViewController: UIViewController {
         let param: Parameters = [
         
             "query": "\(keyword)",
-            "start": "\(start)",
-            "display": "40",
+            "start": "\(page)",
+            "display": "30",
             "sort": "\(sort.rawValue)",
         
         ]
@@ -154,13 +156,21 @@ class SearchResultViewController: UIViewController {
             switch response.result {
             case .success(let value):
                 dump(value)
+                
                 self.shopping = value
-                self.results = value.items
-                self.totalResultLabel.text = "\(value.total)개의 검색결과"
+                
+                if self.page == 1 {
+                    self.results = value.items
+                } else {
+                    self.results.append(contentsOf: value.items)
+                }
+                
+                self.totalResultLabel.text = value.total == 0 ? "검색 결과가 없습니다" : "\(value.total)개의 검색결과"
                 self.resultCollectionView.reloadData()
                 
             case .failure(let error):
                 print(error)
+                self.totalResultLabel.text = "네트워크를 확인해주세요"
             }
         }
     }
@@ -233,17 +243,30 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedData = results[indexPath.item]
+        let cell = collectionView.cellForItem(at: indexPath) as! SearchResultCollectionViewCell
         
         let vc = SearchResultDetailViewController()
+        vc.isShopping = cell.isShopping
         vc.navigationItem.title = String.removeTag(title: selectedData.title)
         vc.configureWebViewUI(link: selectedData.link)
         
         navigationController?.pushViewController(vc, animated: true)
     }
-    
 }
 
-extension Int {
+extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for i in indexPaths {
+            if results.count-8 == i.row {
+                page += 1
+                callRequest(keyword: searchText!, sort: sort)
+            }
+        }
+    }
+}
+
+extension String {
     static func formatInt(int: String) -> String {
         let i = Int(int)!
         let formatter = NumberFormatter()

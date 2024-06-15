@@ -16,6 +16,8 @@ class SearchResultDetailViewController: UIViewController {
         return webView
     }()
     
+    var isShopping: Bool?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -23,14 +25,34 @@ class SearchResultDetailViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureNavigationBar()
+        configureRightBarButtonUI()
     }
     
     func configureNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "handbag.fill"), style: .plain, target: self, action: #selector(selectProductButtonClicked))
     }
     
     @objc func backButtonClicked() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func selectProductButtonClicked() {
+        self.isShopping?.toggle()
+        configureRightBarButtonUI()
+    }
+    
+    func configureRightBarButtonUI() {
+        if let bool = isShopping {
+            if bool {
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "handbag.fill")
+                navigationItem.rightBarButtonItem?.tintColor = .black
+            } else {
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "handbag")
+                navigationItem.rightBarButtonItem?.tintColor = .black
+            }
+        }
     }
     
     func configureHierarchy() {
