@@ -12,19 +12,13 @@ struct Shopping: Codable {
     let items: [Item]
 }
 
-struct Item: Codable {
+struct Item: Equatable, Codable {
     let title: String
     let image: String
     let mallName: String
     let lprice: String
     let link: String
     let productId: String
-}
-
-struct MyShopping: Codable {
-    var item: Item
-    var addDate: Date
-    var save: Bool
 }
 
 struct RecentSearchList: Codable {
@@ -35,13 +29,3 @@ struct RecentSearch: Codable {
     var search: String
     var searchDate: Date
 }
-
-//var addDateStr: Date {
-//    let dateFormatter = DateFormatter()
-//    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-//    dateFormatter.locale = Locale(identifier: "ko_KR")
-//    
-//    let convertDate = dateFormatter.date(from: addDate)!
-//    
-//    return convertDate
-//}

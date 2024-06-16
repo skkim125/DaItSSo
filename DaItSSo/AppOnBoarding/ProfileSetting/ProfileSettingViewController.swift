@@ -289,6 +289,6 @@ extension DateFormatter {
         
         let convertDate = dateFormatter.string(from: date)
         
-        return ""
+        return convertDate
     }
 }

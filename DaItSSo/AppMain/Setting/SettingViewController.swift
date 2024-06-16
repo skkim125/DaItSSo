@@ -53,7 +53,6 @@ class SettingViewController: UIViewController {
         
         profileImg = UserDefaultsManager.shared.profile
         settingTableView.reloadData()
-        print(UserDefaultsManager.shared.profile)
     }
 }
 
@@ -81,7 +80,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         switch setting {
         case .myProfile:
             let myProfileCell = tableView.dequeueReusableCell(withIdentifier: MyProfileTableViewCell.id) as! MyProfileTableViewCell
-            myProfileCell.configureMyProfileCellUI(image: profileImg)
+            myProfileCell.configureMyProfileCellUI(image: profileImg, nickName: UserDefaultsManager.shared.nickname, date: UserDefaultsManager.shared.loginDate)
             
             return myProfileCell
             

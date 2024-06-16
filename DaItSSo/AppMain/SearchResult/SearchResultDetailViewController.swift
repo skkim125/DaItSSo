@@ -16,10 +16,10 @@ class SearchResultDetailViewController: UIViewController {
         return webView
     }()
     
-    var myShopping = MyShopping(item: Item(title: "", image: "", mallName: "", lprice: "", link: "", productId: ""), addDate: Date(), save: false)
+    var myShopping = Item(title: "", image: "", mallName: "", lprice: "", link: "", productId: "")
     var item: Item?
-    var vmMyShopping: [MyShopping] = []
     var searchText = ""
+    var isAdd = false
     lazy var navTitle = SetNavigationTitle.search(searchText)
     
     override func viewDidLoad() {
@@ -45,24 +45,33 @@ class SearchResultDetailViewController: UIViewController {
     }
     
     @objc private func selectProductButtonClicked() {
-        self.myShopping.save.toggle()
+        isAdd.toggle()
+        if let i = item {
+            if UserDefaultsManager.shared.myShopping.isEmpty {
+                let filterdShopping = UserDefaultsManager.shared.myShopping.filter { $0.productId == i.productId }
+                if isAdd {
+                    UserDefaultsManager.shared.myShopping.append(i)
+                } else {
+                    UserDefaultsManager.shared.myShopping.remove(at: UserDefaultsManager.shared.myShopping.lastIndex(where: {
+                        $0.productId == filterdShopping[filterdShopping.startIndex].productId
+                    })!)
+                }
+            } else {
+                if isAdd {
+                    UserDefaultsManager.shared.myShopping.append(i)
+                } else {
+                    UserDefaultsManager.shared.myShopping.remove(at: UserDefaultsManager.shared.myShopping.lastIndex(where: {
+                        $0.productId == i.productId
+                    })!)
+                }
+            }
+        }
+
         configureRightBarButtonUI()
     }
     
     func configureRightBarButtonUI() {
-        
-        if let i = item {
-            // var myShopping = MyShopping(item: i, addDate: Date(), save: isShopping)
-            if myShopping.save {
-                myShopping = MyShopping(item: i, addDate: Date(), save: myShopping.save)
-                UserDefaultsManager.shared.myShopping.append(myShopping)
-            } else {
-                let filterd = vmMyShopping.filter { $0.item.productId != myShopping.item.productId }
-                UserDefaultsManager.shared.myShopping = filterd
-            }
-        }
-        
-        if myShopping.save {
+        if isAdd {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "handbag.fill")
             navigationItem.rightBarButtonItem?.tintColor = .black
         } else {

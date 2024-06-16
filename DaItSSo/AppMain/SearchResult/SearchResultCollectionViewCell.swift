@@ -56,9 +56,9 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    var vmMyShopping: [MyShopping] = []
-    lazy var myShopping = MyShopping(item: Item(title: "", image: "", mallName: "", lprice: "", link: "", productId: ""), addDate: Date(), save: false)
+    var myShopping = Item(title: "", image: "", mallName: "", lprice: "", link: "", productId: "")
     var item: Item?
+    var isAdd: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -120,7 +120,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     }
     
     func configureSelectButtonUI() {
-        if myShopping.save {
+        if isAdd {
             selectProductButton.backgroundColor = .appWhite
             selectProductButton.imageView?.tintColor = .appBlack
         } else {
@@ -129,20 +129,30 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    @objc func selectProductButtonClicked() {
-        myShopping.save.toggle()
-        configureSelectButtonUI()
-        
+    @objc private func selectProductButtonClicked() {
+        isAdd.toggle()
         if let i = item {
-            // var myShopping = MyShopping(item: i, addDate: Date(), save: isShopping)
-            if myShopping.save {
-                myShopping = MyShopping(item: i, addDate: Date(), save: myShopping.save)
-                UserDefaultsManager.shared.myShopping.append(myShopping)
+            if UserDefaultsManager.shared.myShopping.isEmpty {
+                let filterdShopping = UserDefaultsManager.shared.myShopping.filter { $0.productId == i.productId }
+                if isAdd {
+                    UserDefaultsManager.shared.myShopping.append(i)
+                } else {
+                    UserDefaultsManager.shared.myShopping.remove(at: UserDefaultsManager.shared.myShopping.lastIndex(where: {
+                        $0.productId == filterdShopping[filterdShopping.startIndex].productId
+                    })!)
+                }
             } else {
-                let filterd = vmMyShopping.filter { $0.item.productId != myShopping.item.productId }
-                UserDefaultsManager.shared.myShopping = filterd
+                if isAdd {
+                    UserDefaultsManager.shared.myShopping.append(i)
+                } else {
+                    UserDefaultsManager.shared.myShopping.remove(at: UserDefaultsManager.shared.myShopping.lastIndex(where: {
+                        $0.productId == i.productId
+                    })!)
+                }
             }
         }
+        
+        configureSelectButtonUI()
     }
 }
 

@@ -59,7 +59,7 @@ class UserDefaultsManager {
                 let recentSearchArr = try decoder.decode(RecentSearchList.self, from: data)
                 return recentSearchArr
             } catch {
-                print("Failed to decode shopping list: \(error)")
+                print("Failed to decode recentSearchList: \(error)")
                 return RecentSearchList(recentSearchList: [])
             }
         }
@@ -72,12 +72,12 @@ class UserDefaultsManager {
                 let data = try encoder.encode(newValue)
                 defaults.setValue(data, forKey: Key.recentSearchList.rawValue)
             } catch {
-                print("Failed to encode shopping list: \(error)")
+                print("Failed to encode recentSearchList: \(error)")
             }
         }
     }
     
-    var myShopping: [MyShopping] {
+    var myShopping: [Item] {
         
         get {
             guard let data = defaults.data(forKey: Key.myShopping.rawValue) else {
@@ -88,10 +88,10 @@ class UserDefaultsManager {
             decoder.dateDecodingStrategy = .iso8601
             
             do {
-                let myShopping = try decoder.decode([MyShopping].self, from: data)
+                let myShopping = try decoder.decode([Item].self, from: data)
                 return myShopping
             } catch {
-                print("Failed to decode shopping list: \(error)")
+                print("Failed to decode myShopping: \(error)")
                 return []
             }
         }
@@ -104,7 +104,7 @@ class UserDefaultsManager {
                 let data = try encoder.encode(newValue)
                 defaults.setValue(data, forKey: Key.myShopping.rawValue)
             } catch {
-                print("Failed to encode shopping list: \(error)")
+                print("Failed to encode myShopping: \(error)")
             }
         }
     }

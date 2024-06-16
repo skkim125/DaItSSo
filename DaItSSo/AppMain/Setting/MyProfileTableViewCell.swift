@@ -93,9 +93,10 @@ class MyProfileTableViewCell: UITableViewCell {
         }
     }
     
-    func configureMyProfileCellUI(image: String) {
+    func configureMyProfileCellUI(image: String, nickName: String, date: String) {
         profileImgView.image = UIImage(named: image)
-        nicknameLabel.text = UserDefaultsManager.shared.nickname
+        nicknameLabel.text = nickName
+        dateLabel.text = date + " 가입"
     }
     
     required init?(coder: NSCoder) {

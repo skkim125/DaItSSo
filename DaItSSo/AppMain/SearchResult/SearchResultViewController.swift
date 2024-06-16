@@ -51,12 +51,10 @@ class SearchResultViewController: UIViewController {
         return layout
     }
     
-    var vmMyShopping: [MyShopping] = []
-    var vmShopping: Shopping = Shopping(total: 0, items: [])
-    var vcResults: [Item] = []
+    var searchResults: [Item] = []
     var searchText: String = ""
     var sort: SortType = .sim
-    var page = 1
+    var start = 1
     lazy var navTitle = SetNavigationTitle.search(searchText)
     
     override func viewDidLoad() {
@@ -144,7 +142,7 @@ class SearchResultViewController: UIViewController {
         let param: Parameters = [
         
             "query": "\(keyword)",
-            "start": "\(page)",
+            "start": "\(start)",
             "display": "30",
             "sort": "\(sort.rawValue)",
         
@@ -153,12 +151,11 @@ class SearchResultViewController: UIViewController {
         AF.request(url, method: .get, parameters: param, headers: header).responseDecodable(of: Shopping.self) { response in
             switch response.result {
             case .success(let value):
-                self.vmShopping = value
                 
-                if self.page == 1 {
-                    self.vcResults = value.items
+                if self.start == 1 {
+                    self.searchResults = value.items
                 } else {
-                    self.vcResults.append(contentsOf: value.items)
+                    self.searchResults.append(contentsOf: value.items)
                 }
                 
                 self.totalResultLabel.text = value.total == 0 ? "검색 결과가 없습니다" : "\(value.total)개의 검색결과"
@@ -223,37 +220,48 @@ class SearchResultViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        vmMyShopping = UserDefaultsManager.shared.myShopping
+        resultCollectionView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        resultCollectionView.reloadData()
     }
 }
 
 extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return vcResults.count
+        return searchResults.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.id, for: indexPath) as! SearchResultCollectionViewCell
-        let data = vcResults[indexPath.item]
+        let data = searchResults[indexPath.item]
         
-        cell.vmMyShopping = vmMyShopping
         cell.configureCellUI(item: data)
-        cell.item = vcResults[indexPath.item]
+        cell.item = searchResults[indexPath.item]
+        
+        if UserDefaultsManager.shared.myShopping.contains(where: { $0 == data }) {
+            cell.isAdd = true
+        } else {
+            cell.isAdd = false
+        }
+        cell.configureSelectButtonUI()
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedData = vcResults[indexPath.item]
+        let selectedData = searchResults[indexPath.item]
         let cell = collectionView.cellForItem(at: indexPath) as! SearchResultCollectionViewCell
         
         let vc = SearchResultDetailViewController()
         vc.myShopping = cell.myShopping
-        vc.vmMyShopping = cell.vmMyShopping
         vc.item = selectedData
+        vc.isAdd = cell.isAdd
         vc.searchText = String.removeTag(title: selectedData.title)
         vc.configureWebViewUI(link: selectedData.link)
-        
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -262,8 +270,8 @@ extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for i in indexPaths {
-            if vcResults.count-8 == i.row {
-                page += 1
+            if searchResults.count-8 == i.row {
+                start += 30
                 callRequest(keyword: searchText, sort: sort)
             }
         }

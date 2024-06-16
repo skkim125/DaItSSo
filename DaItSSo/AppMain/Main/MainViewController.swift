@@ -56,10 +56,10 @@ class MainViewController: UIViewController {
         
         let cancel = UIAlertAction(title: "취소", style: .cancel)
         
-        let removeAll = UIAlertAction(title: "전체 삭제", style: .destructive) {_ in 
-            self.recentSearchArray.recentSearchList.removeAll()
-            self.recentSearchTableView.reloadData()
+        let removeAll = UIAlertAction(title: "전체 삭제", style: .destructive) { _ in
+            UserDefaultsManager.shared.recentSearchList.recentSearchList.removeAll()
             self.showView()
+            self.recentSearchTableView.reloadData()
         }
         
         alert.addAction(cancel)
@@ -110,8 +110,6 @@ class MainViewController: UIViewController {
         return tv
     }()
     
-    var recentSearchArray: RecentSearchList = RecentSearchList(recentSearchList: [])
-    var userDefaults = UserDefaultsManager.shared
     var nickName = UserDefaultsManager.shared.nickname
     lazy var navTitle = SetNavigationTitle.main(nickName)
     
@@ -123,7 +121,6 @@ class MainViewController: UIViewController {
         configureLayout()
         configureNavigationbar()
         showView()
-        print(UserDefaultsManager.shared.recentSearchList)
     }
     
     func configureNavigationbar() {
@@ -194,17 +191,16 @@ class MainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        recentSearchArray = UserDefaultsManager.shared.recentSearchList
         showView()
         recentSearchTableView.reloadData()
     }
     
     func showView() {
-        if recentSearchArray.recentSearchList.isEmpty {
+        if UserDefaultsManager.shared.recentSearchList.recentSearchList.isEmpty {
             noRecentSearchView.isHidden = false
             stackView.isHidden = true
             recentSearchTableView.isHidden = true
-        }  else {
+        } else {
             noRecentSearchView.isHidden = true
             stackView.isHidden = false
             recentSearchTableView.isHidden = false
@@ -226,13 +222,13 @@ extension UIViewController {
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recentSearchArray.recentSearchList.count
+        return UserDefaultsManager.shared.recentSearchList.recentSearchList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: RecentSearchTableViewCell.id, for: indexPath) as! RecentSearchTableViewCell
-        let data = recentSearchArray.recentSearchList[indexPath.row]
+        let data = UserDefaultsManager.shared.recentSearchList.recentSearchList[indexPath.row]
         cell.configureCellUI(search: data.search)
         cell.deleteButton.addTarget(self, action: #selector(deleteButtonClicked(_:)), for: .touchUpInside)
         
@@ -242,11 +238,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     @objc func deleteButtonClicked(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: recentSearchTableView)
         guard let indexPath = recentSearchTableView.indexPathForRow(at: point) else { return }
-        recentSearchArray.recentSearchList.remove(at: indexPath.row)
+        UserDefaultsManager.shared.recentSearchList.recentSearchList.remove(at: indexPath.row)
         recentSearchTableView.deleteRows(at: [indexPath], with: .none)
         recentSearchTableView.reloadData()
         
-        if recentSearchArray.recentSearchList.isEmpty {
+        if UserDefaultsManager.shared.recentSearchList.recentSearchList.isEmpty {
             showView()
         }
     }
@@ -255,22 +251,17 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.cellForRow(at: indexPath) as! RecentSearchTableViewCell
         
         if let text = cell.recentSearchLabel.text {
-            var result: [RecentSearch] = recentSearchArray.recentSearchList.filter { $0.search == text }
+            let result: [RecentSearch] = UserDefaultsManager.shared.recentSearchList.recentSearchList.filter { $0.search == text }
             if result.isEmpty {
-                recentSearchArray.recentSearchList.append(RecentSearch(search: text, searchDate: Date()))
-                
-                userDefaults.recentSearchList = recentSearchArray
+                UserDefaultsManager.shared.recentSearchList.recentSearchList.append(RecentSearch(search: text, searchDate: Date()))
             } else {
-                recentSearchArray.recentSearchList.remove(at: recentSearchArray.recentSearchList.lastIndex(where: { $0.search == result[result.startIndex].search })!)
-                recentSearchArray.recentSearchList.insert(RecentSearch(search: text, searchDate: Date()), at: 0)
-                
-                userDefaults.recentSearchList = recentSearchArray
+                UserDefaultsManager.shared.recentSearchList.recentSearchList.remove(at: UserDefaultsManager.shared.recentSearchList.recentSearchList.lastIndex(where: { $0.search == result[result.startIndex].search })!)
+                UserDefaultsManager.shared.recentSearchList.recentSearchList.insert(RecentSearch(search: text, searchDate: Date()), at: 0)
             }
             
             let vc = SearchResultViewController()
             vc.searchText = text
             vc.selectedSortButtonUI(button: vc.simSortButton)
-            print(UserDefaultsManager.shared.recentSearchList)
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -281,10 +272,12 @@ extension MainViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
-            let result: [RecentSearch] = recentSearchArray.recentSearchList.filter { $0.search == text }
+            let result: [RecentSearch] = UserDefaultsManager.shared.recentSearchList.recentSearchList.filter { $0.search == text }
             if result.isEmpty {
-                recentSearchArray.recentSearchList.insert(RecentSearch(search: text, searchDate: Date()), at: 0)
-                userDefaults.recentSearchList = recentSearchArray
+                UserDefaultsManager.shared.recentSearchList.recentSearchList.insert(RecentSearch(search: text, searchDate: Date()), at: 0)
+            } else {
+                UserDefaultsManager.shared.recentSearchList.recentSearchList.remove(at: UserDefaultsManager.shared.recentSearchList.recentSearchList.lastIndex(where: { $0.search == result[result.startIndex].search })!)
+                UserDefaultsManager.shared.recentSearchList.recentSearchList.insert(RecentSearch(search: text, searchDate: Date()), at: 0)
             }
             
             let vc = SearchResultViewController()
@@ -292,7 +285,6 @@ extension MainViewController: UISearchBarDelegate {
             vc.selectedSortButtonUI(button: vc.simSortButton)
             keyboardDismiss()
             navigationController?.pushViewController(vc, animated: true)
-            print(UserDefaultsManager.shared.recentSearchList)
         }
     }
     
