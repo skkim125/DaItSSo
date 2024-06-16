@@ -51,29 +51,27 @@ class SearchResultViewController: UIViewController {
         return layout
     }
     
-    var shopping: Shopping = Shopping(total: 0, items: [])
-    var results: [Item] = []
-    var searchText: String?
+    var vmMyShopping: [MyShopping] = []
+    var vmShopping: Shopping = Shopping(total: 0, items: [])
+    var vcResults: [Item] = []
+    var searchText: String = ""
     var sort: SortType = .sim
     var page = 1
+    lazy var navTitle = SetNavigationTitle.search(searchText)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
         configureNavigationBar()
-        if let text = searchText {
-            callRequest(keyword: text, sort: SortType.sim)
-        }
+        callRequest(keyword: searchText, sort: SortType.sim)
         configureHierarchy()
         configureLayout()
         configureSortButtons()
     }
     
     func configureNavigationBar() {
-        if let text = searchText {
-            navigationItem.title = "\(text)"
-        }
+        navigationItem.title = navTitle.navTitle
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonClicked))
         navigationController?.navigationBar.tintColor = .appDarkGray
@@ -155,14 +153,12 @@ class SearchResultViewController: UIViewController {
         AF.request(url, method: .get, parameters: param, headers: header).responseDecodable(of: Shopping.self) { response in
             switch response.result {
             case .success(let value):
-                dump(value)
-                
-                self.shopping = value
+                self.vmShopping = value
                 
                 if self.page == 1 {
-                    self.results = value.items
+                    self.vcResults = value.items
                 } else {
-                    self.results.append(contentsOf: value.items)
+                    self.vcResults.append(contentsOf: value.items)
                 }
                 
                 self.totalResultLabel.text = value.total == 0 ? "검색 결과가 없습니다" : "\(value.total)개의 검색결과"
@@ -176,44 +172,42 @@ class SearchResultViewController: UIViewController {
     }
     
     func configureSortButtons() {
-        if let text = searchText {
-            let simSortAction = UIAction { [self] _ in
-                self.callRequest(keyword: text, sort: .sim)
-                
-                selectedSortButtonUI(button: simSortButton)
-                unSelectedSortButtonUI(button: dateSortButton)
-                unSelectedSortButtonUI(button: ascSortButton)
-                unSelectedSortButtonUI(button: dscSortButton)
-            }
-            simSortButton.addAction(simSortAction, for: .touchUpInside)
+        let simSortAction = UIAction { [self] _ in
+            self.callRequest(keyword: searchText, sort: .sim)
             
-            let dateSortAction = UIAction { [self] _ in
-                self.callRequest(keyword: text, sort: .date)
-                selectedSortButtonUI(button: dateSortButton)
-                unSelectedSortButtonUI(button: simSortButton)
-                unSelectedSortButtonUI(button: ascSortButton)
-                unSelectedSortButtonUI(button: dscSortButton)
-            }
-            dateSortButton.addAction(dateSortAction, for: .touchUpInside)
-            
-            let ascSortAction = UIAction { [self] _ in
-                self.callRequest(keyword: text, sort: .asc)
-                selectedSortButtonUI(button: ascSortButton)
-                unSelectedSortButtonUI(button: dateSortButton)
-                unSelectedSortButtonUI(button: simSortButton)
-                unSelectedSortButtonUI(button: dscSortButton)
-            }
-            ascSortButton.addAction(ascSortAction, for: .touchUpInside)
-            
-            let dscSortAction = UIAction { [self] _ in
-                self.callRequest(keyword: text, sort: .dsc)
-                selectedSortButtonUI(button: dscSortButton)
-                unSelectedSortButtonUI(button: dateSortButton)
-                unSelectedSortButtonUI(button: ascSortButton)
-                unSelectedSortButtonUI(button: simSortButton)
-            }
-            dscSortButton.addAction(dscSortAction, for: .touchUpInside)
+            selectedSortButtonUI(button: simSortButton)
+            unSelectedSortButtonUI(button: dateSortButton)
+            unSelectedSortButtonUI(button: ascSortButton)
+            unSelectedSortButtonUI(button: dscSortButton)
         }
+        simSortButton.addAction(simSortAction, for: .touchUpInside)
+        
+        let dateSortAction = UIAction { [self] _ in
+            self.callRequest(keyword: searchText, sort: .date)
+            selectedSortButtonUI(button: dateSortButton)
+            unSelectedSortButtonUI(button: simSortButton)
+            unSelectedSortButtonUI(button: ascSortButton)
+            unSelectedSortButtonUI(button: dscSortButton)
+        }
+        dateSortButton.addAction(dateSortAction, for: .touchUpInside)
+        
+        let ascSortAction = UIAction { [self] _ in
+            self.callRequest(keyword: searchText, sort: .asc)
+            selectedSortButtonUI(button: ascSortButton)
+            unSelectedSortButtonUI(button: dateSortButton)
+            unSelectedSortButtonUI(button: simSortButton)
+            unSelectedSortButtonUI(button: dscSortButton)
+        }
+        ascSortButton.addAction(ascSortAction, for: .touchUpInside)
+        
+        let dscSortAction = UIAction { [self] _ in
+            self.callRequest(keyword: searchText, sort: .dsc)
+            selectedSortButtonUI(button: dscSortButton)
+            unSelectedSortButtonUI(button: dateSortButton)
+            unSelectedSortButtonUI(button: ascSortButton)
+            unSelectedSortButtonUI(button: simSortButton)
+        }
+        dscSortButton.addAction(dscSortAction, for: .touchUpInside)
     }
     
     func selectedSortButtonUI(button: UIButton) {
@@ -225,29 +219,39 @@ class SearchResultViewController: UIViewController {
         button.backgroundColor = UIColor.appWhite
         button.setTitleColor(UIColor.appBlack, for: .normal)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        vmMyShopping = UserDefaultsManager.shared.myShopping
+    }
 }
 
 extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return results.count
+        return vcResults.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.id, for: indexPath) as! SearchResultCollectionViewCell
-        let data = results[indexPath.item]
+        let data = vcResults[indexPath.item]
         
+        cell.vmMyShopping = vmMyShopping
         cell.configureCellUI(item: data)
+        cell.item = vcResults[indexPath.item]
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedData = results[indexPath.item]
+        let selectedData = vcResults[indexPath.item]
         let cell = collectionView.cellForItem(at: indexPath) as! SearchResultCollectionViewCell
         
         let vc = SearchResultDetailViewController()
-        vc.isShopping = cell.isShopping
-        vc.navigationItem.title = String.removeTag(title: selectedData.title)
+        vc.myShopping = cell.myShopping
+        vc.vmMyShopping = cell.vmMyShopping
+        vc.item = selectedData
+        vc.searchText = String.removeTag(title: selectedData.title)
         vc.configureWebViewUI(link: selectedData.link)
         
         navigationController?.pushViewController(vc, animated: true)
@@ -258,9 +262,9 @@ extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for i in indexPaths {
-            if results.count-8 == i.row {
+            if vcResults.count-8 == i.row {
                 page += 1
-                callRequest(keyword: searchText!, sort: sort)
+                callRequest(keyword: searchText, sort: sort)
             }
         }
     }

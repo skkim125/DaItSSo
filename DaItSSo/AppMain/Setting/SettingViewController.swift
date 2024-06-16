@@ -17,6 +17,7 @@ class SettingViewController: UIViewController {
         tv.separatorColor = .appBlack
         tv.separatorStyle = .singleLine
         tv.separatorInset = .zero
+        tv.isScrollEnabled = false
         
         return tv
     }()
@@ -33,7 +34,7 @@ class SettingViewController: UIViewController {
     }
     
     func configureNavigationBar() {
-        navigationItem.title = "SETTING"
+        navigationItem.title = SetNavigationTitle.setting.navTitle
     }
     
     func configureHierarchy() {
@@ -75,6 +76,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         let setting = Setting.allCases[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.id) as! SettingTableViewCell
         cell.configureSettingLabel(title: setting.rawValue)
+        cell.selectionStyle = .none
         
         switch setting {
         case .myProfile:
@@ -84,10 +86,17 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             return myProfileCell
             
         case .myShopping:
+            cell.configureMyShoppingCellHierarchy()
+            cell.configureMyShoppingCellLayout()
+            cell.configureMyShoppingCellUI(count: UserDefaultsManager.shared.myShopping.count)
+            cell.shoppingCountLabel.isHidden = false
+            cell.shoppingImage.isHidden = false
             
             return cell
-            
+
         default:
+            cell.shoppingCountLabel.isHidden = true
+            cell.shoppingImage.isHidden = true
             return cell
         }
     }
@@ -98,9 +107,9 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         switch setting {
         case .myProfile:
             let vc = ProfileSettingViewController()
-            vc.profileViewType = .edit
+            vc.navTitle = .editProfile
             vc.profileImg = self.profileImg
-            vc.nicknameTextField.text = UserDefaultsManager.shared.defaults.string(forKey: "nickname") ?? ""
+            vc.nicknameTextField.text = UserDefaultsManager.shared.nickname
             navigationController?.pushViewController(vc, animated: true)
             navigationItem.rightBarButtonItem?.action = #selector(saveButtonClicked)
             
@@ -126,6 +135,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             alert.addAction(delete)
 
             present(alert, animated: true)
+            
         default:
             break
         }

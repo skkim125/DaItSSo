@@ -29,7 +29,6 @@ class OnBoardingViewController: UIViewController {
     
     private let startButton = PointButton(title: "시작하기")
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white

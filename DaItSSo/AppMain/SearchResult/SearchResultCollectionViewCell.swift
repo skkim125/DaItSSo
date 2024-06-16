@@ -56,14 +56,15 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    lazy var isShopping = false
+    var vmMyShopping: [MyShopping] = []
+    lazy var myShopping = MyShopping(item: Item(title: "", image: "", mallName: "", lprice: "", link: "", productId: ""), addDate: Date(), save: false)
+    var item: Item?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         configureHierarchy()
         configureLayout()
-        configureSelectButtonUI()
     }
     
     required init?(coder: NSCoder) {
@@ -119,7 +120,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     }
     
     func configureSelectButtonUI() {
-        if isShopping {
+        if myShopping.save {
             selectProductButton.backgroundColor = .appWhite
             selectProductButton.imageView?.tintColor = .appBlack
         } else {
@@ -129,8 +130,19 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func selectProductButtonClicked() {
-        isShopping.toggle()
+        myShopping.save.toggle()
         configureSelectButtonUI()
+        
+        if let i = item {
+            // var myShopping = MyShopping(item: i, addDate: Date(), save: isShopping)
+            if myShopping.save {
+                myShopping = MyShopping(item: i, addDate: Date(), save: myShopping.save)
+                UserDefaultsManager.shared.myShopping.append(myShopping)
+            } else {
+                let filterd = vmMyShopping.filter { $0.item.productId != myShopping.item.productId }
+                UserDefaultsManager.shared.myShopping = filterd
+            }
+        }
     }
 }
 

@@ -15,7 +15,7 @@ class UserDefaultsManager {
     let defaults = UserDefaults.standard
     
     enum Key: String, CaseIterable {
-        case nickname, profile, editProfile, recentSearchArr, myShopping, isFirst
+        case nickname, profile, editProfile, recentSearchList, myShopping, isFirst, loginDate
     }
     
     var nickname: String {
@@ -23,7 +23,7 @@ class UserDefaultsManager {
             return defaults.string(forKey: Key.nickname.rawValue) ?? ""
         }
         set {
-            defaults.setValue(newValue, forKey: "\(Key.nickname.rawValue)")
+            defaults.setValue(newValue, forKey: Key.nickname.rawValue)
         }
     }
     
@@ -32,7 +32,7 @@ class UserDefaultsManager {
             return defaults.string(forKey: Key.profile.rawValue) ?? ""
         }
         set {
-            defaults.setValue(newValue, forKey: "\(Key.profile.rawValue)")
+            defaults.setValue(newValue, forKey: Key.profile.rawValue)
         }
     }
     
@@ -45,21 +45,77 @@ class UserDefaultsManager {
         }
     }
     
-    var recentSearchArr: [String] {
+    var recentSearchList: RecentSearchList {
+        
         get {
-            return defaults.array(forKey: Key.recentSearchArr.rawValue)! as! [String]/* ?? [] as! [String]*/
+            guard let data = defaults.data(forKey: Key.recentSearchList.rawValue) else {
+                return RecentSearchList(recentSearchList: [])
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            do {
+                let recentSearchArr = try decoder.decode(RecentSearchList.self, from: data)
+                return recentSearchArr
+            } catch {
+                print("Failed to decode shopping list: \(error)")
+                return RecentSearchList(recentSearchList: [])
+            }
         }
+        
         set {
-            defaults.setValue(newValue, forKey: "\(Key.recentSearchArr.rawValue)")
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            
+            do {
+                let data = try encoder.encode(newValue)
+                defaults.setValue(data, forKey: Key.recentSearchList.rawValue)
+            } catch {
+                print("Failed to encode shopping list: \(error)")
+            }
         }
     }
     
     var myShopping: [MyShopping] {
+        
         get {
-            return defaults.array(forKey: Key.myShopping.rawValue)! as! [MyShopping]
+            guard let data = defaults.data(forKey: Key.myShopping.rawValue) else {
+                return []
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            do {
+                let myShopping = try decoder.decode([MyShopping].self, from: data)
+                return myShopping
+            } catch {
+                print("Failed to decode shopping list: \(error)")
+                return []
+            }
         }
+        
         set {
-            defaults.setValue(newValue, forKey: "\(Key.myShopping.rawValue)")
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            
+            do {
+                let data = try encoder.encode(newValue)
+                defaults.setValue(data, forKey: Key.myShopping.rawValue)
+            } catch {
+                print("Failed to encode shopping list: \(error)")
+            }
+        }
+    }
+    
+    var loginDate: String {
+        get {
+            return defaults.string(forKey: Key.loginDate.rawValue) ?? "정보 없음"
+        }
+        
+        set {
+            defaults.setValue(newValue, forKey: Key.loginDate.rawValue)
         }
     }
     
@@ -68,7 +124,7 @@ class UserDefaultsManager {
             return defaults.bool(forKey: Key.isFirst.rawValue)
         }
         set {
-            defaults.setValue(newValue, forKey: "\(Key.isFirst.rawValue)")
+            defaults.setValue(newValue, forKey: Key.isFirst.rawValue)
         }
     }
     

@@ -35,11 +35,11 @@ class ProfileSettingViewController: UIViewController {
     
     private lazy var loginButton = PointButton(title: "완료")
     
-    var userDefaults = UserDefaultsManager.shared
     let profileList = ProfileImg.allCases
-    lazy var profileViewType: ProfileViewType = .first
-    lazy var profileImg: String = ""
-    lazy var editProfileImg: String = ""
+    let userDefaults = UserDefaultsManager.shared
+    var navTitle = SetNavigationTitle.firstProfile
+    var profileImg: String = ""
+    var editProfileImg: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,34 +49,41 @@ class ProfileSettingViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         setUI()
+        keyboardDismiss()
     }
     
     private func configureNavigationBar() {
-        navigationItem.title = profileViewType.rawValue
+        navigationItem.title = navTitle.navTitle
         navigationController?.navigationBar.isHidden = false
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
         navigationController?.navigationBar.tintColor = UIColor.appBlack
         
-        switch profileViewType {
-        case .first:
+        switch navTitle {
+        case .firstProfile:
             break
-        case .edit:
+        case .editProfile:
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonClicked))
+        default:
+            break
         }
     }
     
     @objc private func saveButtonClicked() {
         UserDefaultsManager.shared.profile = editProfileImg
+        userDefaults.nickname = nicknameTextField.text!
         navigationController?.popViewController(animated: true)
     }
     
     @objc private func backButtonTapped() {
-        switch profileViewType {
-        case .first:
+        switch navTitle{
+        case .firstProfile:
             UserDefaultsManager.shared.profile = ""
-        case .edit:
+        case .editProfile:
             UserDefaultsManager.shared.profile = profileImg
+            UserDefaultsManager.shared.editProfile = profileImg
+        default:
+            break
         }
         navigationController?.popViewController(animated: true)
     }
@@ -139,34 +146,40 @@ class ProfileSettingViewController: UIViewController {
         setProfileImgButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
         setProfileImgSubButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
         
-        switch profileViewType {
-        case .first:
+        switch navTitle{
+        case .firstProfile:
             loginButton.addTarget(self, action: #selector(moveMainView), for: .touchUpInside)
             loginButton.isEnabled = false
             loginButton.backgroundColor = .appLightGray
-        case .edit:
+        case .editProfile:
             loginButton.isHidden = true
+        default:
+            break
         }
-
     }
     
     @objc private func setProfileImgButtonClicked() {
         let vc = SelectProfileImgViewController()
-        vc.profileViewType = profileViewType
-        switch profileViewType {
-        case .first:
+        vc.navTitle = self.navTitle
+        switch navTitle{
+        case .firstProfile:
             vc.selectedProfile = profileImg
-        case .edit:
+        case .editProfile:
             vc.selectedProfile = editProfileImg
+        default:
+            break
         }
+        keyboardDismiss()
         navigationController?.pushViewController(vc, animated: true)
-        print(vc.selectedProfile)
     }
     
     @objc private func moveMainView() {
         
         UserDefaultsManager.shared.isStart = true
         UserDefaultsManager.shared.nickname = nicknameTextField.text!
+        UserDefaultsManager.shared.profile = profileImg
+        UserDefaultsManager.shared.editProfile = profileImg
+        UserDefaultsManager.shared.loginDate = DateFormatter.customDateFormatter(date: Date())
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         let sceneDelegate = windowScene?.delegate as? SceneDelegate
         
@@ -176,34 +189,28 @@ class ProfileSettingViewController: UIViewController {
         sceneDelegate?.window?.makeKeyAndVisible()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        setProfileImgButton.layer.cornerRadius = setProfileImgButton.frame.width / 2
-        setProfileImgSubButton.layer.cornerRadius = setProfileImgSubButton.frame.width / 2
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if profileImg.isEmpty {
             profileImg = ProfileImg.allCases.randomElement()!.rawValue
             profileImgView.image = UIImage(named: profileImg)
         } else {
-            switch profileViewType {
-            case .first:
+            switch navTitle{
+            case .firstProfile:
                 profileImg = userDefaults.profile
                 profileImgView.image = UIImage(named: profileImg)
                 nicknameTextField.text = nil
                 checkNicknameLabel.text = nil
                 loginButton.isEnabled = false
                 loginButton.backgroundColor = .appLightGray
-                
-            case .edit:
+            case .editProfile:
                 editProfileImg = userDefaults.editProfile
                 profileImgView.image = UIImage(named: editProfileImg)
-                print("editProfileImg = \(editProfileImg)")
                 
                 nicknameTextField.text = userDefaults.nickname
+                checkNicknameLabel.text = CheckNickname.ok.checkNicknameLabelText
+            default:
+                break
             }
         }
     }
@@ -211,11 +218,13 @@ class ProfileSettingViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        switch profileViewType {
-        case .first:
+        switch navTitle{
+        case .firstProfile:
             break
-        case .edit:
+        case .editProfile:
             editProfileImg = userDefaults.profile
+        default:
+            break
         }
     }
 }
@@ -225,42 +234,61 @@ extension ProfileSettingViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         
         if let text = textField.text, !text.trimmingCharacters(in: .whitespaces).isEmpty {
-            print(#function, text)
+            checkNickname(nickName: text)
+        }
+    }
+}
+
+extension ProfileSettingViewController {
+    
+    func checkNickname(nickName: String) {
+        guard nickName.count >= 2 && nickName.count < 10 else {
+            loginButton.isEnabled = false
+            loginButton.backgroundColor = .appLightGray
+            checkNicknameLabel.text = CheckNickname.outRange.checkNicknameLabelText
             
-            guard text.count >= 2 && text.count < 10 else {
+            return
+        }
+        
+        for i in nickName {
+            guard Int(String(i)) == nil else {
                 loginButton.isEnabled = false
                 loginButton.backgroundColor = .appLightGray
-                checkNicknameLabel.text = "2글자 이상 10글자 미만으로 설정해주세요"
+                checkNicknameLabel.text = CheckNickname.noNumber.checkNicknameLabelText
                 
                 return
             }
-            
-            for i in text {
-                guard Int(String(i)) == nil else {
-                    loginButton.isEnabled = false
-                    loginButton.backgroundColor = .appLightGray
-                    checkNicknameLabel.text = "닉네임에 숫자는 포함할 수 없어요"
-                    
-                    return
-                }
-            }
-            
-            let specialStringArr = ["@", "#", "$", "%"]
-            
-            for i in specialStringArr {
-                guard !text.hasPrefix(i) else {
-                    loginButton.isEnabled = false
-                    loginButton.backgroundColor = .appLightGray
-                    checkNicknameLabel.text = "닉네임에 \(i)는 포함할 수 없어요"
-                    
-                    return
-                }
-            }
-            
-            loginButton.isEnabled = true
-            loginButton.backgroundColor = .appMainColor
-            checkNicknameLabel.text = "사용할 수 있는 닉네임이에요!"
-            
         }
+        
+        for i in String.specialStringArray {
+            guard !nickName.contains(i) else {
+                loginButton.isEnabled = false
+                loginButton.backgroundColor = .appLightGray
+                checkNicknameLabel.text = CheckNickname.specialString(i).checkNicknameLabelText
+                
+                return
+            }
+        }
+        
+        loginButton.isEnabled = true
+        loginButton.backgroundColor = .appMainColor
+        checkNicknameLabel.text = CheckNickname.ok.checkNicknameLabelText
+    }
+    
+}
+
+extension String {
+    static var specialStringArray = ["@", "#", "$", "%"]
+}
+
+extension DateFormatter {
+    static func customDateFormatter(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy. MM. dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        
+        let convertDate = dateFormatter.string(from: date)
+        
+        return ""
     }
 }

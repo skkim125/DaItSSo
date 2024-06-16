@@ -36,8 +36,8 @@ class SelectProfileImgViewController: UIViewController {
         return layout
     }
     
-    var profileViewType: ProfileViewType?
-    var selectedProfile: String?
+    var navTitle: SetNavigationTitle = .firstProfile
+    var selectedProfile: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,16 +55,13 @@ class SelectProfileImgViewController: UIViewController {
     }
     
     @objc private func backButtonTapped() {
-        if let type = profileViewType {
-            switch type {
-            case .first:
-                if let img = selectedProfile {
-                    UserDefaultsManager.shared.profile = img
-                }
-            case .edit:
-                break
-            }
+        switch navTitle{
+        case .firstProfile:
+            UserDefaultsManager.shared.profile = selectedProfile
+        default:
+            break
         }
+        
         navigationController?.popViewController(animated: true)
     }
     
@@ -99,26 +96,19 @@ class SelectProfileImgViewController: UIViewController {
     }
     
     func profileImgViewUI() {
-        if let profile = selectedProfile {
-            profileImgView.image = UIImage(named: profile)
-        }
+        profileImgView.image = UIImage(named: selectedProfile)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if let type = profileViewType {
-            switch type {
-            case .first:
-                if let profile = selectedProfile {
-                    UserDefaultsManager.shared.profile = profile
-                }
-            case .edit:
-                if let profile = selectedProfile {
-                    UserDefaultsManager.shared.editProfile = profile
-                    print(#function, UserDefaultsManager.shared.editProfile)
-                }
-            }
+        switch navTitle{
+        case .firstProfile:
+            UserDefaultsManager.shared.profile = selectedProfile
+        case .editProfile:
+            UserDefaultsManager.shared.editProfile = selectedProfile
+        default:
+            break
         }
     }
 }
@@ -126,44 +116,32 @@ class SelectProfileImgViewController: UIViewController {
 extension SelectProfileImgViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return UIImage.profileImgArray.count
+        return ProfileImg.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImgCollectionViewCell.id, for: indexPath) as! ProfileImgCollectionViewCell
-        let img = UIImage.profileImgArray[indexPath.item]
+        let img = ProfileImg.allCases[indexPath.item]
         
-        guard let profile = selectedProfile else {
-            print(#function, "guard문 걸림")
-            return cell
-        }
-        
-        if profile == img {
-            cell.configureCellUI(image: img, profileType: .isSelected)
-            print("선택된 셀 = \(indexPath.item)")
+        if selectedProfile == img.rawValue {
+            cell.configureCellUI(image: img.rawValue, profileType: .isSelected)
         } else {
-            cell.configureCellUI(image: img, profileType: .unSelected)
-            print("선택되지 않은 셀 = \(indexPath.item)")
+            cell.configureCellUI(image: img.rawValue, profileType: .unSelected)
         }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("선택된 항목 인덱스: \(indexPath.row)")
-        let img = UIImage.profileImgArray[indexPath.item]
         let cell = collectionView.cellForItem(at: indexPath) as! ProfileImgCollectionViewCell
-        profileImgView.image = UIImage(named: img)
+        let img = ProfileImg.allCases[indexPath.item]
+        profileImgView.image = UIImage(named: img.rawValue)
+        selectedProfile = img.rawValue
         
-        print("선택된 이미지: \(img)")
-        selectedProfile = img
-        
-        if cell.profileImgView.image == UIImage(named: img) {
-            cell.configureCellUI(image: img, profileType: .isSelected)
-            print("선택된 셀 = \(indexPath.item)")
+        if cell.profileImgView.image == UIImage(named: img.rawValue) {
+            cell.configureCellUI(image: img.rawValue, profileType: .isSelected)
         } else {
-            cell.configureCellUI(image: img, profileType: .unSelected)
-            print("선택되지 않은 셀 = \(indexPath.item)")
+            cell.configureCellUI(image: img.rawValue, profileType: .unSelected)
         }
         
         collectionView.reloadData()

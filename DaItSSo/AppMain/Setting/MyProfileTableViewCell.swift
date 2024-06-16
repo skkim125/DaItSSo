@@ -20,11 +20,16 @@ class MyProfileTableViewCell: UITableViewCell {
     }()
     private lazy var nicknameLabel = {
         let label = UILabel()
+        label.textColor = .appBlack
+        label.font = .systemFont(ofSize: 16, weight: .bold)
         
         return label
     }()
     private lazy var dateLabel = {
         let label = UILabel()
+        label.textColor = .appGray
+        label.font = .systemFont(ofSize: 14)
+        label.text = UserDefaultsManager.shared.loginDate
         
         return label
     }()
@@ -69,14 +74,14 @@ class MyProfileTableViewCell: UITableViewCell {
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(labelStackView.snp.top)
+            make.top.equalTo(labelStackView.snp.top).offset(10)
             make.horizontalEdges.equalTo(labelStackView.snp.horizontalEdges)
-            make.height.equalTo(labelStackView.snp.height).multipliedBy(0.7)
+            make.height.equalTo(labelStackView.snp.height).multipliedBy(0.4)
         }
         
         dateLabel.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom)
-            make.height.equalTo(labelStackView.snp.height).multipliedBy(0.3)
+            make.height.equalTo(labelStackView.snp.height).multipliedBy(0.2)
             make.horizontalEdges.equalTo(labelStackView.snp.horizontalEdges)
         }
         
@@ -97,4 +102,9 @@ class MyProfileTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        backgroundColor = .white
+    }
 }

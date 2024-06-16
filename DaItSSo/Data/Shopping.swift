@@ -18,20 +18,30 @@ struct Item: Codable {
     let mallName: String
     let lprice: String
     let link: String
+    let productId: String
 }
 
 struct MyShopping: Codable {
     var item: Item
-    var addDate: String
+    var addDate: Date
     var save: Bool
-    
-    var addDateStr: Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        
-        let convertDate = dateFormatter.date(from: addDate)!
-        
-        return convertDate
-    }
 }
+
+struct RecentSearchList: Codable {
+    var recentSearchList: [RecentSearch]
+}
+
+struct RecentSearch: Codable {
+    var search: String
+    var searchDate: Date
+}
+
+//var addDateStr: Date {
+//    let dateFormatter = DateFormatter()
+//    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+//    dateFormatter.locale = Locale(identifier: "ko_KR")
+//    
+//    let convertDate = dateFormatter.date(from: addDate)!
+//    
+//    return convertDate
+//}
