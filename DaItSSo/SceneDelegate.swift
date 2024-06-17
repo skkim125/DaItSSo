@@ -18,8 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        
-        if UserDefaultsManager.shared.isStart {
+        let userDefaults = UserDefaultsManager.shared
+        if userDefaults.isStart {
             let vc = TabViewController()
             
             window?.rootViewController = vc

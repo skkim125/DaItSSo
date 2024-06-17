@@ -15,7 +15,7 @@ class SettingTableViewCell: UITableViewCell {
     lazy var shoppingImage = {
         let imgView = UIImageView(image: UIImage(systemName: "handbag.fill"))
         imgView.contentMode = .scaleAspectFit
-        imgView.tintColor = .black
+        imgView.tintColor = .appBlack
         
         return imgView
     }()
@@ -31,11 +31,11 @@ class SettingTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         contentView.addSubview(settingLabel)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         settingLabel.snp.makeConstraints { make in
             make.centerY.equalTo(contentView.snp.centerY)
             make.leading.equalTo(20)

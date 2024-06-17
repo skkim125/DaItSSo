@@ -10,21 +10,21 @@ import SnapKit
 import WebKit
 
 class SearchResultDetailViewController: UIViewController {
-    lazy var webView = {
+    private lazy var webView = {
         let webView = WKWebView()
         
         return webView
     }()
     
-    var myShopping = Item(title: "", image: "", mallName: "", lprice: "", link: "", productId: "")
+    private let userDefaults = UserDefaultsManager.shared
+    lazy var navTitle = SetNavigationTitle.search(searchText)
     var item: Item?
     var searchText = ""
     var isAdd = false
-    lazy var navTitle = SetNavigationTitle.search(searchText)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .appWhite
         
         configureHierarchy()
         configureLayout()
@@ -40,27 +40,28 @@ class SearchResultDetailViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "handbag.fill"), style: .plain, target: self, action: #selector(selectProductButtonClicked))
     }
     
-    @objc func backButtonClicked() {
+    @objc private func backButtonClicked() {
         navigationController?.popViewController(animated: true)
     }
     
     @objc private func selectProductButtonClicked() {
         isAdd.toggle()
         if let i = item {
-            if UserDefaultsManager.shared.myShopping.isEmpty {
-                let filterdShopping = UserDefaultsManager.shared.myShopping.filter { $0.productId == i.productId }
+            switch userDefaults.myShopping.isEmpty {
+            case true:
+                let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
                 if isAdd {
-                    UserDefaultsManager.shared.myShopping.append(i)
+                    userDefaults.myShopping.append(i)
                 } else {
-                    UserDefaultsManager.shared.myShopping.remove(at: UserDefaultsManager.shared.myShopping.lastIndex(where: {
+                    userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
                         $0.productId == filterdShopping[filterdShopping.startIndex].productId
                     })!)
                 }
-            } else {
+            case false:
                 if isAdd {
-                    UserDefaultsManager.shared.myShopping.append(i)
+                    userDefaults.myShopping.append(i)
                 } else {
-                    UserDefaultsManager.shared.myShopping.remove(at: UserDefaultsManager.shared.myShopping.lastIndex(where: {
+                    userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
                         $0.productId == i.productId
                     })!)
                 }
@@ -70,21 +71,21 @@ class SearchResultDetailViewController: UIViewController {
         configureRightBarButtonUI()
     }
     
-    func configureRightBarButtonUI() {
+    private func configureRightBarButtonUI() {
         if isAdd {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "handbag.fill")
-            navigationItem.rightBarButtonItem?.tintColor = .black
+            navigationItem.rightBarButtonItem?.tintColor = .appBlack
         } else {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "handbag")
-            navigationItem.rightBarButtonItem?.tintColor = .black
+            navigationItem.rightBarButtonItem?.tintColor = .appBlack
         }
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         view.addSubview(webView)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         webView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }

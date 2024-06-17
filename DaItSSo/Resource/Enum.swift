@@ -50,12 +50,12 @@ enum ProfileImgType {
         }
     }
     
-    var borderColor: CGColor {
+    var borderColor: UIColor {
         switch self {
         case .isSelected:
-            UIColor.appMainColor.cgColor
+            .appMainColor
         case .unSelected:
-            UIColor.appLightGray.cgColor
+            .appLightGray
         }
     }
     
@@ -98,10 +98,23 @@ enum SortType: String {
             "정확도"
         case .date:
             "날짜순"
-        case .asc:
-            "가격낮은순"
         case .dsc:
             "가격높은순"
+        case .asc:
+            "가격낮은순"
+        }
+    }
+    
+    var buttonTag: Int {
+        switch self {
+        case .sim:
+            0
+        case .date:
+            1
+        case .dsc:
+            2
+        case .asc:
+            3
         }
     }
 }

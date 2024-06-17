@@ -34,28 +34,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="Ue6-Sb-cm1">
-                                <rect key="frame" x="30" y="199" width="333" height="333"/>
+                                <rect key="frame" x="30" y="259.66666666666669" width="333" height="333.00000000000006"/>
                                 <color key="tintColor" red="0.93333333730000001" green="0.58823531870000001" blue="0.38431376220000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Ue6-Sb-cm1" secondAttribute="height" multiplier="1:1" id="VSt-So-Qy9"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DaItSSo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPD-vm-NGe">
-                                <rect key="frame" x="30" y="99" width="333" height="60"/>
+                                <rect key="frame" x="30" y="159.66666666666666" width="333" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="YrH-1F-Mp6"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="50"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="50"/>
                                 <color key="textColor" red="0.93725490199999995" green="0.53725490200000003" blue="0.2784313725" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="김상규" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3vn-FQ-VqF">
-                                <rect key="frame" x="166.66666666666666" y="552" width="60" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kim Sang Gyu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3vn-FQ-VqF">
+                                <rect key="frame" x="20" y="612.66666666666663" width="353" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="PpQ-O3-C2x"/>
                                     <constraint firstAttribute="height" constant="40" id="h8h-TY-ctx"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="23"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="23"/>
                                 <color key="textColor" red="0.92941176889999999" green="0.58823531870000001" blue="0.38431376220000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -65,12 +64,14 @@
                         <constraints>
                             <constraint firstItem="49c-hj-x3e" firstAttribute="trailing" secondItem="lPD-vm-NGe" secondAttribute="trailing" constant="30" id="9Gr-Va-4k2"/>
                             <constraint firstItem="Ue6-Sb-cm1" firstAttribute="top" secondItem="lPD-vm-NGe" secondAttribute="bottom" constant="40" id="AaU-oP-ukD"/>
+                            <constraint firstItem="Ue6-Sb-cm1" firstAttribute="centerY" secondItem="zrs-si-zAo" secondAttribute="centerY" id="DF3-cd-mhW"/>
                             <constraint firstItem="3vn-FQ-VqF" firstAttribute="top" secondItem="Ue6-Sb-cm1" secondAttribute="bottom" constant="20" id="Fif-Tl-MNy"/>
                             <constraint firstItem="3vn-FQ-VqF" firstAttribute="centerX" secondItem="zrs-si-zAo" secondAttribute="centerX" id="Gr1-7g-sU2"/>
-                            <constraint firstItem="lPD-vm-NGe" firstAttribute="top" secondItem="49c-hj-x3e" secondAttribute="top" constant="40" id="IaW-nx-5Ca"/>
                             <constraint firstItem="lPD-vm-NGe" firstAttribute="leading" secondItem="49c-hj-x3e" secondAttribute="leading" constant="30" id="KWE-nf-2PS"/>
                             <constraint firstItem="Ue6-Sb-cm1" firstAttribute="leading" secondItem="49c-hj-x3e" secondAttribute="leading" constant="30" id="Lea-4x-Tb6"/>
+                            <constraint firstItem="49c-hj-x3e" firstAttribute="trailing" secondItem="3vn-FQ-VqF" secondAttribute="trailing" constant="20" id="iOa-uw-Wkr"/>
                             <constraint firstItem="49c-hj-x3e" firstAttribute="trailing" secondItem="Ue6-Sb-cm1" secondAttribute="trailing" constant="30" id="n3y-J1-N2N"/>
+                            <constraint firstItem="3vn-FQ-VqF" firstAttribute="leading" secondItem="49c-hj-x3e" secondAttribute="leading" constant="20" id="tD2-K8-YGD"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="OaM-zB-3Ba"/>

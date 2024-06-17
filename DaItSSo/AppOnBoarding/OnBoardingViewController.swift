@@ -12,8 +12,8 @@ class OnBoardingViewController: UIViewController {
     private let appNameLabel = {
         let label = UILabel()
         label.text = "DaItSSo"
-        label.textColor = UIColor.appMainColor
-        label.font = .systemFont(ofSize: 50, weight: .heavy)
+        label.textColor = .appMainColor
+        label.font = UIFont(name: "Chalkboard SE Regular", size: 50)
         label.textAlignment = .center
         
         return label
@@ -27,16 +27,26 @@ class OnBoardingViewController: UIViewController {
         return imgView
     }()
     
-    private let startButton = PointButton(title: "시작하기")
+    private let startButton = PointButton(title: "Start")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .appWhite
         navigationController?.navigationBar.isHidden = true
+        
         configureHierarchy()
         configureLayout()
-        
+        configureStartButton()
+    }
+    
+    func configureStartButton() {
         startButton.addTarget(self, action: #selector(goLoginView), for: .touchUpInside)
+    }
+    
+    @objc private func goLoginView() {
+        let vc = ProfileSettingViewController()
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func configureHierarchy() {
@@ -47,12 +57,12 @@ class OnBoardingViewController: UIViewController {
     
     private func configureLayout() {
         appNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(40)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.height.equalTo(60)
         }
         
         appImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(view.snp.centerY)
             make.top.equalTo(appNameLabel.snp.bottom).offset(40)
             make.horizontalEdges.equalTo(appNameLabel)
             make.height.equalTo(appImageView.snp.width)
@@ -60,17 +70,8 @@ class OnBoardingViewController: UIViewController {
         
         startButton.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(appNameLabel)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.height.equalTo(60)
         }
     }
-    
-    
-    @objc private func goLoginView() {
-        let vc = ProfileSettingViewController()
-        
-        navigationController?.pushViewController(vc, animated: true)
-        
-    }
-    
 }

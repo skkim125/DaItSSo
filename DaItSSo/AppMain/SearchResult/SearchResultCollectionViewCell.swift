@@ -48,15 +48,19 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     
     lazy var selectProductButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "handbag.fill"), for: .normal)
-        button.layer.cornerRadius = 5
-        button.clipsToBounds = true
+        var configuration = UIButton.Configuration.bordered()
+        configuration.image = UIImage(systemName: "handbag.fill")
+        configuration.image?.withTintColor(.appBlack)
+        configuration.background.strokeColor = .appLightGray
+        configuration.background.strokeWidth = 0.3
+        button.configuration = configuration
+        
         button.addTarget(self, action: #selector(selectProductButtonClicked), for: .touchUpInside)
         
         return button
     }()
     
-    var myShopping = Item(title: "", image: "", mallName: "", lprice: "", link: "", productId: "")
+    private let userDefaults = UserDefaultsManager.shared
     var item: Item?
     var isAdd: Bool = false
     
@@ -71,8 +75,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureHierarchy() {
-        // MARK: addSubView()
+    private func configureHierarchy() {
         contentView.addSubview(shoppingImg)
         contentView.addSubview(shoppingMallNameLabel)
         contentView.addSubview(shoppingTitleLabel)
@@ -80,7 +83,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(selectProductButton)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         shoppingImg.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(contentView.safeAreaLayoutGuide)
             make.height.equalTo(contentView.snp.width).multipliedBy(1.2)
@@ -121,31 +124,32 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     
     func configureSelectButtonUI() {
         if isAdd {
-            selectProductButton.backgroundColor = .appWhite
-            selectProductButton.imageView?.tintColor = .appBlack
+            selectProductButton.configuration?.background.backgroundColor = .appWhite
+            selectProductButton.configuration?.baseForegroundColor = .appBlack
         } else {
-            selectProductButton.backgroundColor = .appBlack.withAlphaComponent(0.3)
-            selectProductButton.imageView?.tintColor = .white
+            selectProductButton.configuration?.background.backgroundColor = .appBlack.withAlphaComponent(0.3)
+            selectProductButton.configuration?.baseForegroundColor = .appWhite
         }
     }
     
     @objc private func selectProductButtonClicked() {
         isAdd.toggle()
         if let i = item {
-            if UserDefaultsManager.shared.myShopping.isEmpty {
-                let filterdShopping = UserDefaultsManager.shared.myShopping.filter { $0.productId == i.productId }
+            switch userDefaults.myShopping.isEmpty {
+            case true:
+                let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
                 if isAdd {
-                    UserDefaultsManager.shared.myShopping.append(i)
+                    userDefaults.myShopping.append(i)
                 } else {
-                    UserDefaultsManager.shared.myShopping.remove(at: UserDefaultsManager.shared.myShopping.lastIndex(where: {
+                    userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
                         $0.productId == filterdShopping[filterdShopping.startIndex].productId
                     })!)
                 }
-            } else {
+            case false:
                 if isAdd {
-                    UserDefaultsManager.shared.myShopping.append(i)
+                    userDefaults.myShopping.append(i)
                 } else {
-                    UserDefaultsManager.shared.myShopping.remove(at: UserDefaultsManager.shared.myShopping.lastIndex(where: {
+                    userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
                         $0.productId == i.productId
                     })!)
                 }
@@ -153,14 +157,5 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         }
         
         configureSelectButtonUI()
-    }
-}
-
-extension String {
-    static func removeTag(title: String) -> String {
-        var removeTag = title.replacingOccurrences(of: "<b>", with: "")
-        removeTag = removeTag.replacingOccurrences(of: "</b>", with: "")
-        
-        return removeTag
     }
 }

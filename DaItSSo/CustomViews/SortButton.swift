@@ -12,17 +12,18 @@ class SortButton: UIButton {
     init(sortType: SortType) {
         super.init(frame: .zero)
         
-        setTitle(sortType.sortTitle, for: .normal)
-        setTitleColor(UIColor.appBlack, for: .normal)
-        titleLabel?.font = .systemFont(ofSize: 15)
+        var configuration = UIButton.Configuration.bordered()
+        configuration.title = sortType.sortTitle
+        configuration.baseForegroundColor = .appDarkGray
+        configuration.baseBackgroundColor = .appWhite
+        configuration.background.strokeColor = .appDarkGray
+        configuration.buttonSize = .small
+        configuration.cornerStyle = .capsule
         
-        backgroundColor = UIColor.appWhite
+        self.configuration = configuration
         
-        layer.borderColor = UIColor.appDarkGray.cgColor
-        layer.borderWidth = 1
-        layer.cornerRadius = 16
-        clipsToBounds = true
-        
+        titleLabel?.font = .systemFont(ofSize: 14)
+        tag = sortType.buttonTag
     }
     
     required init?(coder: NSCoder) {

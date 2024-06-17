@@ -29,7 +29,7 @@ class MyProfileTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .appGray
         label.font = .systemFont(ofSize: 14)
-        label.text = UserDefaultsManager.shared.loginDate
+        label.text = userDefaults.loginDate
         
         return label
     }()
@@ -40,6 +40,8 @@ class MyProfileTableViewCell: UITableViewCell {
         
         return imgView
     }()
+    
+    private let userDefaults = UserDefaultsManager.shared
     var profileImg: String?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -47,6 +49,10 @@ class MyProfileTableViewCell: UITableViewCell {
         
         configureHierarchy()
         configureLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func configureHierarchy() {
@@ -99,13 +105,9 @@ class MyProfileTableViewCell: UITableViewCell {
         dateLabel.text = date + " 가입"
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        backgroundColor = .white
+        backgroundColor = .appWhite
     }
 }

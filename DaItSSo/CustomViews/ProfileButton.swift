@@ -15,7 +15,7 @@ class ProfileButton: UIButton {
         imageView?.contentMode = .scaleAspectFit
         clipsToBounds = true
         layer.borderWidth = profileImgType.borderWidth
-        layer.borderColor = profileImgType.borderColor
+        layer.borderColor = profileImgType.borderColor.cgColor
         imageView?.alpha = profileImgType.alpha
     }
     

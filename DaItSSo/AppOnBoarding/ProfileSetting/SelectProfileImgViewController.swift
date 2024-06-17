@@ -22,7 +22,7 @@ class SelectProfileImgViewController: UIViewController {
         return cv
     }()
     
-    func collectionViewLayout() -> UICollectionViewLayout {
+    private func collectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         let cellSpacing: CGFloat = 10
         let sectionSpacing: CGFloat = 10
@@ -36,28 +36,29 @@ class SelectProfileImgViewController: UIViewController {
         return layout
     }
     
+    private let userDefaults = UserDefaultsManager.shared
     var navTitle: SetNavigationTitle = .firstProfile
     var selectedProfile: String = ""
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = .appWhite
         configureNavigationBar()
         configureHierarchy()
         configureLayout()
         profileImgViewUI()
     }
     
-    func configureNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.title = "Profile Setting"
+    private func configureNavigationBar() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
+        navigationItem.title = navTitle.navTitle
     }
     
-    @objc private func backButtonTapped() {
+    @objc private func backButtonClicked() {
         switch navTitle{
         case .firstProfile:
-            UserDefaultsManager.shared.profile = selectedProfile
+            userDefaults.profile = selectedProfile
         default:
             break
         }
@@ -65,14 +66,14 @@ class SelectProfileImgViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         view.addSubview(selectedProfileImgButton)
         view.addSubview(selectedProfileImgSubButton)
         selectedProfileImgButton.addSubview(profileImgView)
         view.addSubview(collectionView)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         selectedProfileImgButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             make.centerX.equalTo(view.snp.centerX)
@@ -104,9 +105,9 @@ class SelectProfileImgViewController: UIViewController {
         
         switch navTitle{
         case .firstProfile:
-            UserDefaultsManager.shared.profile = selectedProfile
+            userDefaults.profile = selectedProfile
         case .editProfile:
-            UserDefaultsManager.shared.editProfile = selectedProfile
+            userDefaults.editProfile = selectedProfile
         default:
             break
         }

@@ -25,7 +25,7 @@ class SearchResultViewController: UIViewController {
     lazy var totalResultLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .heavy)
-        label.textColor = UIColor.appMainColor
+        label.textColor = .appMainColor
         
         return label
     }()
@@ -51,6 +51,7 @@ class SearchResultViewController: UIViewController {
         return layout
     }
     
+    private let userDefaults = UserDefaultsManager.shared
     var searchResults: [Item] = []
     var searchText: String = ""
     var sort: SortType = .sim
@@ -60,7 +61,7 @@ class SearchResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = .appWhite
         configureNavigationBar()
         callRequest(keyword: searchText, sort: SortType.sim)
         configureHierarchy()
@@ -79,8 +80,7 @@ class SearchResultViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    func configureHierarchy() {
-        // MARK: addSubView()
+    private func configureHierarchy() {
         view.addSubview(totalResultLabel)
         view.addSubview(simSortButton)
         view.addSubview(dateSortButton)
@@ -89,7 +89,7 @@ class SearchResultViewController: UIViewController {
         view.addSubview(resultCollectionView)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         totalResultLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(15)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
@@ -99,29 +99,25 @@ class SearchResultViewController: UIViewController {
         simSortButton.snp.makeConstraints { make in
             make.top.equalTo(totalResultLabel.snp.bottom).offset(10)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-            make.height.equalTo(35)
-            make.width.equalTo(simSortButton.snp.height).multipliedBy(1.5)
+            make.height.equalTo(30)
         }
         
         dateSortButton.snp.makeConstraints { make in
             make.top.equalTo(simSortButton)
             make.leading.equalTo(simSortButton.snp.trailing).offset(10)
             make.height.equalTo(simSortButton)
-            make.width.equalTo(simSortButton.snp.height).multipliedBy(1.5)
         }
         
         dscSortButton.snp.makeConstraints { make in
             make.top.equalTo(simSortButton)
             make.leading.equalTo(dateSortButton.snp.trailing).offset(10)
             make.height.equalTo(simSortButton)
-            make.width.equalTo(simSortButton.snp.height).multipliedBy(2)
         }
         
         ascSortButton.snp.makeConstraints { make in
             make.top.equalTo(simSortButton)
             make.leading.equalTo(dscSortButton.snp.trailing).offset(10)
             make.height.equalTo(simSortButton)
-            make.width.equalTo(simSortButton.snp.height).multipliedBy(2)
         }
         
         resultCollectionView.snp.makeConstraints { make in
@@ -133,19 +129,15 @@ class SearchResultViewController: UIViewController {
     func callRequest(keyword: String, sort: SortType) {
         let url = "https://openapi.naver.com/v1/search/shop.json"
         let header: HTTPHeaders = [
-            
             "X-Naver-Client-Id": APIKey.clientId,
             "X-Naver-Client-Secret": APIKey.key
-        
         ]
         
         let param: Parameters = [
-        
             "query": "\(keyword)",
             "start": "\(start)",
             "display": "30",
             "sort": "\(sort.rawValue)",
-        
         ]
         
         AF.request(url, method: .get, parameters: param, headers: header).responseDecodable(of: Shopping.self) { response in
@@ -169,54 +161,19 @@ class SearchResultViewController: UIViewController {
     }
     
     func configureSortButtons() {
-        let simSortAction = UIAction { [self] _ in
-            self.callRequest(keyword: searchText, sort: .sim)
-            
-            selectedSortButtonUI(button: simSortButton)
-            unSelectedSortButtonUI(button: dateSortButton)
-            unSelectedSortButtonUI(button: ascSortButton)
-            unSelectedSortButtonUI(button: dscSortButton)
-        }
-        simSortButton.addAction(simSortAction, for: .touchUpInside)
+        simSortButton.configuration?.baseForegroundColor = .appWhite
+        simSortButton.configuration?.baseBackgroundColor = .appDarkGray
         
-        let dateSortAction = UIAction { [self] _ in
-            self.callRequest(keyword: searchText, sort: .date)
-            selectedSortButtonUI(button: dateSortButton)
-            unSelectedSortButtonUI(button: simSortButton)
-            unSelectedSortButtonUI(button: ascSortButton)
-            unSelectedSortButtonUI(button: dscSortButton)
-        }
-        dateSortButton.addAction(dateSortAction, for: .touchUpInside)
-        
-        let ascSortAction = UIAction { [self] _ in
-            self.callRequest(keyword: searchText, sort: .asc)
-            selectedSortButtonUI(button: ascSortButton)
-            unSelectedSortButtonUI(button: dateSortButton)
-            unSelectedSortButtonUI(button: simSortButton)
-            unSelectedSortButtonUI(button: dscSortButton)
-        }
-        ascSortButton.addAction(ascSortAction, for: .touchUpInside)
-        
-        let dscSortAction = UIAction { [self] _ in
-            self.callRequest(keyword: searchText, sort: .dsc)
-            selectedSortButtonUI(button: dscSortButton)
-            unSelectedSortButtonUI(button: dateSortButton)
-            unSelectedSortButtonUI(button: ascSortButton)
-            unSelectedSortButtonUI(button: simSortButton)
-        }
-        dscSortButton.addAction(dscSortAction, for: .touchUpInside)
+        simSortButton.addTarget(self, action: #selector(sortButtonClicked(_:)), for: .touchUpInside)
+        dateSortButton.addTarget(self, action: #selector(sortButtonClicked(_:)), for: .touchUpInside)
+        dscSortButton.addTarget(self, action: #selector(sortButtonClicked(_:)), for: .touchUpInside)
+        ascSortButton.addTarget(self, action: #selector(sortButtonClicked(_:)), for: .touchUpInside)
     }
     
-    func selectedSortButtonUI(button: UIButton) {
-        button.backgroundColor = UIColor.appDarkGray
-        button.setTitleColor(UIColor.appWhite, for: .normal)
+    @objc func sortButtonClicked(_ sender: UIButton) {
+        sortButtonAction(button: sender)
     }
-    
-    func unSelectedSortButtonUI(button: UIButton) {
-        button.backgroundColor = UIColor.appWhite
-        button.setTitleColor(UIColor.appBlack, for: .normal)
-    }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -242,7 +199,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         cell.configureCellUI(item: data)
         cell.item = searchResults[indexPath.item]
         
-        if UserDefaultsManager.shared.myShopping.contains(where: { $0 == data }) {
+        if userDefaults.myShopping.contains(where: { $0 == data }) {
             cell.isAdd = true
         } else {
             cell.isAdd = false
@@ -257,7 +214,6 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         let cell = collectionView.cellForItem(at: indexPath) as! SearchResultCollectionViewCell
         
         let vc = SearchResultDetailViewController()
-        vc.myShopping = cell.myShopping
         vc.item = selectedData
         vc.isAdd = cell.isAdd
         vc.searchText = String.removeTag(title: selectedData.title)
@@ -269,7 +225,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
 extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for i in indexPaths {
+        indexPaths.forEach { i in
             if searchResults.count-8 == i.row {
                 start += 30
                 callRequest(keyword: searchText, sort: sort)
@@ -278,14 +234,41 @@ extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
     }
 }
 
-extension String {
-    static func formatInt(int: String) -> String {
-        let i = Int(int)!
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-
-        let result = formatter.string(for: i)!
-
-        return result
+extension SearchResultViewController {
+    
+    func sortButtonAction(button: UIButton) {
+        switch button.tag {
+        case 0:
+            callRequest(keyword: searchText, sort: .sim)
+            isSelectedSortButtonUI(button: button)
+            
+        case 1:
+            callRequest(keyword: searchText, sort: .date)
+            isSelectedSortButtonUI(button: button)
+            
+            return
+        case 2:
+            callRequest(keyword: searchText, sort: .dsc)
+            isSelectedSortButtonUI(button: button)
+            
+            return
+        case 3:
+            callRequest(keyword: searchText, sort: .asc)
+            isSelectedSortButtonUI(button: button)
+            
+            return
+        default:
+            break
+        }
+    }
+    
+    func isSelectedSortButtonUI(button: UIButton) {
+        button.configuration?.baseForegroundColor = .appWhite
+        button.configuration?.baseBackgroundColor = .appDarkGray
+    }
+    
+    func unSelectedSortButtonUI(button: UIButton) {
+        button.configuration?.baseForegroundColor = .appDarkGray
+        button.configuration?.baseBackgroundColor = .appWhite
     }
 }

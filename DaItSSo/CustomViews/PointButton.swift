@@ -10,12 +10,15 @@ import UIKit
 class PointButton: UIButton {
     init(title: String) {
         super.init(frame: .zero)
+        var configuration = UIButton.Configuration.bordered()
+        configuration.cornerStyle = .capsule
+        configuration.title = title
+        configuration.baseForegroundColor = .appWhite
+        configuration.baseBackgroundColor = .appMainColor
         
-        setTitle(title, for: .normal)
+        self.configuration = configuration
+        
         titleLabel?.font = .systemFont(ofSize: 16, weight: .heavy)
-        setTitleColor(UIColor.appWhite, for: .normal)
-        backgroundColor = UIColor.appMainColor
-        layer.cornerRadius = 30
     }
     
     required init?(coder: NSCoder) {

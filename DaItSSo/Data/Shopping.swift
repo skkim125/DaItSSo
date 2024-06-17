@@ -20,12 +20,3 @@ struct Item: Equatable, Codable {
     let link: String
     let productId: String
 }
-
-struct RecentSearchList: Codable {
-    var recentSearchList: [RecentSearch]
-}
-
-struct RecentSearch: Codable {
-    var search: String
-    var searchDate: Date
-}

@@ -16,7 +16,7 @@ class ProfileSubButton: UIButton {
         tintAdjustmentMode = .automatic
         contentMode = .center
         clipsToBounds = true
-        tintColor = .white
+        tintColor = .appWhite
         backgroundColor = .appMainColor
     }
     

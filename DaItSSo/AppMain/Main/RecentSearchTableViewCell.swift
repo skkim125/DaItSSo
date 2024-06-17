@@ -10,14 +10,14 @@ import SnapKit
 
 class RecentSearchTableViewCell: UITableViewCell {
     
-    let clockImgView = {
+    private lazy var clockImgView = {
         let imgView = UIImageView(image: UIImage(systemName: "clock"))
         imgView.tintColor = .appDarkGray
         imgView.contentMode = .scaleAspectFit
         
         return imgView
     }()
-    let recentSearchLabel = {
+    lazy var recentSearchLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textColor = .appDarkGray
@@ -44,14 +44,13 @@ class RecentSearchTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureHierarchy() {
-        // MARK: addSubView()
+    private func configureHierarchy() {
         contentView.addSubview(clockImgView)
         contentView.addSubview(recentSearchLabel)
         contentView.addSubview(deleteButton)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         clockImgView.snp.makeConstraints { make in
             make.top.equalTo(contentView.safeAreaLayoutGuide).inset(10)
             make.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(10)

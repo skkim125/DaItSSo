@@ -22,26 +22,27 @@ class SettingViewController: UIViewController {
         return tv
     }()
     
+    private let userDefaults = UserDefaultsManager.shared
     private var profileImg = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .appWhite
         configureNavigationBar()
         configureHierarchy()
         configureLayout()
     }
     
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
         navigationItem.title = SetNavigationTitle.setting.navTitle
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         view.addSubview(settingTableView)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         
         settingTableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
@@ -51,7 +52,7 @@ class SettingViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        profileImg = UserDefaultsManager.shared.profile
+        profileImg = userDefaults.profile
         settingTableView.reloadData()
     }
 }
@@ -80,14 +81,14 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         switch setting {
         case .myProfile:
             let myProfileCell = tableView.dequeueReusableCell(withIdentifier: MyProfileTableViewCell.id) as! MyProfileTableViewCell
-            myProfileCell.configureMyProfileCellUI(image: profileImg, nickName: UserDefaultsManager.shared.nickname, date: UserDefaultsManager.shared.loginDate)
+            myProfileCell.configureMyProfileCellUI(image: profileImg, nickName: userDefaults.nickname, date: userDefaults.loginDate)
             
             return myProfileCell
             
         case .myShopping:
             cell.configureMyShoppingCellHierarchy()
             cell.configureMyShoppingCellLayout()
-            cell.configureMyShoppingCellUI(count: UserDefaultsManager.shared.myShopping.count)
+            cell.configureMyShoppingCellUI(count: userDefaults.myShopping.count)
             cell.shoppingCountLabel.isHidden = false
             cell.shoppingImage.isHidden = false
             
@@ -108,7 +109,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             let vc = ProfileSettingViewController()
             vc.navTitle = .editProfile
             vc.profileImg = self.profileImg
-            vc.nicknameTextField.text = UserDefaultsManager.shared.nickname
+            vc.nicknameTextField.text = userDefaults.nickname
             navigationController?.pushViewController(vc, animated: true)
             navigationItem.rightBarButtonItem?.action = #selector(saveButtonClicked)
             
@@ -118,8 +119,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             let cancel = UIAlertAction(title: "취소", style: .cancel)
             let delete = UIAlertAction(title: "삭제", style: .destructive) { _ in
                 
-                UserDefaultsManager.shared.removeValue(keys: UserDefaultsManager.Key.allCases)
-                UserDefaultsManager.shared.isStart = false
+                self.userDefaults.removeValue(keys: UserDefaultsManager.Key.allCases)
                 let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                 let sceneDelegate = windowScene?.delegate as? SceneDelegate
                 
