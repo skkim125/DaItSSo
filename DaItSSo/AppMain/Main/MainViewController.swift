@@ -58,7 +58,7 @@ class MainViewController: UIViewController {
         let cancel = UIAlertAction(title: "취소", style: .cancel)
         
         let removeAll = UIAlertAction(title: "전체 삭제", style: .destructive) { _ in
-            self.userDefaults.recentSearchList.recentSearchList.removeAll()
+            self.userDefaults.recentSearchList.removeAll()
             self.showView()
             self.recentSearchTableView.reloadData()
         }
@@ -206,14 +206,14 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userDefaults.recentSearchList.recentSearchList.count
+        return userDefaults.recentSearchList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: RecentSearchTableViewCell.id, for: indexPath) as! RecentSearchTableViewCell
-        let data = userDefaults.recentSearchList.recentSearchList[indexPath.row]
-        cell.configureCellUI(search: data.search)
+        let data = userDefaults.recentSearchList[indexPath.row]
+        cell.configureCellUI(search: data)
         cell.deleteButton.addTarget(self, action: #selector(deleteButtonClicked(_:)), for: .touchUpInside)
         
         return cell
@@ -222,11 +222,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     @objc func deleteButtonClicked(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: recentSearchTableView)
         guard let indexPath = recentSearchTableView.indexPathForRow(at: point) else { return }
-        userDefaults.recentSearchList.recentSearchList.remove(at: indexPath.row)
+        userDefaults.recentSearchList.remove(at: indexPath.row)
         recentSearchTableView.deleteRows(at: [indexPath], with: .none)
         recentSearchTableView.reloadData()
         
-        if userDefaults.recentSearchList.recentSearchList.isEmpty {
+        if userDefaults.recentSearchList.isEmpty {
             showView()
         }
     }
@@ -235,7 +235,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.cellForRow(at: indexPath) as! RecentSearchTableViewCell
         
         if let text = cell.recentSearchLabel.text {
-            let results: [RecentSearch] = userDefaults.recentSearchList.recentSearchList.filter { $0.search == text }
+            let results = userDefaults.recentSearchList.filter { $0 == text }
             saveRecentSearch(results: results, text: text)
             
             let vc = SearchResultViewController()
@@ -250,7 +250,7 @@ extension MainViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
-            let results: [RecentSearch] = userDefaults.recentSearchList.recentSearchList.filter { $0.search == text }
+            let results = userDefaults.recentSearchList.filter { $0 == text }
             saveRecentSearch(results: results, text: text)
             
             let vc = SearchResultViewController()
@@ -268,7 +268,7 @@ extension MainViewController: UISearchBarDelegate {
 extension MainViewController {
     
     private func showView() {
-        if userDefaults.recentSearchList.recentSearchList.isEmpty {
+        if userDefaults.recentSearchList.isEmpty {
             noRecentSearchView.isHidden = false
             stackView.isHidden = true
             recentSearchTableView.isHidden = true
@@ -279,12 +279,12 @@ extension MainViewController {
         }
     }
     
-    func saveRecentSearch(results: [RecentSearch], text: String) {
+    func saveRecentSearch(results: [String], text: String) {
         if results.isEmpty {
-            userDefaults.recentSearchList.recentSearchList.append(RecentSearch(search: text, searchDate: Date()))
+            userDefaults.recentSearchList.insert(text, at: 0)
         } else {
-            userDefaults.recentSearchList.recentSearchList.remove(at: userDefaults.recentSearchList.recentSearchList.lastIndex(where: { $0.search == results[results.startIndex].search })!)
-            userDefaults.recentSearchList.recentSearchList.insert(RecentSearch(search: text, searchDate: Date()), at: 0)
+            userDefaults.recentSearchList.remove(at: userDefaults.recentSearchList.lastIndex(where: { $0 == results.first ?? "" })!)
+            userDefaults.recentSearchList.insert(text, at: 0)
         }
     }
 }

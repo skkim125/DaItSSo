@@ -19,6 +19,8 @@ class ProfileSettingViewController: UIViewController {
         tf.borderStyle = .none
         tf.placeholder = "닉네임을 입력해주세요"
         tf.delegate = self
+        tf.autocapitalizationType = .none
+        tf.autocorrectionType = .no
         
         return tf
     }()

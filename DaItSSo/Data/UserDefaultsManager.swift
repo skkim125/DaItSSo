@@ -45,35 +45,13 @@ final class UserDefaultsManager {
         }
     }
     
-    var recentSearchList: RecentSearchList {
+    var recentSearchList: [String] {
         
         get {
-            guard let data = defaults.data(forKey: Key.recentSearchList.rawValue) else {
-                return RecentSearchList(recentSearchList: [])
-            }
-            
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            
-            do {
-                let recentSearchArr = try decoder.decode(RecentSearchList.self, from: data)
-                return recentSearchArr
-            } catch {
-                print("Failed to decode recentSearchList: \(error)")
-                return RecentSearchList(recentSearchList: [])
-            }
+            return defaults.array(forKey: Key.recentSearchList.rawValue) as? [String] ?? []
         }
-        
         set {
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .iso8601
-            
-            do {
-                let data = try encoder.encode(newValue)
-                defaults.setValue(data, forKey: Key.recentSearchList.rawValue)
-            } catch {
-                print("Failed to encode recentSearchList: \(error)")
-            }
+            defaults.setValue(newValue, forKey: "\(Key.recentSearchList.rawValue)")
         }
     }
     
