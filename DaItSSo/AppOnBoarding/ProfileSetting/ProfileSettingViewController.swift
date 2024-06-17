@@ -234,26 +234,24 @@ extension ProfileSettingViewController: UITextFieldDelegate {
 extension ProfileSettingViewController {
     
     func checkNickname(nickname: String) {
-        guard nickname.count >= 2 && nickname.count < 10 else {
+        guard nickname.count >= 2 && nickname.count <= 9 else {
             setButtonDisable(navTitle: navTitle)
             checkNicknameLabel.text = CheckNickname.outRange.checkNicknameLabelText
             
             return
         }
         
-        nickname.forEach {
-            guard Int(String($0)) == nil else {
-                setButtonDisable(navTitle: navTitle)
-                checkNicknameLabel.text = CheckNickname.noNumber.checkNicknameLabelText
-                
-                return
-            }
+        guard nickname.rangeOfCharacter(from: .decimalDigits) == nil else {
+            setButtonDisable(navTitle: navTitle)
+            checkNicknameLabel.text = CheckNickname.noNumber.checkNicknameLabelText
+            
+            return
         }
         
-        String.specialStringArray.forEach {
-            guard !nickname.contains($0) else {
+        for str in String.specialStringArray {
+            guard !nickname.contains(str) else {
                 setButtonDisable(navTitle: navTitle)
-                checkNicknameLabel.text = CheckNickname.specialString($0).checkNicknameLabelText
+                checkNicknameLabel.text = CheckNickname.specialString(str).checkNicknameLabelText
                 
                 return
             }
