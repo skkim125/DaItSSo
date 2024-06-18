@@ -28,7 +28,7 @@ class MainViewController: UIViewController {
         let view = UIView()
         view.addSubview(recentSearchLabel)
         view.addSubview(removeAllButton)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.keyboardDismiss)))
+        
         
         return view
     }()
@@ -75,8 +75,7 @@ class MainViewController: UIViewController {
         view.addSubview(emptyImageView)
         view.addSubview(emptyLabel)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardDismiss))
-        view.addGestureRecognizer(tapGesture)
+        
         
         return view
     }()
@@ -199,7 +198,7 @@ class MainViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        keyboardDismiss()
+        
         searchBar.text = nil
     }
 }
@@ -255,7 +254,9 @@ extension MainViewController: UISearchBarDelegate {
             
             let vc = SearchResultViewController()
             vc.searchText = text
-            keyboardDismiss()
+            
+            self.view.endEditing(true)
+            
             navigationController?.pushViewController(vc, animated: true)
         }
     }

@@ -7,12 +7,6 @@
 
 import UIKit
 
-extension UIViewController {
-    @objc func keyboardDismiss() {
-        view.endEditing(true)
-    }
-}
-
 extension UIColor {
     static let appMainColor = #colorLiteral(red: 0.937254902, green: 0.537254902, blue: 0.2784313725, alpha: 1)
     static let appBlack = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)

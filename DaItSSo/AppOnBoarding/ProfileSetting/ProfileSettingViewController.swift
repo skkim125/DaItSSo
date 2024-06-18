@@ -51,7 +51,6 @@ class ProfileSettingViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureProfileSettingView()
-        keyboardDismiss()
     }
     
     private func configureNavigationBar() {
@@ -171,7 +170,6 @@ class ProfileSettingViewController: UIViewController {
         default:
             break
         }
-        keyboardDismiss()
         navigationController?.pushViewController(vc, animated: true)
     }
     

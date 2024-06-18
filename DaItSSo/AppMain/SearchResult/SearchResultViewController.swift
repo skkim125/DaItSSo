@@ -52,18 +52,19 @@ class SearchResultViewController: UIViewController {
     }
     
     private let userDefaults = UserDefaultsManager.shared
+    private var sort: SortType = .sim
+    private var start = 1
+    private var display = 30
+    lazy var navTitle = SetNavigationTitle.search(searchText)
     var searchResults: [Item] = []
     var searchText: String = ""
-    var sort: SortType = .sim
-    var start = 1
-    lazy var navTitle = SetNavigationTitle.search(searchText)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .appWhite
         configureNavigationBar()
-        callRequest(keyword: searchText, sort: SortType.sim)
+        callRequest(keyword: searchText, sort: sort)
         configureHierarchy()
         configureLayout()
         configureSortButtons()
@@ -91,7 +92,7 @@ class SearchResultViewController: UIViewController {
     
     private func configureLayout() {
         totalResultLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(15)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(5)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.height.equalTo(30)
         }
@@ -136,7 +137,7 @@ class SearchResultViewController: UIViewController {
         let param: Parameters = [
             "query": "\(keyword)",
             "start": "\(start)",
-            "display": "30",
+            "display": "\(display)",
             "sort": "\(sort.rawValue)",
         ]
         
@@ -150,12 +151,17 @@ class SearchResultViewController: UIViewController {
                     self.searchResults.append(contentsOf: value.items)
                 }
                 
-                self.totalResultLabel.text = value.total == 0 ? "검색 결과가 없습니다" : "\(value.total)개의 검색결과"
+                self.totalResultLabel.text = value.total == 0 ? "검색 결과가 없습니다" : "\(String.formatInt(int: "\(value.total)"))개의 검색결과"
                 self.resultCollectionView.reloadData()
+                
+                guard !self.searchResults.isEmpty else { return }
+                if self.start == 1 {
+                    self.resultCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+                }
                 
             case .failure(let error):
                 print(error)
-                self.totalResultLabel.text = "네트워크를 확인해주세요"
+                self.totalResultLabel.text = "네트워크 연결을 확인해주세요"
             }
         }
     }
@@ -171,6 +177,10 @@ class SearchResultViewController: UIViewController {
     }
     
     @objc func sortButtonClicked(_ sender: UIButton) {
+        let buttons = [simSortButton, dateSortButton, dscSortButton, ascSortButton]
+        for b in buttons {
+            unSelectedSortButtonUI(button: b)
+        }
         sortButtonAction(button: sender)
     }
 
@@ -225,9 +235,9 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
 extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        indexPaths.forEach { i in
-            if searchResults.count-8 == i.row {
-                start += 30
+        for i in indexPaths {
+            if searchResults.count-10 == i.row {
+                start += display
                 callRequest(keyword: searchText, sort: sort)
             }
         }
@@ -239,20 +249,24 @@ extension SearchResultViewController {
     func sortButtonAction(button: UIButton) {
         switch button.tag {
         case 0:
+            start = 1
             callRequest(keyword: searchText, sort: .sim)
             isSelectedSortButtonUI(button: button)
             
         case 1:
+            start = 1
             callRequest(keyword: searchText, sort: .date)
             isSelectedSortButtonUI(button: button)
             
             return
         case 2:
+            start = 1
             callRequest(keyword: searchText, sort: .dsc)
             isSelectedSortButtonUI(button: button)
             
             return
         case 3:
+            start = 1
             callRequest(keyword: searchText, sort: .asc)
             isSelectedSortButtonUI(button: button)
             
