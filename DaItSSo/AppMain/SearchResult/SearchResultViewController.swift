@@ -52,6 +52,7 @@ class SearchResultViewController: UIViewController {
     }
     
     private let userDefaults = UserDefaultsManager.shared
+    private let naverShoppingManager = NaverShoppingManager.shared
     private var sort: SortType = .sim
     private var start = 1
     private var display = 30
@@ -64,10 +65,24 @@ class SearchResultViewController: UIViewController {
 
         view.backgroundColor = .appWhite
         configureNavigationBar()
-        callRequest(keyword: searchText, sort: sort)
+        naverShoppingManager.callRequest(keyword: searchText, start: start, sort: sort, display: display) { result in
+            
+            self.configureUI(result)
+        }
         configureHierarchy()
         configureLayout()
         configureSortButtons()
+    }
+    
+    func configureUI(_ result: Result<Shopping, AFError>) {
+        self.searchResults = self.naverShoppingManager.returnSearchResults(result: result, start: self.start, searchResults: self.searchResults)
+        self.totalResultLabel.text = self.naverShoppingManager.returnResultLabelText(result: result)
+        self.resultCollectionView.reloadData()
+        
+        guard !self.searchResults.isEmpty else { return }
+        if self.start == 1 {
+            self.resultCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+        }
     }
     
     func configureNavigationBar() {
@@ -124,45 +139,6 @@ class SearchResultViewController: UIViewController {
         resultCollectionView.snp.makeConstraints { make in
             make.top.equalTo(simSortButton.snp.bottom).offset(15)
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
-    }
-    
-    func callRequest(keyword: String, sort: SortType) {
-        let url = "https://openapi.naver.com/v1/search/shop.json"
-        let header: HTTPHeaders = [
-            "X-Naver-Client-Id": APIKey.clientId,
-            "X-Naver-Client-Secret": APIKey.key
-        ]
-        
-        let param: Parameters = [
-            "query": "\(keyword)",
-            "start": "\(start)",
-            "display": "\(display)",
-            "sort": "\(sort.rawValue)",
-        ]
-        
-        AF.request(url, method: .get, parameters: param, headers: header).responseDecodable(of: Shopping.self) { response in
-            switch response.result {
-            case .success(let value):
-                
-                if self.start == 1 {
-                    self.searchResults = value.items
-                } else {
-                    self.searchResults.append(contentsOf: value.items)
-                }
-                
-                self.totalResultLabel.text = value.total == 0 ? "검색 결과가 없습니다" : "\(String.formatInt(int: "\(value.total)"))개의 검색결과"
-                self.resultCollectionView.reloadData()
-                
-                guard !self.searchResults.isEmpty else { return }
-                if self.start == 1 {
-                    self.resultCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
-                }
-                
-            case .failure(let error):
-                print(error)
-                self.totalResultLabel.text = "네트워크 연결을 확인해주세요"
-            }
         }
     }
     
@@ -238,7 +214,9 @@ extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
         for i in indexPaths {
             if searchResults.count-10 == i.row {
                 start += display
-                callRequest(keyword: searchText, sort: sort)
+                naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .sim, display: display) { result in
+                    self.configureUI(result)
+                }
             }
         }
     }
@@ -250,24 +228,32 @@ extension SearchResultViewController {
         switch button.tag {
         case 0:
             start = 1
-            callRequest(keyword: searchText, sort: .sim)
+            naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .sim, display: display) { result in
+                self.configureUI(result)
+            }
             isSelectedSortButtonUI(button: button)
             
         case 1:
             start = 1
-            callRequest(keyword: searchText, sort: .date)
+            naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .date, display: display) { result in
+                self.configureUI(result)
+            }
             isSelectedSortButtonUI(button: button)
             
             return
         case 2:
             start = 1
-            callRequest(keyword: searchText, sort: .dsc)
+            naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .dsc, display: display) { result in
+                self.configureUI(result)
+            }
             isSelectedSortButtonUI(button: button)
             
             return
         case 3:
             start = 1
-            callRequest(keyword: searchText, sort: .asc)
+            naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .asc, display: display) { result in
+                self.configureUI(result)
+            }
             isSelectedSortButtonUI(button: button)
             
             return

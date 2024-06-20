@@ -40,6 +40,7 @@
 		042670202C1C60AA007C8197 /* SearchResultDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426701F2C1C60AA007C8197 /* SearchResultDetailViewController.swift */; };
 		042670242C1DACAF007C8197 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670232C1DACAF007C8197 /* SettingTableViewCell.swift */; };
 		042670262C1DAE8B007C8197 /* MyProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670252C1DAE8B007C8197 /* MyProfileTableViewCell.swift */; };
+		04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,7 @@
 		0426701F2C1C60AA007C8197 /* SearchResultDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultDetailViewController.swift; sourceTree = "<group>"; };
 		042670232C1DACAF007C8197 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		042670252C1DAE8B007C8197 /* MyProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileTableViewCell.swift; sourceTree = "<group>"; };
+		04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverShoppingManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +211,7 @@
 		0426701A2C1C388D007C8197 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */,
 				042670182C1C3747007C8197 /* Shopping.swift */,
 				04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */,
 				042670052C1C1941007C8197 /* APIKey.swift */,
@@ -322,6 +325,7 @@
 				042670142C1C2CD7007C8197 /* SettingViewController.swift in Sources */,
 				04266FE52C1B390B007C8197 /* Resource.swift in Sources */,
 				04266FE12C1B3897007C8197 /* ProfileSettingViewController.swift in Sources */,
+				04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */,
 				04266FE32C1B38B4007C8197 /* OnBoardingViewController.swift in Sources */,
 				042670122C1C2C4D007C8197 /* TabViewController.swift in Sources */,
 				0426701C2C1C3A47007C8197 /* SearchResultCollectionViewCell.swift in Sources */,
