@@ -35,12 +35,14 @@ class NaverShoppingManager {
     func returnResultLabelText(result: (Result<Shopping, AFError>)) -> String {
         switch result {
         case .success(let value):
-            
-            return value.total == 0 ? "검색 결과가 없습니다" : "\(String.formatInt(int: "\(value.total)"))개의 검색결과"
+            guard value.total > 0 else {
+                return ""
+            }
+            return "\(String.formatInt(int: "\(value.total)"))개의 검색결과"
             
         case .failure(let error):
             print(error)
-            return "네트워크 연결을 확인해주세요"
+            return ""
         }
     }
     
@@ -59,7 +61,7 @@ class NaverShoppingManager {
             
         case .failure(let error):
             print(error)
-            return []
+            return array
         }
     }
 }

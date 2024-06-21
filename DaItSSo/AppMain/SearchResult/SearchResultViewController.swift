@@ -53,6 +53,7 @@ class SearchResultViewController: UIViewController {
     
     private let userDefaults = UserDefaultsManager.shared
     private let naverShoppingManager = NaverShoppingManager.shared
+    private let errorManager = ErrorManager.shared
     private var sort: SortType = .sim
     private var start = 1
     private var display = 30
@@ -66,16 +67,31 @@ class SearchResultViewController: UIViewController {
         view.backgroundColor = .appWhite
         configureNavigationBar()
         naverShoppingManager.callRequest(keyword: searchText, start: start, sort: sort, display: display) { result in
-            
-            self.configureUI(result)
+            self.checkResults(result: result)
         }
         configureHierarchy()
         configureLayout()
         configureSortButtons()
     }
     
+    func checkResults(result: Result<Shopping, AFError>) {
+        
+        do {
+            try errorManager.checkSearchResults(result: result)
+        } catch SearchError.isEmptyResult {
+            presentBackAlert(searchError: .isEmptyResult)
+        } catch SearchError.networkError {
+            presentBackAlert(searchError: .networkError)
+        } catch {
+            print(error)
+        }
+        
+        self.configureUI(result)
+    }
+    
     func configureUI(_ result: Result<Shopping, AFError>) {
         self.searchResults = self.naverShoppingManager.returnSearchResults(result: result, start: self.start, searchResults: self.searchResults)
+        
         self.totalResultLabel.text = self.naverShoppingManager.returnResultLabelText(result: result)
         self.resultCollectionView.reloadData()
         

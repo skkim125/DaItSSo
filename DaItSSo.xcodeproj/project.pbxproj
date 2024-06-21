@@ -41,6 +41,7 @@
 		042670242C1DACAF007C8197 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670232C1DACAF007C8197 /* SettingTableViewCell.swift */; };
 		042670262C1DAE8B007C8197 /* MyProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670252C1DAE8B007C8197 /* MyProfileTableViewCell.swift */; };
 		04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */; };
+		04C40C902C2549C400052A82 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8F2C2549C400052A82 /* ErrorManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		042670232C1DACAF007C8197 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		042670252C1DAE8B007C8197 /* MyProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileTableViewCell.swift; sourceTree = "<group>"; };
 		04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverShoppingManager.swift; sourceTree = "<group>"; };
+		04C40C8F2C2549C400052A82 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,8 +214,9 @@
 			isa = PBXGroup;
 			children = (
 				04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */,
-				042670182C1C3747007C8197 /* Shopping.swift */,
 				04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */,
+				04C40C8F2C2549C400052A82 /* ErrorManager.swift */,
+				042670182C1C3747007C8197 /* Shopping.swift */,
 				042670052C1C1941007C8197 /* APIKey.swift */,
 			);
 			path = Data;
@@ -304,6 +307,7 @@
 			files = (
 				042670202C1C60AA007C8197 /* SearchResultDetailViewController.swift in Sources */,
 				042670242C1DACAF007C8197 /* SettingTableViewCell.swift in Sources */,
+				04C40C902C2549C400052A82 /* ErrorManager.swift in Sources */,
 				0426701E2C1C4A7B007C8197 /* SortButton.swift in Sources */,
 				04266FF12C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift in Sources */,
 				04266FF42C1B3E03007C8197 /* IdProtocol.swift in Sources */,

@@ -7,6 +7,17 @@
 
 import UIKit
 
+extension UIViewController {
+    func presentBackAlert(searchError: SearchError) {
+        let alert = UIAlertController(title: searchError.rawValue , message: nil, preferredStyle: .alert)
+        let back = UIAlertAction(title: "돌아가기", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(back)
+        self.present(alert, animated: true)
+    }
+}
+
 extension UIColor {
     static let appMainColor = #colorLiteral(red: 0.937254902, green: 0.537254902, blue: 0.2784313725, alpha: 1)
     static let appBlack = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)

@@ -12,6 +12,7 @@ import WebKit
 class SearchResultDetailViewController: UIViewController {
     private lazy var webView = {
         let webView = WKWebView()
+        webView.navigationDelegate = self
         
         return webView
     }()
@@ -30,6 +31,7 @@ class SearchResultDetailViewController: UIViewController {
         configureLayout()
         configureNavigationBar()
         configureRightBarButtonUI()
+        
     }
     
     func configureNavigationBar() {
@@ -95,5 +97,12 @@ class SearchResultDetailViewController: UIViewController {
         let url = URL(string: link)!
         let urlRequest = URLRequest(url: url)
         webView.load(urlRequest)
+    }
+}
+
+extension SearchResultDetailViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
+        presentBackAlert(searchError: .networkError)
+        print(#function)
     }
 }
