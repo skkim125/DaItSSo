@@ -38,6 +38,7 @@ class ProfileSettingViewController: UIViewController {
     private lazy var loginButton = PointButton(title: "완료")
     
     private let userDefaults = UserDefaultsManager.shared
+    private let errorManager = ErrorManager.shared
     private let profileList = ProfileImg.allCases
     var navTitle = SetNavigationTitle.firstProfile
     var profileImg: String = ""
@@ -234,31 +235,15 @@ extension ProfileSettingViewController: UITextFieldDelegate {
 extension ProfileSettingViewController {
     
     func checkNickname(nickname: String) {
-        guard nickname.count >= 2 && nickname.count <= 9 else {
+        do {
+            try errorManager.checkNicknameCondition(nickname: nickname)
+            setbuttonEnabled(navTitle: navTitle)
+        } catch let error as ErrorType.CheckNickname {
             setButtonDisable(navTitle: navTitle)
-            checkNicknameLabel.text = CheckNickname.outRange.checkNicknameLabelText
-            
-            return
+            checkNicknameLabel.text = error.checkNicknameLabelText
+        } catch {
+            print(error)
         }
-        
-        guard nickname.rangeOfCharacter(from: .decimalDigits) == nil else {
-            setButtonDisable(navTitle: navTitle)
-            checkNicknameLabel.text = CheckNickname.noNumber.checkNicknameLabelText
-            
-            return
-        }
-        
-        for str in String.specialStringArray {
-            guard !nickname.contains(str) else {
-                setButtonDisable(navTitle: navTitle)
-                checkNicknameLabel.text = CheckNickname.specialString(str).checkNicknameLabelText
-                
-                return
-            }
-        }
-        
-        setbuttonEnabled(navTitle: navTitle)
-        checkNicknameLabel.text = CheckNickname.ok.checkNicknameLabelText
     }
     
     func saveUserInfo() {
@@ -291,6 +276,6 @@ extension ProfileSettingViewController {
         default:
             break
         }
-        checkNicknameLabel.text = CheckNickname.ok.checkNicknameLabelText
+        checkNicknameLabel.text = ErrorType.CheckNickname.ok.checkNicknameLabelText
     }
 }

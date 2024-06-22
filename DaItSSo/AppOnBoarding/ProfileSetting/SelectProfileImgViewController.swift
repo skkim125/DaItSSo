@@ -47,7 +47,7 @@ class SelectProfileImgViewController: UIViewController {
         configureNavigationBar()
         configureHierarchy()
         configureLayout()
-        profileImgViewUI()
+        configureProfileImgViewUI()
     }
     
     private func configureNavigationBar() {
@@ -96,7 +96,7 @@ class SelectProfileImgViewController: UIViewController {
         }
     }
     
-    func profileImgViewUI() {
+    func configureProfileImgViewUI() {
         profileImgView.image = UIImage(named: selectedProfile)
     }
     
@@ -114,6 +114,17 @@ class SelectProfileImgViewController: UIViewController {
     }
 }
 
+extension SelectProfileImgViewController {
+    func updateImageView(_ cell: ProfileImgCollectionViewCell, imageView: UIImageView, defaultImg: ProfileImg ) {
+        
+        if profileImgView.image == UIImage(named: defaultImg.rawValue) {
+            cell.configureCellUI(image: defaultImg.rawValue, profileType: .isSelected)
+        } else {
+            cell.configureCellUI(image: defaultImg.rawValue, profileType: .unSelected)
+        }
+    }
+}
+
 extension SelectProfileImgViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -124,11 +135,7 @@ extension SelectProfileImgViewController: UICollectionViewDelegate, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImgCollectionViewCell.id, for: indexPath) as! ProfileImgCollectionViewCell
         let img = ProfileImg.allCases[indexPath.item]
         
-        if selectedProfile == img.rawValue {
-            cell.configureCellUI(image: img.rawValue, profileType: .isSelected)
-        } else {
-            cell.configureCellUI(image: img.rawValue, profileType: .unSelected)
-        }
+        updateImageView(cell, imageView: profileImgView, defaultImg: img)
         
         return cell
     }
@@ -139,11 +146,7 @@ extension SelectProfileImgViewController: UICollectionViewDelegate, UICollection
         profileImgView.image = UIImage(named: img.rawValue)
         selectedProfile = img.rawValue
         
-        if cell.profileImgView.image == UIImage(named: img.rawValue) {
-            cell.configureCellUI(image: img.rawValue, profileType: .isSelected)
-        } else {
-            cell.configureCellUI(image: img.rawValue, profileType: .unSelected)
-        }
+        updateImageView(cell, imageView: profileImgView, defaultImg: img)
         
         collectionView.reloadData()
     }

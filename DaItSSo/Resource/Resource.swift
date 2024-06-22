@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIViewController {
-    func presentBackAlert(searchError: SearchError) {
+    func presentBackAlert(searchError: ErrorType.SearchError) {
         let alert = UIAlertController(title: searchError.rawValue , message: nil, preferredStyle: .alert)
         let back = UIAlertAction(title: "돌아가기", style: .default) { _ in
             self.navigationController?.popViewController(animated: true)

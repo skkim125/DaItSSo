@@ -78,9 +78,9 @@ class SearchResultViewController: UIViewController {
         
         do {
             try errorManager.checkSearchResults(result: result)
-        } catch SearchError.isEmptyResult {
+        } catch ErrorType.SearchError.isEmptyResult {
             presentBackAlert(searchError: .isEmptyResult)
-        } catch SearchError.networkError {
+        } catch ErrorType.SearchError.networkError {
             presentBackAlert(searchError: .networkError)
         } catch {
             print(error)
