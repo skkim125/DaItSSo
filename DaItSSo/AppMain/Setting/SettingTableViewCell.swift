@@ -67,8 +67,8 @@ class SettingTableViewCell: UITableViewCell {
     }
     
     func configureMyShoppingCellUI(count: Int) {
-        let string = NSMutableAttributedString(string: "\(count)개의 상품")
-        string.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: ("\(count)개의 상품" as NSString).range(of: "\(count)개"))
+        let string = NSMutableAttributedString(string: "\(count)" + "개의 상품")
+        string.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: ("\(count)" + "개의 상품" as NSString).range(of: "\(count)" + "개"))
         shoppingCountLabel.attributedText = string
     }
 }

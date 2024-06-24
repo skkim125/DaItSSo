@@ -29,7 +29,6 @@ class MainViewController: UIViewController {
         view.addSubview(recentSearchLabel)
         view.addSubview(removeAllButton)
         
-        
         return view
     }()
     
@@ -53,20 +52,11 @@ class MainViewController: UIViewController {
     }()
     
     @objc private func removeAllButtonClicked() {
-        let alert = UIAlertController(title: "정말로 전체 삭제하시겠습니까?", message: "최근 검색어 목록이 모두 삭제됩니다.", preferredStyle: .alert)
-        
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
-        
-        let removeAll = UIAlertAction(title: "전체 삭제", style: .destructive) { _ in
+        presentTwoActionsAlert(title: "정말로 전체 삭제하시겠습니까?", message: "최근 검색어 목록이 모두 삭제됩니다.", act: "전체 삭제") { _ in
             self.userDefaults.recentSearchList.removeAll()
             self.showView()
             self.recentSearchTableView.reloadData()
         }
-        
-        alert.addAction(cancel)
-        alert.addAction(removeAll)
-        
-        present(alert, animated: true)
     }
     
     private lazy var noRecentSearchView = {
@@ -74,8 +64,6 @@ class MainViewController: UIViewController {
         view.backgroundColor = .appWhite
         view.addSubview(emptyImageView)
         view.addSubview(emptyLabel)
-        
-        
         
         return view
     }()
@@ -269,23 +257,16 @@ extension MainViewController: UISearchBarDelegate {
 extension MainViewController {
     
     private func showView() {
-        if userDefaults.recentSearchList.isEmpty {
-            noRecentSearchView.isHidden = false
-            stackView.isHidden = true
-            recentSearchTableView.isHidden = true
-        } else {
-            noRecentSearchView.isHidden = true
-            stackView.isHidden = false
-            recentSearchTableView.isHidden = false
-        }
+        let isEmptyList = userDefaults.recentSearchList.isEmpty
+        noRecentSearchView.isHidden = isEmptyList ? false : true
+        stackView.isHidden = isEmptyList ? true : false
+        recentSearchTableView.isHidden = isEmptyList ? true : false
     }
     
     func saveRecentSearch(results: [String], text: String) {
-        if results.isEmpty {
-            userDefaults.recentSearchList.insert(text, at: 0)
-        } else {
+        if !results.isEmpty {
             userDefaults.recentSearchList.remove(at: userDefaults.recentSearchList.lastIndex(where: { $0 == results.first ?? "" })!)
-            userDefaults.recentSearchList.insert(text, at: 0)
         }
+        userDefaults.recentSearchList.insert(text, at: 0)
     }
 }

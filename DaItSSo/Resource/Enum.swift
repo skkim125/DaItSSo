@@ -18,7 +18,7 @@ enum SetNavigationTitle {
     var navTitle: String {
         switch self {
         case .main(let nickname):
-            "\(nickname)'s DaItSSo"
+            "\(nickname)" + "'s DaItSSo"
         case .search(let shopping):
             "\(shopping)"
         case .searchDetail(let detail):

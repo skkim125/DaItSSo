@@ -115,21 +115,27 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCellUI(item: Item) {
-        let url = URL(string: item.image)
-        shoppingImg.kf.setImage(with: url)
+        let url = URL(string: item.image)!
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            do {
+                let data = try Data(contentsOf: url)
+                
+                DispatchQueue.main.async {
+                    self.shoppingImg.image = UIImage(data: data)
+                }
+            } catch {
+                self.shoppingImg.image = UIImage(systemName: "arrow.clockwise.circle.fill")
+            }
+        }
         shoppingMallNameLabel.text = item.mallName
         shoppingTitleLabel.text = String.removeTag(title: item.title)
-        shoppingPriceLabel.text = "\(String.formatInt(int: item.lprice))원"
+        shoppingPriceLabel.text = String(Int(item.lprice)!.formatted()) + "원"
     }
     
     func configureSelectButtonUI() {
-        if isAdd {
-            selectProductButton.configuration?.background.backgroundColor = .appWhite
-            selectProductButton.configuration?.baseForegroundColor = .appBlack
-        } else {
-            selectProductButton.configuration?.background.backgroundColor = .appBlack.withAlphaComponent(0.3)
-            selectProductButton.configuration?.baseForegroundColor = .appWhite
-        }
+        selectProductButton.configuration?.background.backgroundColor = isAdd ? .appWhite : .appBlack.withAlphaComponent(0.3)
+        selectProductButton.configuration?.baseForegroundColor = isAdd ? .appBlack : .appWhite
     }
     
     @objc private func selectProductButtonClicked() {
@@ -157,5 +163,11 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         }
         
         configureSelectButtonUI()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        shoppingImg.image = nil
     }
 }

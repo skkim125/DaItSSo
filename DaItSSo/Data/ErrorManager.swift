@@ -35,9 +35,10 @@ enum ErrorType {
 }
 
 class ErrorManager {
-    static let shared = ErrorManager()
     
     private init() { }
+    
+    static let shared = ErrorManager()
     
     func checkNicknameCondition(nickname: String) throws {
         guard nickname.count >= 2 && nickname.count <= 9 else {

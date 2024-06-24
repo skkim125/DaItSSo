@@ -8,6 +8,19 @@
 import UIKit
 
 extension UIViewController {
+    func presentTwoActionsAlert(title: String, message: String, act: String, completionHandler: @escaping (UIAlertAction) -> ()) {
+        let userDefaults = UserDefaultsManager.shared
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let act = UIAlertAction(title: act, style: .destructive, handler: completionHandler)
+        
+        alert.addAction(cancel)
+        alert.addAction(act)
+
+        present(alert, animated: true)
+    }
+    
     func presentBackAlert(searchError: ErrorType.SearchError) {
         let alert = UIAlertController(title: searchError.rawValue , message: nil, preferredStyle: .alert)
         let back = UIAlertAction(title: "돌아가기", style: .default) { _ in
@@ -29,6 +42,7 @@ extension UIColor {
 
 extension UIImage {
     static let backButtonImg = UIImage(systemName: "chevron.backward")!
+    static let nextButtonImg = UIImage(systemName: "chevron.forward")!
 }
 
 extension String {
@@ -36,13 +50,7 @@ extension String {
     static var specialStringArray = ["@", "#", "$", "%"]
     
     static func formatInt(int: String) -> String {
-        let i = Int(int)!
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        
-        let result = formatter.string(for: i)!
-        
-        return result
+        return String(Int(int)!.formatted())
     }
     
     static func removeTag(title: String) -> String {

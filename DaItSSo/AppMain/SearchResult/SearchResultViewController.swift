@@ -66,45 +66,16 @@ class SearchResultViewController: UIViewController {
 
         view.backgroundColor = .appWhite
         configureNavigationBar()
-        naverShoppingManager.callRequest(keyword: searchText, start: start, sort: sort, display: display) { result in
-            self.checkResults(result: result)
-        }
         configureHierarchy()
         configureLayout()
+        getShoppingInfo(starts: self.start)
         configureSortButtons()
     }
-    
-    func checkResults(result: Result<Shopping, AFError>) {
-        
-        do {
-            try errorManager.checkSearchResults(result: result)
-        } catch ErrorType.SearchError.isEmptyResult {
-            presentBackAlert(searchError: .isEmptyResult)
-        } catch ErrorType.SearchError.networkError {
-            presentBackAlert(searchError: .networkError)
-        } catch {
-            print(error)
-        }
-        
-        self.configureUI(result)
-    }
-    
-    func configureUI(_ result: Result<Shopping, AFError>) {
-        self.searchResults = self.naverShoppingManager.returnSearchResults(result: result, start: self.start, searchResults: self.searchResults)
-        
-        self.totalResultLabel.text = self.naverShoppingManager.returnResultLabelText(result: result)
-        self.resultCollectionView.reloadData()
-        
-        guard !self.searchResults.isEmpty else { return }
-        if self.start == 1 {
-            self.resultCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
-        }
-    }
-    
+
     func configureNavigationBar() {
         navigationItem.title = navTitle.navTitle
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonClicked))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
         navigationController?.navigationBar.tintColor = .appDarkGray
     }
     
@@ -175,16 +146,44 @@ class SearchResultViewController: UIViewController {
         }
         sortButtonAction(button: sender)
     }
+    
+    func getShoppingInfo(starts: Int) {
+        naverShoppingManager.callRequest(keyword: searchText, start: starts, sort: sort, display: display) { result in
+            self.checkResults(result: result)
+        }
+    }
+    
+    func checkResults(result: Result<Shopping, AFError>) {
+        
+        do {
+            try errorManager.checkSearchResults(result: result)
+        } catch ErrorType.SearchError.isEmptyResult {
+            presentBackAlert(searchError: .isEmptyResult)
+        } catch ErrorType.SearchError.networkError {
+            presentBackAlert(searchError: .networkError)
+        } catch {
+            print(error)
+        }
+        
+        self.configureUI(result)
+    }
+    
+    func configureUI(_ result: Result<Shopping, AFError>) {
+        self.searchResults = self.naverShoppingManager.returnSearchResults(result: result, start: self.start, searchResults: self.searchResults)
+        
+        self.totalResultLabel.text = self.naverShoppingManager.returnResultLabelText(result: result)
+        self.resultCollectionView.reloadData()
+        
+        guard !self.searchResults.isEmpty else { return }
+        if self.start == 1 {
+            self.resultCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+        }
+    }
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        resultCollectionView.reloadData()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
         resultCollectionView.reloadData()
     }
 }
@@ -200,12 +199,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         
         cell.configureCellUI(item: data)
         cell.item = searchResults[indexPath.item]
-        
-        if userDefaults.myShopping.contains(where: { $0 == data }) {
-            cell.isAdd = true
-        } else {
-            cell.isAdd = false
-        }
+        cell.isAdd = userDefaults.myShopping.contains(where: { $0 == data }) ? true : false
         cell.configureSelectButtonUI()
         
         return cell
@@ -229,10 +223,8 @@ extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for i in indexPaths {
             if searchResults.count-10 == i.row {
-                start += display
-                naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .sim, display: display) { result in
-                    self.configureUI(result)
-                }
+                self.start += display
+                getShoppingInfo(starts: self.start)
             }
         }
     }
@@ -241,35 +233,28 @@ extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
 extension SearchResultViewController {
     
     func sortButtonAction(button: UIButton) {
+        self.start = 1
         switch button.tag {
         case 0:
-            start = 1
-            naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .sim, display: display) { result in
-                self.configureUI(result)
-            }
+            sort = .sim
+            getShoppingInfo(starts: self.start)
             isSelectedSortButtonUI(button: button)
             
         case 1:
-            start = 1
-            naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .date, display: display) { result in
-                self.configureUI(result)
-            }
+            sort = .date
+            getShoppingInfo(starts: self.start)
             isSelectedSortButtonUI(button: button)
             
             return
         case 2:
-            start = 1
-            naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .dsc, display: display) { result in
-                self.configureUI(result)
-            }
+            sort = .dsc
+            getShoppingInfo(starts: self.start)
             isSelectedSortButtonUI(button: button)
             
             return
         case 3:
-            start = 1
-            naverShoppingManager.callRequest(keyword: searchText, start: start, sort: .asc, display: display) { result in
-                self.configureUI(result)
-            }
+            sort = .asc
+            getShoppingInfo(starts: self.start)
             isSelectedSortButtonUI(button: button)
             
             return

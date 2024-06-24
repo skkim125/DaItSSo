@@ -74,13 +74,8 @@ class SearchResultDetailViewController: UIViewController {
     }
     
     private func configureRightBarButtonUI() {
-        if isAdd {
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "handbag.fill")
-            navigationItem.rightBarButtonItem?.tintColor = .appBlack
-        } else {
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "handbag")
-            navigationItem.rightBarButtonItem?.tintColor = .appBlack
-        }
+        navigationItem.rightBarButtonItem?.image = isAdd ? UIImage(systemName: "handbag.fill") : UIImage(systemName: "handbag")
+        navigationItem.rightBarButtonItem?.tintColor = .appBlack
     }
     
     private func configureHierarchy() {
@@ -103,6 +98,5 @@ class SearchResultDetailViewController: UIViewController {
 extension SearchResultDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
         presentBackAlert(searchError: .networkError)
-        print(#function)
     }
 }

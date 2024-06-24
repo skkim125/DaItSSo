@@ -116,12 +116,8 @@ class SelectProfileImgViewController: UIViewController {
 
 extension SelectProfileImgViewController {
     func updateImageView(_ cell: ProfileImgCollectionViewCell, imageView: UIImageView, defaultImg: ProfileImg ) {
-        
-        if profileImgView.image == UIImage(named: defaultImg.rawValue) {
-            cell.configureCellUI(image: defaultImg.rawValue, profileType: .isSelected)
-        } else {
-            cell.configureCellUI(image: defaultImg.rawValue, profileType: .unSelected)
-        }
+        let isEqual = profileImgView.image == UIImage(named: defaultImg.rawValue)
+        cell.configureCellUI(image: defaultImg.rawValue, profileType: isEqual ? .isSelected : .unSelected)
     }
 }
 

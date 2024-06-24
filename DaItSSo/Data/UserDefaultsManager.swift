@@ -106,6 +106,15 @@ final class UserDefaultsManager {
         }
     }
     
+    func saveUserInfo(nickname: String, profile: String, editProfile: String) {
+        let userDefaults = UserDefaultsManager.shared
+        userDefaults.isStart = true
+        userDefaults.nickname = nickname
+        userDefaults.profile = profile
+        userDefaults.editProfile = editProfile
+        userDefaults.loginDate = DateFormatter.customDateFormatter(date: Date())
+    }
+    
     func removeValue(keys: [Key]) {
         keys.forEach { key in
             defaults.removeObject(forKey: key.rawValue)

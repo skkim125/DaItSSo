@@ -58,7 +58,7 @@ class ProfileSettingViewController: UIViewController {
         navigationItem.title = navTitle.navTitle
         navigationController?.navigationBar.isHidden = false
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonClicked))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
         navigationController?.navigationBar.tintColor = .appBlack
         
         switch navTitle {
@@ -176,7 +176,7 @@ class ProfileSettingViewController: UIViewController {
     
     @objc private func logIn() {
         
-        saveUserInfo()
+        userDefaults.saveUserInfo(nickname: nicknameTextField.text!, profile: profileImg, editProfile: profileImg)
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         let sceneDelegate = windowScene?.delegate as? SceneDelegate
         
@@ -244,14 +244,6 @@ extension ProfileSettingViewController {
         } catch {
             print(error)
         }
-    }
-    
-    func saveUserInfo() {
-        userDefaults.isStart = true
-        userDefaults.nickname = nicknameTextField.text!
-        userDefaults.profile = profileImg
-        userDefaults.editProfile = profileImg
-        userDefaults.loginDate = DateFormatter.customDateFormatter(date: Date())
     }
     
     func setButtonDisable(navTitle: SetNavigationTitle) {

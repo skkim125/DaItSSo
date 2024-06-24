@@ -33,8 +33,8 @@ class MyProfileTableViewCell: UITableViewCell {
         
         return label
     }()
-    private lazy var rightChevronImg = {
-        let imgView = UIImageView(image: UIImage(systemName: "chevron.right"))
+    private lazy var goUserDetailImageView = {
+        let imgView = UIImageView(image: UIImage.nextButtonImg)
         imgView.contentMode = .scaleAspectFit
         imgView.tintColor = .appDarkGray
         
@@ -60,7 +60,7 @@ class MyProfileTableViewCell: UITableViewCell {
         profileButton.addSubview(profileImgView)
         contentView.addSubview(labelStackView)
         contentView.addSubview(dateLabel)
-        contentView.addSubview(rightChevronImg)
+        contentView.addSubview(goUserDetailImageView)
     }
     
     private func configureLayout() {
@@ -91,7 +91,7 @@ class MyProfileTableViewCell: UITableViewCell {
             make.horizontalEdges.equalTo(labelStackView.snp.horizontalEdges)
         }
         
-        rightChevronImg.snp.makeConstraints { make in
+        goUserDetailImageView.snp.makeConstraints { make in
             make.leading.equalTo(labelStackView.snp.trailing).offset(20)
             make.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(20)
             make.centerY.equalTo(profileButton.snp.centerY)

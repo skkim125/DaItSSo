@@ -114,11 +114,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             navigationItem.rightBarButtonItem?.action = #selector(saveButtonClicked)
             
         case .deleteId:
-            let alert = UIAlertController(title: "탈퇴하기", message: "탈퇴를 하면 데이터가 초기화됩니다. 탈퇴하시겠습니까?", preferredStyle: .alert)
-            
-            let cancel = UIAlertAction(title: "취소", style: .cancel)
-            let delete = UIAlertAction(title: "삭제", style: .destructive) { _ in
-                
+            presentTwoActionsAlert(title: "탈퇴하기", message: "탈퇴를 하면 데이터가 초기화됩니다. 탈퇴하시겠습니까?", act: "탈퇴") { _ in
                 self.userDefaults.removeValue(keys: UserDefaultsManager.Key.allCases)
                 let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                 let sceneDelegate = windowScene?.delegate as? SceneDelegate
@@ -129,11 +125,6 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 sceneDelegate?.window?.rootViewController = nav
                 sceneDelegate?.window?.makeKeyAndVisible()
             }
-            
-            alert.addAction(cancel)
-            alert.addAction(delete)
-
-            present(alert, animated: true)
             
         default:
             break

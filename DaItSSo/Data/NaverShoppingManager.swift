@@ -9,9 +9,10 @@ import Foundation
 import Alamofire
 
 class NaverShoppingManager {
-    static let shared = NaverShoppingManager()
     
     private init() { }
+    
+    static let shared = NaverShoppingManager()
     
     func callRequest(keyword: String, start: Int, sort: SortType, display: Int, completionHandler: @escaping (Result<Shopping, AFError>)-> Void) {
         let url = "https://openapi.naver.com/v1/search/shop.json"
@@ -38,7 +39,7 @@ class NaverShoppingManager {
             guard value.total > 0 else {
                 return ""
             }
-            return "\(String.formatInt(int: "\(value.total)"))개의 검색결과"
+            return String.formatInt(int: "\(value.total)") + "개의 검색결과"
             
         case .failure(let error):
             print(error)
