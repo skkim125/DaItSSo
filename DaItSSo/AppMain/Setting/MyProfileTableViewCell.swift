@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-class MyProfileTableViewCell: UITableViewCell {
-    private lazy var profileButton = ProfileButton(profileImgType: .isSelected)
-    private lazy var profileImgView = UIImageView()
+class MyProfileTableViewCell: BaseTableViewCell {
+    private let profileButton = ProfileButton(profileImgType: .isSelected)
+    private let profileImgView = UIImageView()
     private lazy var labelStackView = {
         let sv = UIStackView(arrangedSubviews: [nicknameLabel, dateLabel])
         sv.axis = .vertical
@@ -18,7 +18,7 @@ class MyProfileTableViewCell: UITableViewCell {
         
         return sv
     }()
-    private lazy var nicknameLabel = {
+    private let nicknameLabel = {
         let label = UILabel()
         label.textColor = .appBlack
         label.font = .systemFont(ofSize: 16, weight: .bold)
@@ -33,7 +33,7 @@ class MyProfileTableViewCell: UITableViewCell {
         
         return label
     }()
-    private lazy var goUserDetailImageView = {
+    private let goUserDetailImageView = {
         let imgView = UIImageView(image: UIImage.nextButtonImg)
         imgView.contentMode = .scaleAspectFit
         imgView.tintColor = .appDarkGray
@@ -44,18 +44,7 @@ class MyProfileTableViewCell: UITableViewCell {
     private let userDefaults = UserDefaultsManager.shared
     var profileImg: String?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        configureHierarchy()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         contentView.addSubview(profileButton)
         profileButton.addSubview(profileImgView)
         contentView.addSubview(labelStackView)
@@ -63,7 +52,7 @@ class MyProfileTableViewCell: UITableViewCell {
         contentView.addSubview(goUserDetailImageView)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         profileButton.snp.makeConstraints { make in
             make.verticalEdges.equalTo(contentView.safeAreaLayoutGuide).inset(15)
             make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(20)

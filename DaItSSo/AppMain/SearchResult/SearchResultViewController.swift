@@ -10,10 +10,10 @@ import Alamofire
 import Kingfisher
 import SnapKit
 
-class SearchResultViewController: UIViewController {
+class SearchResultViewController: BaseViewController {
     
     lazy var resultCollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout.searchResultCollectionViewLayout())
         cv.delegate = self
         cv.dataSource = self
         cv.prefetchDataSource = self
@@ -35,22 +35,6 @@ class SearchResultViewController: UIViewController {
     lazy var dscSortButton = SortButton(sortType: .dsc)
     lazy var ascSortButton = SortButton(sortType: .asc)
     
-    func collectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewFlowLayout()
-        
-        let sectionSpacing: CGFloat = 20
-        let cellSpacing: CGFloat = 20
-        let width = UIScreen.main.bounds.width-(sectionSpacing*2 + cellSpacing*1)
-        
-        layout.itemSize = CGSize(width: width/2, height: (width/2) * 1.8)
-        layout.minimumLineSpacing = cellSpacing
-        layout.minimumInteritemSpacing = cellSpacing
-        layout.sectionInset = .init(top: 0, left: sectionSpacing, bottom: 0, right: sectionSpacing)
-        layout.scrollDirection = .vertical
-        
-        return layout
-    }
-    
     private let userDefaults = UserDefaultsManager.shared
     private let naverShoppingManager = NaverShoppingManager.shared
     private let errorManager = ErrorManager.shared
@@ -64,15 +48,11 @@ class SearchResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .appWhite
-        configureNavigationBar()
-        configureHierarchy()
-        configureLayout()
         getShoppingInfo(starts: self.start)
         configureSortButtons()
     }
 
-    func configureNavigationBar() {
+    override func configureNavigationBar() {
         navigationItem.title = navTitle.navTitle
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
@@ -83,7 +63,7 @@ class SearchResultViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         view.addSubview(totalResultLabel)
         view.addSubview(simSortButton)
         view.addSubview(dateSortButton)
@@ -92,7 +72,7 @@ class SearchResultViewController: UIViewController {
         view.addSubview(resultCollectionView)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         totalResultLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(5)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
@@ -129,7 +109,7 @@ class SearchResultViewController: UIViewController {
         }
     }
     
-    func configureSortButtons() {
+    private func configureSortButtons() {
         simSortButton.configuration?.baseForegroundColor = .appWhite
         simSortButton.configuration?.baseBackgroundColor = .appDarkGray
         
@@ -140,38 +120,43 @@ class SearchResultViewController: UIViewController {
     }
     
     @objc func sortButtonClicked(_ sender: UIButton) {
-        let buttons = [simSortButton, dateSortButton, dscSortButton, ascSortButton]
-        for b in buttons {
-            unSelectedSortButtonUI(button: b)
-        }
-        sortButtonAction(button: sender)
-    }
-    
-    func getShoppingInfo(starts: Int) {
-        naverShoppingManager.callRequest(keyword: searchText, start: starts, sort: sort, display: display) { result in
-            self.checkResults(result: result)
+        if sender.tag != sort.buttonTag {
+            let buttons = [simSortButton, dateSortButton, dscSortButton, ascSortButton]
+            for b in buttons {
+                unSelectedSortButtonUI(button: b)
+            }
+            sortButtonAction(button: sender)
         }
     }
     
-    func checkResults(result: Result<Shopping, AFError>) {
-        
-        do {
-            try errorManager.checkSearchResults(result: result)
-        } catch ErrorType.SearchError.isEmptyResult {
-            presentBackAlert(searchError: .isEmptyResult)
-        } catch ErrorType.SearchError.networkError {
-            presentBackAlert(searchError: .networkError)
-        } catch {
-            print(error)
+    private func getShoppingInfo(starts: Int) {
+        naverShoppingManager.callRequest(keyword: searchText, start: starts, sort: sort, display: display) { shopping, error in
+            
+            if let shopping = shopping {
+                do {
+                    try self.errorManager.checkSearchResults(result: shopping)
+                } catch ErrorType.SearchError.isEmptyResult {
+                    self.presentBackAlert(searchError: .isEmptyResult) { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                } catch {
+                    print(error)
+                }
+                
+                self.configureUI(shopping)
+                
+            } else {
+                self.presentBackAlert(searchError: .networkError) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
         }
-        
-        self.configureUI(result)
     }
     
-    func configureUI(_ result: Result<Shopping, AFError>) {
+    private func configureUI(_ result: Shopping) {
         self.searchResults = self.naverShoppingManager.returnSearchResults(result: result, start: self.start, searchResults: self.searchResults)
         
-        self.totalResultLabel.text = self.naverShoppingManager.returnResultLabelText(result: result)
+        self.totalResultLabel.text = self.naverShoppingManager.setResultLabelText(result: result)
         self.resultCollectionView.reloadData()
         
         guard !self.searchResults.isEmpty else { return }
@@ -232,7 +217,7 @@ extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
 
 extension SearchResultViewController {
     
-    func sortButtonAction(button: UIButton) {
+    private func sortButtonAction(button: UIButton) {
         self.start = 1
         switch button.tag {
         case 0:
@@ -263,12 +248,12 @@ extension SearchResultViewController {
         }
     }
     
-    func isSelectedSortButtonUI(button: UIButton) {
+    private func isSelectedSortButtonUI(button: UIButton) {
         button.configuration?.baseForegroundColor = .appWhite
         button.configuration?.baseBackgroundColor = .appDarkGray
     }
     
-    func unSelectedSortButtonUI(button: UIButton) {
+    private func unSelectedSortButtonUI(button: UIButton) {
         button.configuration?.baseForegroundColor = .appDarkGray
         button.configuration?.baseBackgroundColor = .appWhite
     }

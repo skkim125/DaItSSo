@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class ProfileSettingViewController: UIViewController {
+class ProfileSettingViewController: BaseViewController {
     
     private lazy var setProfileImgButton = ProfileButton(profileImgType: .isSelected)
     private lazy var profileImgView = UIImageView()
@@ -44,17 +44,7 @@ class ProfileSettingViewController: UIViewController {
     var profileImg: String = ""
     var editProfileImg: String = ""
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .appWhite
-        
-        configureNavigationBar()
-        configureHierarchy()
-        configureLayout()
-        configureProfileSettingView()
-    }
-    
-    private func configureNavigationBar() {
+    override func configureNavigationBar() {
         navigationItem.title = navTitle.navTitle
         navigationController?.navigationBar.isHidden = false
         
@@ -91,7 +81,7 @@ class ProfileSettingViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         view.addSubview(setProfileImgButton)
         setProfileImgButton.addSubview(profileImgView)
         view.addSubview(setProfileImgSubButton)
@@ -101,7 +91,7 @@ class ProfileSettingViewController: UIViewController {
         view.addSubview(loginButton)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         setProfileImgButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             make.centerX.equalTo(view.snp.centerX)
@@ -143,7 +133,7 @@ class ProfileSettingViewController: UIViewController {
         }
     }
     
-    private func configureProfileSettingView() {
+    override func configureUI() {
         profileImgView.image = UIImage(named: profileImg)
         setProfileImgButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
         setProfileImgSubButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)

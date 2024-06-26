@@ -17,7 +17,7 @@
 		04266FDF2C1B381A007C8197 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 04266FDE2C1B381A007C8197 /* IQKeyboardManagerSwift */; };
 		04266FE12C1B3897007C8197 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE02C1B3897007C8197 /* ProfileSettingViewController.swift */; };
 		04266FE32C1B38B4007C8197 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE22C1B38B4007C8197 /* OnBoardingViewController.swift */; };
-		04266FE52C1B390B007C8197 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE42C1B390B007C8197 /* Resource.swift */; };
+		04266FE52C1B390B007C8197 /* DesignResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE42C1B390B007C8197 /* DesignResource.swift */; };
 		04266FE72C1B3926007C8197 /* PointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE62C1B3926007C8197 /* PointButton.swift */; };
 		04266FE92C1B3939007C8197 /* ProfileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FE82C1B3939007C8197 /* ProfileButton.swift */; };
 		04266FEF2C1B3B85007C8197 /* SelectProfileImgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FEE2C1B3B85007C8197 /* SelectProfileImgViewController.swift */; };
@@ -40,6 +40,12 @@
 		042670202C1C60AA007C8197 /* SearchResultDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426701F2C1C60AA007C8197 /* SearchResultDetailViewController.swift */; };
 		042670242C1DACAF007C8197 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670232C1DACAF007C8197 /* SettingTableViewCell.swift */; };
 		042670262C1DAE8B007C8197 /* MyProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670252C1DAE8B007C8197 /* MyProfileTableViewCell.swift */; };
+		042E425B2C2C39A30024E5A2 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E425A2C2C39A30024E5A2 /* BaseCell.swift */; };
+		042E425F2C2C54600024E5A2 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E425E2C2C54600024E5A2 /* String+Extension.swift */; };
+		042E42612C2C54720024E5A2 /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E42602C2C54720024E5A2 /* DateFormatter+Extension.swift */; };
+		04BFE1E62C2C12ED00D741E1 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */; };
+		04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */; };
+		04BFE1EC2C2C354100D741E1 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */; };
 		04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */; };
 		04C40C902C2549C400052A82 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8F2C2549C400052A82 /* ErrorManager.swift */; };
 /* End PBXBuildFile section */
@@ -53,7 +59,7 @@
 		04266FCE2C1B3736007C8197 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04266FE02C1B3897007C8197 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
 		04266FE22C1B38B4007C8197 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
-		04266FE42C1B390B007C8197 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		04266FE42C1B390B007C8197 /* DesignResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignResource.swift; sourceTree = "<group>"; };
 		04266FE62C1B3926007C8197 /* PointButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointButton.swift; sourceTree = "<group>"; };
 		04266FE82C1B3939007C8197 /* ProfileButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButton.swift; sourceTree = "<group>"; };
 		04266FEE2C1B3B85007C8197 /* SelectProfileImgViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImgViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +82,12 @@
 		0426701F2C1C60AA007C8197 /* SearchResultDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultDetailViewController.swift; sourceTree = "<group>"; };
 		042670232C1DACAF007C8197 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		042670252C1DAE8B007C8197 /* MyProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileTableViewCell.swift; sourceTree = "<group>"; };
+		042E425A2C2C39A30024E5A2 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		042E425E2C2C54600024E5A2 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		042E42602C2C54720024E5A2 /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
+		04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Extension.swift"; sourceTree = "<group>"; };
+		04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverShoppingManager.swift; sourceTree = "<group>"; };
 		04C40C8F2C2549C400052A82 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,12 +129,14 @@
 			children = (
 				04266FC02C1B3735007C8197 /* AppDelegate.swift */,
 				04266FC22C1B3735007C8197 /* SceneDelegate.swift */,
+				04BFE1EA2C2C353000D741E1 /* Base */,
 				04266FED2C1B3985007C8197 /* CustomViews */,
 				042670162C1C33F7007C8197 /* AppOnBoarding */,
 				042670172C1C3416007C8197 /* AppMain */,
 				04266FC92C1B3736007C8197 /* Assets.xcassets */,
 				04266FCB2C1B3736007C8197 /* LaunchScreen.storyboard */,
 				04266FCE2C1B3736007C8197 /* Info.plist */,
+				04BFE1E92C2C136E00D741E1 /* Extension */,
 				04266FEC2C1B397D007C8197 /* Resource */,
 				0426701A2C1C388D007C8197 /* Data */,
 			);
@@ -132,9 +146,7 @@
 		04266FEC2C1B397D007C8197 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				04266FF32C1B3E03007C8197 /* IdProtocol.swift */,
-				04266FE42C1B390B007C8197 /* Resource.swift */,
-				04266FFF2C1B4CE0007C8197 /* Enum.swift */,
+				04266FE42C1B390B007C8197 /* DesignResource.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -213,6 +225,7 @@
 		0426701A2C1C388D007C8197 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				04266FFF2C1B4CE0007C8197 /* Enum.swift */,
 				04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */,
 				04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */,
 				04C40C8F2C2549C400052A82 /* ErrorManager.swift */,
@@ -220,6 +233,27 @@
 				042670052C1C1941007C8197 /* APIKey.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		04BFE1E92C2C136E00D741E1 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				04266FF32C1B3E03007C8197 /* IdProtocol.swift */,
+				04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */,
+				04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */,
+				042E425E2C2C54600024E5A2 /* String+Extension.swift */,
+				042E42602C2C54720024E5A2 /* DateFormatter+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		04BFE1EA2C2C353000D741E1 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */,
+				042E425A2C2C39A30024E5A2 /* BaseCell.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -306,19 +340,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				042670202C1C60AA007C8197 /* SearchResultDetailViewController.swift in Sources */,
+				042E425F2C2C54600024E5A2 /* String+Extension.swift in Sources */,
 				042670242C1DACAF007C8197 /* SettingTableViewCell.swift in Sources */,
 				04C40C902C2549C400052A82 /* ErrorManager.swift in Sources */,
 				0426701E2C1C4A7B007C8197 /* SortButton.swift in Sources */,
+				042E425B2C2C39A30024E5A2 /* BaseCell.swift in Sources */,
+				04BFE1EC2C2C354100D741E1 /* BaseViewController.swift in Sources */,
 				04266FF12C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift in Sources */,
 				04266FF42C1B3E03007C8197 /* IdProtocol.swift in Sources */,
 				04266FE72C1B3926007C8197 /* PointButton.swift in Sources */,
 				04266FFC2C1B48E0007C8197 /* UserDefaultsManager.swift in Sources */,
 				042670062C1C1941007C8197 /* APIKey.swift in Sources */,
 				042670002C1B4CE0007C8197 /* Enum.swift in Sources */,
+				04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */,
+				042E42612C2C54720024E5A2 /* DateFormatter+Extension.swift in Sources */,
 				04266FFA2C1B4263007C8197 /* ProfileSubButton.swift in Sources */,
 				042670192C1C3747007C8197 /* Shopping.swift in Sources */,
 				04266FC12C1B3735007C8197 /* AppDelegate.swift in Sources */,
 				04266FEF2C1B3B85007C8197 /* SelectProfileImgViewController.swift in Sources */,
+				04BFE1E62C2C12ED00D741E1 /* UIViewController+Extension.swift in Sources */,
 				0426700D2C1C2729007C8197 /* RecentSearchTableViewCell.swift in Sources */,
 				0426700F2C1C2A77007C8197 /* SearchResultViewController.swift in Sources */,
 				042670262C1DAE8B007C8197 /* MyProfileTableViewCell.swift in Sources */,
@@ -327,7 +367,7 @@
 				042670082C1C2079007C8197 /* DividerLine.swift in Sources */,
 				04266FC32C1B3735007C8197 /* SceneDelegate.swift in Sources */,
 				042670142C1C2CD7007C8197 /* SettingViewController.swift in Sources */,
-				04266FE52C1B390B007C8197 /* Resource.swift in Sources */,
+				04266FE52C1B390B007C8197 /* DesignResource.swift in Sources */,
 				04266FE12C1B3897007C8197 /* ProfileSettingViewController.swift in Sources */,
 				04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */,
 				04266FE32C1B38B4007C8197 /* OnBoardingViewController.swift in Sources */,
@@ -476,7 +516,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = K7C455FTM9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DaItSSo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "김상규";
@@ -510,7 +550,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = K7C455FTM9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DaItSSo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "김상규";

@@ -7,14 +7,14 @@
 
 import UIKit
 
-class SelectProfileImgViewController: UIViewController {
+class SelectProfileImgViewController: BaseViewController {
     
     lazy var selectedProfileImgButton = ProfileButton(profileImgType: .isSelected)
     lazy var profileImgView = UIImageView()
     lazy var selectedProfileImgSubButton = ProfileSubButton()
     
     lazy var collectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout.selectProfileCollectionViewLayout())
         cv.delegate = self
         cv.dataSource = self
         cv.register(ProfileImgCollectionViewCell.self, forCellWithReuseIdentifier: ProfileImgCollectionViewCell.id)
@@ -22,35 +22,11 @@ class SelectProfileImgViewController: UIViewController {
         return cv
     }()
     
-    private func collectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewFlowLayout()
-        let cellSpacing: CGFloat = 10
-        let sectionSpacing: CGFloat = 10
-        let width = UIScreen.main.bounds.width-(sectionSpacing*2 + cellSpacing*3)
-        
-        layout.itemSize = CGSize(width: width/4, height: width/4)
-        layout.minimumLineSpacing = cellSpacing
-        layout.minimumInteritemSpacing = cellSpacing
-        layout.sectionInset = .init(top: 0, left: sectionSpacing, bottom: 0, right: sectionSpacing)
-        
-        return layout
-    }
-    
     private let userDefaults = UserDefaultsManager.shared
     var navTitle: SetNavigationTitle = .firstProfile
     var selectedProfile: String = ""
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = .appWhite
-        configureNavigationBar()
-        configureHierarchy()
-        configureLayout()
-        configureProfileImgViewUI()
-    }
-    
-    private func configureNavigationBar() {
+    override func configureNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
         navigationItem.title = navTitle.navTitle
     }
@@ -66,14 +42,14 @@ class SelectProfileImgViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         view.addSubview(selectedProfileImgButton)
         view.addSubview(selectedProfileImgSubButton)
         selectedProfileImgButton.addSubview(profileImgView)
         view.addSubview(collectionView)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         selectedProfileImgButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             make.centerX.equalTo(view.snp.centerX)
@@ -96,7 +72,7 @@ class SelectProfileImgViewController: UIViewController {
         }
     }
     
-    func configureProfileImgViewUI() {
+    override func configureUI() {
         profileImgView.image = UIImage(named: selectedProfile)
     }
     
@@ -130,7 +106,7 @@ extension SelectProfileImgViewController: UICollectionViewDelegate, UICollection
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImgCollectionViewCell.id, for: indexPath) as! ProfileImgCollectionViewCell
         let img = ProfileImg.allCases[indexPath.item]
-        
+        cell.isUserInteractionEnabled = true
         updateImageView(cell, imageView: profileImgView, defaultImg: img)
         
         return cell

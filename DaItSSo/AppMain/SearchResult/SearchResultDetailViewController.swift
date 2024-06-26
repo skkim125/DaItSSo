@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import WebKit
 
-class SearchResultDetailViewController: UIViewController {
+class SearchResultDetailViewController: BaseViewController {
     private lazy var webView = {
         let webView = WKWebView()
         webView.navigationDelegate = self
@@ -25,16 +25,11 @@ class SearchResultDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .appWhite
         
-        configureHierarchy()
-        configureLayout()
-        configureNavigationBar()
         configureRightBarButtonUI()
-        
     }
     
-    func configureNavigationBar() {
+    override func configureNavigationBar() {
         navigationItem.title = navTitle.navTitle
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
@@ -78,11 +73,11 @@ class SearchResultDetailViewController: UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = .appBlack
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         view.addSubview(webView)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         webView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }

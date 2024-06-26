@@ -10,6 +10,7 @@ import Alamofire
 
 enum ErrorType {
     enum SearchError: String, Error {
+        case isEmptySearchText = "공백없이 한글자 이상 입력해주세요"
         case isEmptyResult = "검색결과가 없습니다."
         case networkError = "네트워크 연결을 확인하세요"
         case inValidURL = "유효하지 않은 링크입니다."
@@ -59,14 +60,15 @@ class ErrorManager {
         }
     }
     
-    func checkSearchResults(result: Result<Shopping, AFError>) throws {
-        switch result {
-        case .success(let value):
-            guard value.total == 0 else { return }
-            throw ErrorType.SearchError.isEmptyResult
-        case .failure(let error):
-            throw ErrorType.SearchError.networkError
-        }
+    func checkSearchBarText(text: String) throws {
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && text.count > 0 else { throw ErrorType.SearchError.isEmptySearchText }
+        
+        return
+    }
+    
+    func checkSearchResults(result: Shopping) throws {
+        guard result.total == 0 else { return }
+        throw ErrorType.SearchError.isEmptyResult
     }
     
     func checkLink(item: Item) throws {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingViewController: UIViewController {
+class SettingViewController: BaseViewController {
     private lazy var settingTableView = {
         let tv = UITableView()
         tv.delegate = self
@@ -25,24 +25,15 @@ class SettingViewController: UIViewController {
     private let userDefaults = UserDefaultsManager.shared
     private var profileImg = ""
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = .appWhite
-        configureNavigationBar()
-        configureHierarchy()
-        configureLayout()
-    }
-    
-    private func configureNavigationBar() {
+    override func configureNavigationBar() {
         navigationItem.title = SetNavigationTitle.setting.navTitle
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         view.addSubview(settingTableView)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         
         settingTableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
@@ -89,14 +80,13 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             cell.configureMyShoppingCellHierarchy()
             cell.configureMyShoppingCellLayout()
             cell.configureMyShoppingCellUI(count: userDefaults.myShopping.count)
-            cell.shoppingCountLabel.isHidden = false
-            cell.shoppingImage.isHidden = false
+            cell.showLabel(bool: false)
             
             return cell
 
         default:
-            cell.shoppingCountLabel.isHidden = true
-            cell.shoppingImage.isHidden = true
+            cell.showLabel(bool: true)
+            
             return cell
         }
     }

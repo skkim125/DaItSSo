@@ -11,13 +11,7 @@ protocol setIdentifier {
     static var id: String { get }
 }
 
-extension UICollectionViewCell: setIdentifier {
-    static var id: String {
-        String(describing: self)
-    }
-}
-
-extension UITableViewCell: setIdentifier {
+extension UIView: setIdentifier {
     static var id: String {
         String(describing: self)
     }

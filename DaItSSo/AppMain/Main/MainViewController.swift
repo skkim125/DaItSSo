@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Alamofire
 
-class MainViewController: UIViewController {
+class MainViewController: BaseViewController {
     
     private lazy var searchBar = {
         let searchBar = UISearchBar()
@@ -103,19 +103,15 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .appWhite
-        configureHierarchy()
-        configureLayout()
-        configureNavigationbar()
         showView()
     }
     
-    private func configureNavigationbar() {
+    override func configureNavigationBar() {
         let navTitle = SetNavigationTitle.main(userDefaults.nickname)
         navigationItem.title = navTitle.navTitle
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         view.addSubview(searchBar)
         view.addSubview(dividerLine)
         view.addSubview(stackView)
@@ -123,7 +119,7 @@ class MainViewController: UIViewController {
         view.addSubview(recentSearchTableView)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(10)
@@ -179,7 +175,7 @@ class MainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureNavigationbar()
+        configureNavigationBar()
         showView()
         recentSearchTableView.reloadData()
     }
@@ -237,6 +233,17 @@ extension MainViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
+            do {
+                try ErrorManager.shared.checkSearchBarText(text: text)
+            } catch ErrorType.SearchError.isEmptySearchText {
+                
+                presentBackAlert(searchError: .isEmptySearchText)
+                return
+                
+            } catch {
+                print(error)
+            }
+            
             let results = userDefaults.recentSearchList.filter { $0 == text }
             saveRecentSearch(results: results, text: text)
             

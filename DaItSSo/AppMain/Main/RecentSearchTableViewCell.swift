@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class RecentSearchTableViewCell: UITableViewCell {
+class RecentSearchTableViewCell: BaseTableViewCell {
     
     private lazy var clockImgView = {
         let imgView = UIImageView(image: UIImage(systemName: "clock"))
@@ -33,24 +33,13 @@ class RecentSearchTableViewCell: UITableViewCell {
         return button
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .default, reuseIdentifier: reuseIdentifier)
-        
-        configureHierarchy()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         contentView.addSubview(clockImgView)
         contentView.addSubview(recentSearchLabel)
         contentView.addSubview(deleteButton)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         clockImgView.snp.makeConstraints { make in
             make.top.equalTo(contentView.safeAreaLayoutGuide).inset(10)
             make.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(10)

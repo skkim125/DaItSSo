@@ -8,34 +8,23 @@
 import UIKit
 import SnapKit
 
-class SettingTableViewCell: UITableViewCell {
+class SettingTableViewCell: BaseTableViewCell {
     
-    lazy var settingLabel = UILabel()
-    lazy var shoppingCountLabel = UILabel()
-    lazy var shoppingImage = {
+    private let settingLabel = UILabel()
+    private let shoppingCountLabel = UILabel()
+    private let shoppingImage = {
         let imgView = UIImageView(image: UIImage(systemName: "handbag.fill"))
         imgView.contentMode = .scaleAspectFit
         imgView.tintColor = .appBlack
         
         return imgView
     }()
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .default, reuseIdentifier: reuseIdentifier)
-        
-        configureHierarchy()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureHierarchy() {
+
+    override func configureHierarchy() {
         contentView.addSubview(settingLabel)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         settingLabel.snp.makeConstraints { make in
             make.centerY.equalTo(contentView.snp.centerY)
             make.leading.equalTo(20)
@@ -70,5 +59,10 @@ class SettingTableViewCell: UITableViewCell {
         let string = NSMutableAttributedString(string: "\(count)" + "개의 상품")
         string.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: ("\(count)" + "개의 상품" as NSString).range(of: "\(count)" + "개"))
         shoppingCountLabel.attributedText = string
+    }
+    
+    func showLabel(bool: Bool) {
+        shoppingCountLabel.isHidden = bool
+        shoppingImage.isHidden = bool
     }
 }

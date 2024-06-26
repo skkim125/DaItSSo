@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OnBoardingViewController: UIViewController {
+class OnBoardingViewController: BaseViewController {
     
     private let appNameLabel = {
         let label = UILabel()
@@ -31,12 +31,12 @@ class OnBoardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .appWhite
-        navigationController?.navigationBar.isHidden = true
         
-        configureHierarchy()
-        configureLayout()
         configureStartButton()
+    }
+    
+    override func configureNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
     }
     
     func configureStartButton() {
@@ -49,13 +49,13 @@ class OnBoardingViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         view.addSubview(appNameLabel)
         view.addSubview(appImageView)
         view.addSubview(startButton)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         appNameLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.height.equalTo(60)

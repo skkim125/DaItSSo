@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-class SearchResultCollectionViewCell: UICollectionViewCell {
+class SearchResultCollectionViewCell: BaseCollectionViewCell {
     let shoppingImg = {
         let imgView = UIImageView()
         imgView.contentMode = .scaleAspectFill
@@ -63,19 +63,8 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     private let userDefaults = UserDefaultsManager.shared
     var item: Item?
     var isAdd: Bool = false
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureHierarchy()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureHierarchy() {
+
+    override func configureHierarchy() {
         contentView.addSubview(shoppingImg)
         contentView.addSubview(shoppingMallNameLabel)
         contentView.addSubview(shoppingTitleLabel)
@@ -83,7 +72,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(selectProductButton)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         shoppingImg.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(contentView.safeAreaLayoutGuide)
             make.height.equalTo(contentView.snp.width).multipliedBy(1.2)
