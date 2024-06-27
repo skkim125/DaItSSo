@@ -236,8 +236,9 @@ extension MainViewController: UISearchBarDelegate {
             do {
                 try ErrorManager.shared.checkSearchBarText(text: text)
             } catch ErrorType.SearchError.isEmptySearchText {
+                searchBar.text = nil
+                presentErrorAlert(searchError: .isEmptySearchText)
                 
-                presentBackAlert(searchError: .isEmptySearchText)
                 return
                 
             } catch {

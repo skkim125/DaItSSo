@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import Kingfisher
+import Reachability
 import SnapKit
 
 class SearchResultViewController: BaseViewController {
@@ -44,10 +45,22 @@ class SearchResultViewController: BaseViewController {
     lazy var navTitle = SetNavigationTitle.search(searchText)
     var searchResults: [Item] = []
     var searchText: String = ""
+    var totalResults: Int = 0
+    var reachability: Reachability = try! Reachability()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        reachability.whenUnreachable = { _ in
+            print("Not reachable")
+        }
+
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
         getShoppingInfo(starts: self.start)
         configureSortButtons()
     }
@@ -136,17 +149,18 @@ class SearchResultViewController: BaseViewController {
                 do {
                     try self.errorManager.checkSearchResults(result: shopping)
                 } catch ErrorType.SearchError.isEmptyResult {
-                    self.presentBackAlert(searchError: .isEmptyResult) { _ in
+                    self.presentErrorAlert(searchError: .isEmptyResult) { _ in
                         self.navigationController?.popViewController(animated: true)
                     }
                 } catch {
                     print(error)
                 }
                 
+                self.totalResults = shopping.total
                 self.configureUI(shopping)
                 
             } else {
-                self.presentBackAlert(searchError: .networkError) { _ in
+                self.presentErrorAlert(searchError: .networkError) { _ in
                     self.navigationController?.popViewController(animated: true)
                 }
             }
@@ -206,8 +220,8 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
 extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for i in indexPaths {
-            if searchResults.count-10 == i.row {
+        for indexPath in indexPaths {
+            if searchResults.count-10 == indexPath.row && totalResults > searchResults.count {
                 self.start += display
                 getShoppingInfo(starts: self.start)
             }
@@ -251,10 +265,12 @@ extension SearchResultViewController {
     private func isSelectedSortButtonUI(button: UIButton) {
         button.configuration?.baseForegroundColor = .appWhite
         button.configuration?.baseBackgroundColor = .appDarkGray
+        button.isUserInteractionEnabled = false
     }
     
     private func unSelectedSortButtonUI(button: UIButton) {
         button.configuration?.baseForegroundColor = .appDarkGray
         button.configuration?.baseBackgroundColor = .appWhite
+        button.isUserInteractionEnabled = true
     }
 }

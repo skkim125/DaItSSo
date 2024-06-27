@@ -12,7 +12,10 @@ import SnapKit
 class SearchResultCollectionViewCell: BaseCollectionViewCell {
     let shoppingImg = {
         let imgView = UIImageView()
-        imgView.contentMode = .scaleAspectFill
+        imgView.image = UIImage(systemName: "arrow.clockwise")
+        imgView.contentMode = .scaleAspectFit
+        imgView.backgroundColor = .appLightGray
+        imgView.tintColor = .appDarkGray
         imgView.layer.cornerRadius = 12
         imgView.clipsToBounds = true
         imgView.layer.borderWidth = 0.5
@@ -112,9 +115,12 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
                 
                 DispatchQueue.main.async {
                     self.shoppingImg.image = UIImage(data: data)
+                    self.shoppingImg.contentMode = .scaleAspectFill
                 }
             } catch {
-                self.shoppingImg.image = UIImage(systemName: "arrow.clockwise.circle.fill")
+                DispatchQueue.main.async {
+                    self.shoppingImg.image = UIImage(systemName: "xmark")
+                }
             }
         }
         shoppingMallNameLabel.text = item.mallName

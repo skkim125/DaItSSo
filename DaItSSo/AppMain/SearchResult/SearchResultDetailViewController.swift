@@ -8,23 +8,32 @@
 import UIKit
 import SnapKit
 import WebKit
+import Reachability
 
 class SearchResultDetailViewController: BaseViewController {
-    private lazy var webView = {
-        let webView = WKWebView()
-        webView.navigationDelegate = self
-        
-        return webView
-    }()
-    
+    private let webView = WKWebView()
     private let userDefaults = UserDefaultsManager.shared
     lazy var navTitle = SetNavigationTitle.search(searchText)
+    var reachability: Reachability = try! Reachability()
     var item: Item?
     var searchText = ""
     var isAdd = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        reachability.whenUnreachable = { _ in
+            print("Not reachable")
+            self.presentErrorAlert(searchError: .networkError) { _ in
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to startNotifier")
+        }
         
         configureRightBarButtonUI()
     }
@@ -87,11 +96,5 @@ class SearchResultDetailViewController: BaseViewController {
         let url = URL(string: link)!
         let urlRequest = URLRequest(url: url)
         webView.load(urlRequest)
-    }
-}
-
-extension SearchResultDetailViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
-        presentBackAlert(searchError: .networkError)
     }
 }

@@ -22,7 +22,7 @@ extension UIViewController {
         present(alert, animated: true)
     }
     
-    func presentBackAlert(searchError: ErrorType.SearchError, completionHandler: CompletionHandler? = nil) {
+    func presentErrorAlert(searchError: ErrorType.SearchError, completionHandler: CompletionHandler? = nil) {
         let alert = UIAlertController(title: searchError.rawValue , message: nil, preferredStyle: .alert)
         let back = UIAlertAction(title: "확인", style: .default, handler: completionHandler)
         alert.addAction(back)
