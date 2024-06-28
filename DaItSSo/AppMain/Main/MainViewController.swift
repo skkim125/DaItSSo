@@ -194,7 +194,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: RecentSearchTableViewCell.id, for: indexPath) as! RecentSearchTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentSearchTableViewCell.id, for: indexPath) as? RecentSearchTableViewCell else { return UITableViewCell() }
+        
         let data = userDefaults.recentSearchList[indexPath.row]
         cell.configureCellUI(search: data)
         cell.deleteButton.addTarget(self, action: #selector(deleteButtonClicked(_:)), for: .touchUpInside)
@@ -215,15 +216,16 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! RecentSearchTableViewCell
-        
-        if let text = cell.recentSearchLabel.text {
-            let results = userDefaults.recentSearchList.filter { $0 == text }
-            saveRecentSearch(results: results, text: text)
+        if let cell = tableView.cellForRow(at: indexPath) as? RecentSearchTableViewCell {
             
-            let vc = SearchResultViewController()
-            vc.searchText = text
-            navigationController?.pushViewController(vc, animated: true)
+            if let text = cell.recentSearchLabel.text {
+                let results = userDefaults.recentSearchList.filter { $0 == text }
+                saveRecentSearch(results: results, text: text)
+                
+                let vc = SearchResultViewController()
+                vc.searchText = text
+                navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     
@@ -273,7 +275,9 @@ extension MainViewController {
     
     func saveRecentSearch(results: [String], text: String) {
         if !results.isEmpty {
-            userDefaults.recentSearchList.remove(at: userDefaults.recentSearchList.lastIndex(where: { $0 == results.first ?? "" })!)
+            if let lastIndex = userDefaults.recentSearchList.lastIndex(where: { $0 == results.first ?? "" }) {
+                userDefaults.recentSearchList.remove(at: lastIndex)
+            }
         }
         userDefaults.recentSearchList.insert(text, at: 0)
     }

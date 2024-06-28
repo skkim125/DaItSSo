@@ -107,7 +107,7 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
     }
     
     func configureCellUI(item: Item) {
-        let url = URL(string: item.image)!
+        guard let url = URL(string: item.image) else { return }
         
         DispatchQueue.global(qos: .userInteractive).async {
             do {
@@ -125,7 +125,7 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
         }
         shoppingMallNameLabel.text = item.mallName
         shoppingTitleLabel.text = String.removeTag(title: item.title)
-        shoppingPriceLabel.text = String(Int(item.lprice)!.formatted()) + "원"
+        shoppingPriceLabel.text = String.formatInt(int: item.lprice) + "원"
     }
     
     func configureSelectButtonUI() {
@@ -143,13 +143,17 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
                 switch userDefaults.myShopping.isEmpty {
                 case true:
                     let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
-                    userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
+                    if let lastIndex = userDefaults.myShopping.lastIndex(where: {
                         $0.productId == filterdShopping[filterdShopping.startIndex].productId
-                    })!)
+                    }) {
+                        userDefaults.myShopping.remove(at: lastIndex)
+                    }
                 case false:
-                    userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
+                    if let lastIndex = userDefaults.myShopping.lastIndex(where: {
                         $0.productId == i.productId
-                    })!)
+                    }) {
+                        userDefaults.myShopping.remove(at: lastIndex)
+                    }
                 }
             }
         }
@@ -161,5 +165,6 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
         super.prepareForReuse()
         
         shoppingImg.image = nil
+        shoppingImg.contentMode = .scaleAspectFit
     }
 }

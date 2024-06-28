@@ -12,7 +12,8 @@ extension String {
     static var specialStringArray = ["@", "#", "$", "%"]
     
     static func formatInt(int: String) -> String {
-        return String(Int(int)!.formatted())
+        guard let integer = Int(int) else { return ""}
+            return String(integer.formatted())
     }
     
     static func removeTag(title: String) -> String {

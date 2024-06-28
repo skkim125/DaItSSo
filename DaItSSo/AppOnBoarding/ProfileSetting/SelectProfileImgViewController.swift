@@ -104,16 +104,16 @@ extension SelectProfileImgViewController: UICollectionViewDelegate, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImgCollectionViewCell.id, for: indexPath) as! ProfileImgCollectionViewCell
-        let img = ProfileImg.allCases[indexPath.item]
-        cell.isUserInteractionEnabled = true
-        updateImageView(cell, imageView: profileImgView, defaultImg: img)
-        
-        return cell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImgCollectionViewCell.id, for: indexPath) as? ProfileImgCollectionViewCell else { return UICollectionViewCell()}
+            let img = ProfileImg.allCases[indexPath.item]
+            cell.isUserInteractionEnabled = true
+            updateImageView(cell, imageView: profileImgView, defaultImg: img)
+            
+            return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! ProfileImgCollectionViewCell
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ProfileImgCollectionViewCell else { return }
         let img = ProfileImg.allCases[indexPath.item]
         profileImgView.image = UIImage(named: img.rawValue)
         selectedProfile = img.rawValue

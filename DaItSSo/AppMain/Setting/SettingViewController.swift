@@ -65,16 +65,18 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let setting = Setting.allCases[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.id) as! SettingTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.id) as? SettingTableViewCell else { return UITableViewCell() }
+        
         cell.configureSettingLabel(title: setting.rawValue)
         cell.selectionStyle = .none
         
         switch setting {
         case .myProfile:
-            let myProfileCell = tableView.dequeueReusableCell(withIdentifier: MyProfileTableViewCell.id) as! MyProfileTableViewCell
-            myProfileCell.configureMyProfileCellUI(image: profileImg, nickName: userDefaults.nickname, date: userDefaults.loginDate)
-            
-            return myProfileCell
+            if let myProfileCell = tableView.dequeueReusableCell(withIdentifier: MyProfileTableViewCell.id) as? MyProfileTableViewCell {
+                myProfileCell.configureMyProfileCellUI(image: profileImg, nickName: userDefaults.nickname, date: userDefaults.loginDate)
+                
+                return myProfileCell
+            }
             
         case .myShopping:
             cell.configureMyShoppingCellHierarchy()
@@ -83,12 +85,14 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             cell.showLabel(bool: false)
             
             return cell
-
+            
         default:
             cell.showLabel(bool: true)
             
             return cell
         }
+        
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

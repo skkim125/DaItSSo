@@ -47,6 +47,7 @@
 		04BFE1E62C2C12ED00D741E1 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */; };
 		04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */; };
 		04BFE1EC2C2C354100D741E1 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */; };
+		04C24D5D2C2EEF0F00AFAF9A /* MyShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */; };
 		04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */; };
 		04C40C902C2549C400052A82 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8F2C2549C400052A82 /* ErrorManager.swift */; };
 /* End PBXBuildFile section */
@@ -89,6 +90,7 @@
 		04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Extension.swift"; sourceTree = "<group>"; };
 		04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyShoppingListView.swift; sourceTree = "<group>"; };
 		04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverShoppingManager.swift; sourceTree = "<group>"; };
 		04C40C8F2C2549C400052A82 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -200,6 +202,7 @@
 				042670132C1C2CD7007C8197 /* SettingViewController.swift */,
 				042670252C1DAE8B007C8197 /* MyProfileTableViewCell.swift */,
 				042670232C1DACAF007C8197 /* SettingTableViewCell.swift */,
+				04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				04266FEF2C1B3B85007C8197 /* SelectProfileImgViewController.swift in Sources */,
 				04BFE1E62C2C12ED00D741E1 /* UIViewController+Extension.swift in Sources */,
 				0426700D2C1C2729007C8197 /* RecentSearchTableViewCell.swift in Sources */,
+				04C24D5D2C2EEF0F00AFAF9A /* MyShoppingListView.swift in Sources */,
 				0426700F2C1C2A77007C8197 /* SearchResultViewController.swift in Sources */,
 				042670262C1DAE8B007C8197 /* MyProfileTableViewCell.swift in Sources */,
 				042670022C1C162D007C8197 /* MainViewController.swift in Sources */,

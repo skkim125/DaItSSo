@@ -76,8 +76,9 @@ class ProfileSettingViewController: BaseViewController {
     }
     
     @objc private func saveButtonClicked() {
+        guard let nickname = nicknameTextField.text else { return }
+        userDefaults.nickname = nickname
         userDefaults.profile = editProfileImg
-        userDefaults.nickname = nicknameTextField.text!
         navigationController?.popViewController(animated: true)
     }
     
@@ -165,8 +166,8 @@ class ProfileSettingViewController: BaseViewController {
     }
     
     @objc private func logIn() {
-        
-        userDefaults.saveUserInfo(nickname: nicknameTextField.text!, profile: profileImg, editProfile: profileImg)
+        guard let nickname = nicknameTextField.text else { return }
+        userDefaults.saveUserInfo(nickname: nickname, profile: profileImg, editProfile: profileImg)
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         let sceneDelegate = windowScene?.delegate as? SceneDelegate
         
@@ -186,8 +187,9 @@ class ProfileSettingViewController: BaseViewController {
             case .firstProfile:
                 profileImg = userDefaults.profile
                 profileImgView.image = UIImage(named: profileImg)
-                if !nicknameTextField.text!.isEmpty {
-                    checkNickname(nickname: nicknameTextField.text!)
+                guard let text = nicknameTextField.text else { return }
+                if !text.isEmpty {
+                    checkNickname(nickname: text)
                 }
             case .editProfile:
                 editProfileImg = userDefaults.editProfile

@@ -47,13 +47,17 @@ class SearchResultDetailViewController: BaseViewController {
                 switch userDefaults.myShopping.isEmpty {
                 case true:
                     let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
-                    userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
+                    if let lastIndex = userDefaults.myShopping.lastIndex(where: {
                         $0.productId == filterdShopping[filterdShopping.startIndex].productId
-                    })!)
+                    }) {
+                        userDefaults.myShopping.remove(at: lastIndex)
+                    }
                 case false:
-                    userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
+                    if let lastIndex = userDefaults.myShopping.lastIndex(where: {
                         $0.productId == i.productId
-                    })!)
+                    }) {
+                        userDefaults.myShopping.remove(at: lastIndex)
+                    }
                 }
             }
         }
@@ -77,7 +81,7 @@ class SearchResultDetailViewController: BaseViewController {
     }
     
     func configureWebViewUI(link: String) {
-        let url = URL(string: link)!
+        guard let url = URL(string: link) else { return }
         let urlRequest = URLRequest(url: url)
         webView.load(urlRequest)
     }
@@ -93,7 +97,6 @@ class SearchResultDetailViewController: BaseViewController {
         reachability.whenUnreachable = { _ in
             print("Not reachable")
             self.presentErrorAlert(searchError: .networkError) { _ in
-                self.navigationController?.popViewController(animated: true)
             }
         }
     }

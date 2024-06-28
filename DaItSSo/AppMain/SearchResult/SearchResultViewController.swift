@@ -65,7 +65,9 @@ class SearchResultViewController: BaseViewController {
         }
         
         reachability.whenUnreachable = { _ in
-            self.presentErrorAlert(searchError: .networkError)
+            self.presentErrorAlert(searchError: .networkError) { _ in
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     
@@ -201,7 +203,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.id, for: indexPath) as! SearchResultCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.id, for: indexPath) as? SearchResultCollectionViewCell else { return UICollectionViewCell() }
         let data = searchResults[indexPath.item]
         
         cell.item = data
@@ -213,15 +215,17 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedData = searchResults[indexPath.item]
-        let cell = collectionView.cellForItem(at: indexPath) as! SearchResultCollectionViewCell
-        
-        let vc = SearchResultDetailViewController()
-        vc.item = selectedData
-        vc.isAdd = cell.isAdd
-        vc.searchText = String.removeTag(title: selectedData.title)
-        vc.configureWebViewUI(link: selectedData.link)
-        navigationController?.pushViewController(vc, animated: true)
+        if let cell = collectionView.cellForItem(at: indexPath) as? SearchResultCollectionViewCell {
+            
+            let selectedData = searchResults[indexPath.item]
+            let vc = SearchResultDetailViewController()
+            
+            vc.item = selectedData
+            vc.isAdd = cell.isAdd
+            vc.searchText = String.removeTag(title: selectedData.title)
+            vc.configureWebViewUI(link: selectedData.link)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 
