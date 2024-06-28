@@ -6,8 +6,8 @@
 //
 
 import UIKit
-import SnapKit
 import Alamofire
+import SnapKit
 
 class MainViewController: BaseViewController {
     

@@ -51,20 +51,24 @@ class SearchResultViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        reachability.whenUnreachable = { _ in
-            print("Not reachable")
-        }
-
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print("Unable to start notifier")
-        }
-        
+        networkReachability()
         getShoppingInfo(starts: self.start)
         configureSortButtons()
     }
 
+    func networkReachability() {
+        do {
+            try reachability.startNotifier()
+            print("네트워크 연결 정상")
+        } catch {
+            print("Unable to start notifier")
+        }
+        
+        reachability.whenUnreachable = { _ in
+            self.presentErrorAlert(searchError: .networkError)
+        }
+    }
+    
     override func configureNavigationBar() {
         navigationItem.title = navTitle.navTitle
         
@@ -143,7 +147,14 @@ class SearchResultViewController: BaseViewController {
     }
     
     private func getShoppingInfo(starts: Int) {
-        naverShoppingManager.callRequest(keyword: searchText, start: starts, sort: sort, display: display) { shopping, error in
+        naverShoppingManager.callRequest(decodableType: Shopping.self, query: searchText, start: starts, sort: sort, display: display) { shopping, error in
+            guard error == nil else {
+                print(error!)
+                self.presentErrorAlert(searchError: .networkError) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                }
+                return
+            }
             
             if let shopping = shopping {
                 do {
@@ -159,10 +170,6 @@ class SearchResultViewController: BaseViewController {
                 self.totalResults = shopping.total
                 self.configureUI(shopping)
                 
-            } else {
-                self.presentErrorAlert(searchError: .networkError) { _ in
-                    self.navigationController?.popViewController(animated: true)
-                }
             }
         }
     }
@@ -183,6 +190,7 @@ class SearchResultViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        networkReachability()
         resultCollectionView.reloadData()
     }
 }
@@ -196,8 +204,8 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.id, for: indexPath) as! SearchResultCollectionViewCell
         let data = searchResults[indexPath.item]
         
+        cell.item = data
         cell.configureCellUI(item: data)
-        cell.item = searchResults[indexPath.item]
         cell.isAdd = userDefaults.myShopping.contains(where: { $0 == data }) ? true : false
         cell.configureSelectButtonUI()
         

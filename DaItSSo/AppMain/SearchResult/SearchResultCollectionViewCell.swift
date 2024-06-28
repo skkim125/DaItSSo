@@ -136,20 +136,17 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
     @objc private func selectProductButtonClicked() {
         isAdd.toggle()
         if let i = item {
-            switch userDefaults.myShopping.isEmpty {
-            case true:
-                let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
-                if isAdd {
-                    userDefaults.myShopping.append(i)
-                } else {
+            
+            if isAdd {
+                userDefaults.myShopping.append(i)
+            } else {
+                switch userDefaults.myShopping.isEmpty {
+                case true:
+                    let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
                     userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
                         $0.productId == filterdShopping[filterdShopping.startIndex].productId
                     })!)
-                }
-            case false:
-                if isAdd {
-                    userDefaults.myShopping.append(i)
-                } else {
+                case false:
                     userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
                         $0.productId == i.productId
                     })!)

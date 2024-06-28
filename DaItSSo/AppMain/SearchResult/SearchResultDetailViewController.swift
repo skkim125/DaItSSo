@@ -22,19 +22,7 @@ class SearchResultDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        reachability.whenUnreachable = { _ in
-            print("Not reachable")
-            self.presentErrorAlert(searchError: .networkError) { _ in
-                self.navigationController?.popViewController(animated: true)
-            }
-        }
-
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print("Unable to startNotifier")
-        }
-        
+        networkReachability()
         configureRightBarButtonUI()
     }
     
@@ -53,20 +41,16 @@ class SearchResultDetailViewController: BaseViewController {
     @objc private func selectProductButtonClicked() {
         isAdd.toggle()
         if let i = item {
-            switch userDefaults.myShopping.isEmpty {
-            case true:
-                let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
-                if isAdd {
-                    userDefaults.myShopping.append(i)
-                } else {
+            if isAdd {
+                userDefaults.myShopping.append(i)
+            } else {
+                switch userDefaults.myShopping.isEmpty {
+                case true:
+                    let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
                     userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
                         $0.productId == filterdShopping[filterdShopping.startIndex].productId
                     })!)
-                }
-            case false:
-                if isAdd {
-                    userDefaults.myShopping.append(i)
-                } else {
+                case false:
                     userDefaults.myShopping.remove(at: userDefaults.myShopping.lastIndex(where: {
                         $0.productId == i.productId
                     })!)
@@ -96,5 +80,21 @@ class SearchResultDetailViewController: BaseViewController {
         let url = URL(string: link)!
         let urlRequest = URLRequest(url: url)
         webView.load(urlRequest)
+    }
+    
+    func networkReachability() {
+        do {
+            try reachability.startNotifier()
+            print("네트워크 연결 정상")
+        } catch {
+            print("Unable to start notifier")
+        }
+        
+        reachability.whenUnreachable = { _ in
+            print("Not reachable")
+            self.presentErrorAlert(searchError: .networkError) { _ in
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
     }
 }

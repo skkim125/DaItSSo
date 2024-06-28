@@ -10,11 +10,10 @@ import Alamofire
 
 enum ErrorType {
     enum SearchError: String, Error {
-        case isEmptySearchText = "공백없이 한글자 이상 입력해주세요"
+        case isEmptySearchText = "공백없이 한글자 이상 입력해주세요."
         case isEmptyResult = "검색결과가 없습니다."
-        case networkError = "네트워크 연결을 확인하세요"
-        case inValidURL = "유효하지 않은 링크입니다."
-        
+        case networkError = "네트워크 연결을 확인해주세요."
+        case isEmptyURL = "존재하지 않는 링크입니다."
     }
     
     enum CheckNickname: Error {
@@ -32,6 +31,13 @@ enum ErrorType {
                 "닉네임에 숫자는 포함할 수 없어요"
             }
         }
+    }
+    
+    enum APIError: Error {
+        case inValidURL
+        case inValidRespnose
+        case noData
+        case serverError
     }
 }
 
@@ -73,7 +79,7 @@ class ErrorManager {
     
     func checkLink(item: Item) throws {
         if item.link.isEmpty {
-            throw ErrorType.SearchError.inValidURL
+            throw ErrorType.SearchError.isEmptyURL
         }
     }
 }
