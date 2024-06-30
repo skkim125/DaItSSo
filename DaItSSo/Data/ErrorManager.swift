@@ -33,11 +33,20 @@ enum ErrorType {
         }
     }
     
-    enum APIError: Error {
-        case inValidURL
-        case inValidRespnose
-        case noData
-        case serverError
+    enum APIError: String, Error {
+        case inValidURL = "잘못된 URL입니다."
+        case inValidRespnose = "잘못된 서버 응답입니다."
+        case noData = "데이터가 존재하지 않습니다."
+    }
+    
+    enum ResponseStatusCode: String {
+        case parameterError = "요청변수 명이 잘못되었습니다."
+        case authorizationError = "인증에 실패하였습니다."
+        case disallowRequest = "허용되지 않은 호출입니다."
+        case inValidURL = "요청 URL이 잘못되었습니다."
+        case disallowMethod = "메서드를 허용할 수 없습니다."
+        case overRequest = "호출 한도가 초과되었습니다."
+        case serverError = "네이버 서버 오류입니다."
     }
 }
 

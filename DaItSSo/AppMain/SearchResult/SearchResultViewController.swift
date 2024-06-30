@@ -151,7 +151,6 @@ class SearchResultViewController: BaseViewController {
     private func getShoppingInfo(starts: Int) {
         naverShoppingManager.callRequest(decodableType: Shopping.self, query: searchText, start: starts, sort: sort, display: display) { shopping, error in
             guard error == nil else {
-                print(error!)
                 self.presentErrorAlert(searchError: .networkError) { _ in
                     self.navigationController?.popViewController(animated: true)
                 }

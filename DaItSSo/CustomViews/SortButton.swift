@@ -13,7 +13,7 @@ class SortButton: UIButton {
         super.init(frame: .zero)
         
         var configuration = UIButton.Configuration.bordered()
-        configuration.title = sortType.sortTitle
+        configuration.title = sortType.rawValue
         configuration.baseForegroundColor = .appDarkGray
         configuration.baseBackgroundColor = .appWhite
         configuration.background.strokeColor = .appDarkGray

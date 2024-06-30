@@ -13,8 +13,9 @@ class NaverShoppingManager {
     private init() { }
     
     static let shared = NaverShoppingManager()
+    typealias CompletionHandler<T: Decodable> = (T?, ErrorType.APIError?) -> ()
     
-    func callRequest<T: Decodable>(decodableType: T.Type, query: String, start: Int, sort: SortType, display: Int, completionHandler: @escaping (T?, ErrorType.APIError?)-> ()) {
+    func callRequest<T: Decodable>(decodableType: T.Type, query: String, start: Int, sort: SortType, display: Int, completionHandler: @escaping CompletionHandler<T>) {
         
         var component = URLComponents()
         component.scheme = "https"
@@ -24,7 +25,7 @@ class NaverShoppingManager {
             URLQueryItem(name: "query", value: "\(query)"),
             URLQueryItem(name: "start", value: "\(start)"),
             URLQueryItem(name: "display", value: "\(display)"),
-            URLQueryItem(name: "sort", value: "\(sort.rawValue)")
+            URLQueryItem(name: "sort", value: "\(sort)")
         ]
         
         guard let url = component.url else { return }
@@ -60,20 +61,19 @@ class NaverShoppingManager {
                     
                     switch response.statusCode {
                     case 400:
-                        print("요청변수 명이 잘못되었습니다.")
+                        print(ErrorType.ResponseStatusCode.parameterError.rawValue)
                     case 401:
-                        print("인증에 실패하였습니다.")
+                        print(ErrorType.ResponseStatusCode.authorizationError.rawValue)
                     case 403:
-                        print("허용되지 않은 호출입니다.")
+                        print(ErrorType.ResponseStatusCode.disallowRequest.rawValue)
                     case 404:
-                        print("요청 URL이 잘못되었습니다.")
+                        print(ErrorType.ResponseStatusCode.inValidURL.rawValue)
                     case 405:
-                        print("메서드를 허용할 수 없습니다.")
+                        print(ErrorType.ResponseStatusCode.disallowMethod.rawValue)
                     case 429:
-                        print("호출 한도가 초과되었습니다.")
+                        print(ErrorType.ResponseStatusCode.overRequest.rawValue)
                     case 500:
-                        print("네이버 서버 오류입니다.")
-                        completionHandler(nil, .serverError)
+                        print(ErrorType.ResponseStatusCode.serverError.rawValue)
                     default:
                         print(response.statusCode)
                     }
@@ -83,7 +83,6 @@ class NaverShoppingManager {
                 
                 do {
                     let result = try JSONDecoder().decode(T.self, from: data)
-                    
                     completionHandler(result, nil)
                     
                 } catch {
