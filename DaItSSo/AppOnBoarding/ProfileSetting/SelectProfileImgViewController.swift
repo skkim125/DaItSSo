@@ -7,13 +7,13 @@
 
 import UIKit
 
-class SelectProfileImgViewController: BaseViewController {
+final class SelectProfileImgViewController: BaseViewController {
     
-    lazy var selectedProfileImgButton = ProfileButton(profileImgType: .isSelected)
-    lazy var profileImgView = UIImageView()
-    lazy var selectedProfileImgSubButton = ProfileSubButton()
+    private let selectedProfileImgButton = ProfileButton(profileImgType: .isSelected)
+    private let profileImgView = UIImageView()
+    private let selectedProfileImgSubButton = ProfileSubButton()
     
-    lazy var collectionView = {
+    private lazy var collectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout.selectProfileCollectionViewLayout())
         cv.delegate = self
         cv.dataSource = self
@@ -72,7 +72,7 @@ class SelectProfileImgViewController: BaseViewController {
         }
     }
     
-    override func configureUI() {
+    override func configureView() {
         profileImgView.image = UIImage(named: selectedProfile)
     }
     

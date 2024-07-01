@@ -9,8 +9,8 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-class SearchResultCollectionViewCell: BaseCollectionViewCell {
-    let shoppingImg = {
+final class SearchResultCollectionViewCell: BaseCollectionViewCell {
+    private let shoppingImg = {
         let imgView = UIImageView()
         imgView.image = UIImage(systemName: "arrow.clockwise")
         imgView.contentMode = .scaleAspectFit
@@ -24,7 +24,7 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
         return imgView
     }()
     
-    let shoppingMallNameLabel = {
+    private let shoppingMallNameLabel = {
         let label = UILabel()
         label.textColor = .appGray
         label.font = .systemFont(ofSize: 13)
@@ -32,7 +32,7 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
     
-    let shoppingTitleLabel = {
+    private let shoppingTitleLabel = {
         let label = UILabel()
         label.textColor = .appBlack
         label.font = .systemFont(ofSize: 15, weight: .semibold)
@@ -41,7 +41,7 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
     
-    let shoppingPriceLabel = {
+    private let shoppingPriceLabel = {
         let label = UILabel()
         label.textColor = .appBlack
         label.font = .systemFont(ofSize: 16, weight: .heavy)
@@ -49,7 +49,7 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
     
-    lazy var selectProductButton = {
+    private let selectProductButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.bordered()
         configuration.image = UIImage(systemName: "handbag.fill")
@@ -57,8 +57,6 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
         configuration.background.strokeColor = .appLightGray
         configuration.background.strokeWidth = 0.3
         button.configuration = configuration
-        
-        button.addTarget(self, action: #selector(selectProductButtonClicked), for: .touchUpInside)
         
         return button
     }()
@@ -128,9 +126,11 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
         shoppingPriceLabel.text = String.formatInt(int: item.lprice) + "원"
     }
     
-    func configureSelectButtonUI() {
+    func configureSelectButton() {
         selectProductButton.configuration?.background.backgroundColor = isAdd ? .appWhite : .appBlack.withAlphaComponent(0.3)
         selectProductButton.configuration?.baseForegroundColor = isAdd ? .appBlack : .appWhite
+        
+        selectProductButton.addTarget(self, action: #selector(selectProductButtonClicked), for: .touchUpInside)
     }
     
     @objc private func selectProductButtonClicked() {
@@ -158,7 +158,7 @@ class SearchResultCollectionViewCell: BaseCollectionViewCell {
             }
         }
         
-        configureSelectButtonUI()
+        configureSelectButton()
     }
     
     override func prepareForReuse() {

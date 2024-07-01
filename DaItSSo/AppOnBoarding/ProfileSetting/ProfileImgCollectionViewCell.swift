@@ -8,10 +8,10 @@
 import UIKit
 import SnapKit
 
-class ProfileImgCollectionViewCell: BaseCollectionViewCell {
+final class ProfileImgCollectionViewCell: BaseCollectionViewCell {
     
-    lazy var profileImgButton: ProfileButton = ProfileButton(profileImgType: .unSelected)
-    lazy var profileImgView = UIImageView()
+    private let profileImgButton: ProfileButton = ProfileButton(profileImgType: .unSelected)
+    private let profileImgView = UIImageView()
     
     override func configureHierarchy() {
         contentView.addSubview(profileImgButton)

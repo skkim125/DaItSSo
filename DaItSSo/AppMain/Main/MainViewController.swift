@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 import SnapKit
 
-class MainViewController: BaseViewController {
+final class MainViewController: BaseViewController {
     
     private lazy var searchBar = {
         let searchBar = UISearchBar()
@@ -22,7 +22,7 @@ class MainViewController: BaseViewController {
         return searchBar
     }()
     
-    private lazy var dividerLine = DividerLine(color: .appLightGray)
+    private let dividerLine = DividerLine(color: .appLightGray)
     
     private lazy var stackView = {
         let view = UIView()
@@ -32,7 +32,7 @@ class MainViewController: BaseViewController {
         return view
     }()
     
-    private lazy var recentSearchLabel = {
+    private let recentSearchLabel = {
         let label = UILabel()
         label.text = "최근 검색"
         label.textColor = .appBlack
@@ -41,23 +41,14 @@ class MainViewController: BaseViewController {
         return label
     }()
     
-    private lazy var removeAllButton = {
+    private let removeAllButton = {
         let button = UIButton(type: .system)
         button.setTitle("전체 삭제", for: .normal)
         button.setTitleColor(.appMainColor, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
-        button.addTarget(self, action: #selector(removeAllButtonClicked), for: .touchUpInside)
         
         return button
     }()
-    
-    @objc private func removeAllButtonClicked() {
-        presentTwoActionsAlert(title: "정말로 전체 삭제하시겠습니까?", message: "최근 검색어 목록이 모두 삭제됩니다.", act: "전체 삭제") { _ in
-            self.userDefaults.recentSearchList.removeAll()
-            self.showView()
-            self.recentSearchTableView.reloadData()
-        }
-    }
     
     private lazy var noRecentSearchView = {
         let view = UIView()
@@ -68,7 +59,7 @@ class MainViewController: BaseViewController {
         return view
     }()
     
-    private lazy var emptyImageView = {
+    private let emptyImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "empty")
         imgView.contentMode = .scaleAspectFit
@@ -76,7 +67,7 @@ class MainViewController: BaseViewController {
         return imgView
     }()
     
-    private lazy var emptyLabel = {
+    private let emptyLabel = {
         let label = UILabel()
         label.text = "최근 검색어가 없어요"
         label.textColor = .appBlack
@@ -103,6 +94,7 @@ class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        removeAllButtonAddTarget()
         showView()
     }
     
@@ -173,6 +165,18 @@ class MainViewController: BaseViewController {
         }
     }
     
+    private func removeAllButtonAddTarget() {
+        removeAllButton.addTarget(self, action: #selector(removeAllButtonClicked), for: .touchUpInside)
+    }
+    
+    @objc private func removeAllButtonClicked() {
+        presentTwoActionsAlert(title: "정말로 전체 삭제하시겠습니까?", message: "최근 검색어 목록이 모두 삭제됩니다.", act: "전체 삭제") { _ in
+            self.userDefaults.recentSearchList.removeAll()
+            self.showView()
+            self.recentSearchTableView.reloadData()
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavigationBar()
@@ -198,7 +202,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         let data = userDefaults.recentSearchList[indexPath.row]
         cell.configureCellUI(search: data)
-        cell.deleteButton.addTarget(self, action: #selector(deleteButtonClicked(_:)), for: .touchUpInside)
+        cell.deleteButtonAddTarget(target: self, action: #selector(deleteButtonClicked(_:)))
         
         return cell
     }
@@ -218,14 +222,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? RecentSearchTableViewCell {
             
-            if let text = cell.recentSearchLabel.text {
-                let results = userDefaults.recentSearchList.filter { $0 == text }
-                saveRecentSearch(results: results, text: text)
-                
-                let vc = SearchResultViewController()
-                vc.searchText = text
-                navigationController?.pushViewController(vc, animated: true)
-            }
+            let results = userDefaults.recentSearchList.filter { $0 == cell.searchText }
+            saveRecentSearch(results: results, text: cell.searchText)
+            
+            let vc = SearchResultViewController()
+            vc.searchText = cell.searchText
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

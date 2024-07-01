@@ -8,23 +8,23 @@
 import UIKit
 import SnapKit
 
-class RecentSearchTableViewCell: BaseTableViewCell {
+final class RecentSearchTableViewCell: BaseTableViewCell {
     
-    private lazy var clockImgView = {
+    private let clockImgView = {
         let imgView = UIImageView(image: UIImage(systemName: "clock"))
         imgView.tintColor = .appDarkGray
         imgView.contentMode = .scaleAspectFit
         
         return imgView
     }()
-    lazy var recentSearchLabel = {
+    private let recentSearchLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textColor = .appDarkGray
         
         return label
     }()
-    lazy var deleteButton = {
+    private let deleteButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
@@ -32,6 +32,8 @@ class RecentSearchTableViewCell: BaseTableViewCell {
         
         return button
     }()
+    
+    var searchText = ""
     
     override func configureHierarchy() {
         contentView.addSubview(clockImgView)
@@ -63,5 +65,10 @@ class RecentSearchTableViewCell: BaseTableViewCell {
     
     func configureCellUI(search: String) {
         recentSearchLabel.text = search
+        searchText = search
+    }
+    
+    func deleteButtonAddTarget(target: Any?, action: Selector) {
+        deleteButton.addTarget(target, action: action, for: .touchUpInside)
     }
 }

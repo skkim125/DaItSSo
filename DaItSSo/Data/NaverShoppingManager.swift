@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-class NaverShoppingManager {
+final class NaverShoppingManager {
     
     private init() { }
     

@@ -10,11 +10,10 @@ import SnapKit
 import WebKit
 import Reachability
 
-class SearchResultDetailViewController: BaseViewController {
+final class SearchResultDetailViewController: BaseViewController {
     private let webView = WKWebView()
     private let userDefaults = UserDefaultsManager.shared
-    lazy var navTitle = SetNavigationTitle.search(searchText)
-    var reachability: Reachability = try! Reachability()
+    private let reachability: Reachability = try! Reachability()
     var item: Item?
     var searchText = ""
     var isAdd = false
@@ -27,7 +26,7 @@ class SearchResultDetailViewController: BaseViewController {
     }
     
     override func configureNavigationBar() {
-        navigationItem.title = navTitle.navTitle
+        navigationItem.title = SetNavigationTitle.search(searchText).navTitle
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
         
@@ -86,7 +85,7 @@ class SearchResultDetailViewController: BaseViewController {
         webView.load(urlRequest)
     }
     
-    func networkReachability() {
+    private func networkReachability() {
         do {
             try reachability.startNotifier()
             print("네트워크 연결 정상")

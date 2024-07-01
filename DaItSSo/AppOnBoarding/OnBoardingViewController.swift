@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OnBoardingViewController: BaseViewController {
+final class OnBoardingViewController: BaseViewController {
     
     private let appNameLabel = {
         let label = UILabel()
@@ -39,7 +39,7 @@ class OnBoardingViewController: BaseViewController {
         navigationController?.navigationBar.isHidden = true
     }
     
-    func configureStartButton() {
+    private func configureStartButton() {
         startButton.addTarget(self, action: #selector(goLoginView), for: .touchUpInside)
     }
     

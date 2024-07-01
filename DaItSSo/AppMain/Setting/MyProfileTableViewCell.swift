@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class MyProfileTableViewCell: BaseTableViewCell {
+final class MyProfileTableViewCell: BaseTableViewCell {
     private let profileButton = ProfileButton(profileImgType: .isSelected)
     private let profileImgView = UIImageView()
     private lazy var labelStackView = {
@@ -25,11 +25,10 @@ class MyProfileTableViewCell: BaseTableViewCell {
         
         return label
     }()
-    private lazy var dateLabel = {
+    private let dateLabel = {
         let label = UILabel()
         label.textColor = .appGray
         label.font = .systemFont(ofSize: 14)
-        label.text = userDefaults.loginDate
         
         return label
     }()

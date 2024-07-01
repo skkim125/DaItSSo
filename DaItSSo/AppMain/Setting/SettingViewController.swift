@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingViewController: BaseViewController {
+final class SettingViewController: BaseViewController {
     private lazy var settingTableView = {
         let tv = UITableView()
         tv.delegate = self
@@ -103,7 +103,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             let vc = ProfileSettingViewController()
             vc.navTitle = .editProfile
             vc.profileImg = self.profileImg
-            vc.nicknameTextField.text = userDefaults.nickname
+            vc.text = userDefaults.nickname
             navigationController?.pushViewController(vc, animated: true)
             navigationItem.rightBarButtonItem?.action = #selector(saveButtonClicked)
             

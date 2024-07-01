@@ -7,7 +7,7 @@
 
 import UIKit
 
-//class MyShoppingListView: BaseViewController {
+//final class MyShoppingListView: BaseViewController {
 //    
 //    
 //    override func configureNavigationBar() {

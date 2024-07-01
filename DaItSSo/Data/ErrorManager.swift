@@ -50,7 +50,7 @@ enum ErrorType {
     }
 }
 
-class ErrorManager {
+final class ErrorManager {
     
     private init() { }
     

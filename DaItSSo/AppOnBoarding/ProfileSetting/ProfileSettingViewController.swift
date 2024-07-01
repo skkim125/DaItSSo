@@ -8,13 +8,13 @@
 import UIKit
 import SnapKit
 
-class ProfileSettingViewController: BaseViewController {
+final class ProfileSettingViewController: BaseViewController {
     
-    private lazy var setProfileImgButton = ProfileButton(profileImgType: .isSelected)
-    private lazy var profileImgView = UIImageView()
-    private lazy var setProfileImgSubButton = ProfileSubButton()
+    private let setProfileImgButton = ProfileButton(profileImgType: .isSelected)
+    private let profileImgView = UIImageView()
+    private let setProfileImgSubButton = ProfileSubButton()
     
-    lazy var nicknameTextField = {
+    private lazy var nicknameTextField = {
         let tf = UITextField()
         tf.borderStyle = .none
         tf.placeholder = "닉네임을 입력해주세요"
@@ -25,9 +25,9 @@ class ProfileSettingViewController: BaseViewController {
         return tf
     }()
     
-    private lazy var dividerLine = DividerLine(color: .appLightGray)
+    private let dividerLine = DividerLine(color: .appLightGray)
     
-    private lazy var checkNicknameLabel = {
+    private let checkNicknameLabel = {
         let label = UILabel()
         label.textColor = .appMainColor
         label.font = .systemFont(ofSize: 13)
@@ -35,12 +35,13 @@ class ProfileSettingViewController: BaseViewController {
         return label
     }()
     
-    private lazy var loginButton = PointButton(title: "완료")
+    private let loginButton = PointButton(title: "완료")
     
     private let userDefaults = UserDefaultsManager.shared
     private let errorManager = ErrorManager.shared
     private let profileList = ProfileImg.allCases
     var navTitle = SetNavigationTitle.firstProfile
+    var text = ""
     var profileImg: String = ""
     var editProfileImg: String = ""
     
@@ -134,10 +135,11 @@ class ProfileSettingViewController: BaseViewController {
         }
     }
     
-    override func configureUI() {
+    override func configureView() {
         profileImgView.image = UIImage(named: profileImg)
         setProfileImgButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
         setProfileImgSubButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
+        nicknameTextField.text = text
         
         switch navTitle{
         case .firstProfile:
@@ -226,7 +228,7 @@ extension ProfileSettingViewController: UITextFieldDelegate {
 
 extension ProfileSettingViewController {
     
-    func checkNickname(nickname: String) {
+    private func checkNickname(nickname: String) {
         do {
             try errorManager.checkNicknameCondition(nickname: nickname)
             setbuttonEnabled(navTitle: navTitle)
@@ -238,7 +240,7 @@ extension ProfileSettingViewController {
         }
     }
     
-    func setButtonDisable(navTitle: SetNavigationTitle) {
+    private func setButtonDisable(navTitle: SetNavigationTitle) {
         switch navTitle {
         case .firstProfile:
             loginButton.isEnabled = false
@@ -250,7 +252,7 @@ extension ProfileSettingViewController {
         }
     }
     
-    func setbuttonEnabled(navTitle: SetNavigationTitle) {
+    private func setbuttonEnabled(navTitle: SetNavigationTitle) {
         switch navTitle {
         case .firstProfile:
             loginButton.isEnabled = true

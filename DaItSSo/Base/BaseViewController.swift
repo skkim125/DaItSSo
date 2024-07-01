@@ -9,7 +9,6 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -17,7 +16,7 @@ class BaseViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureNavigationBar()
-        configureUI()
+        configureView()
     }
     
     func configureNavigationBar() { }
@@ -26,5 +25,5 @@ class BaseViewController: UIViewController {
     
     func configureLayout() { }
     
-    func configureUI() { }
+    func configureView() { }
 }

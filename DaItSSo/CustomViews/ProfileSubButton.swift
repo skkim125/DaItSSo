@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileSubButton: UIButton {
+final class ProfileSubButton: UIButton {
     
     init() {
         super.init(frame: .zero)

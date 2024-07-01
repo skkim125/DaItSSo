@@ -11,9 +11,9 @@ import Kingfisher
 import Reachability
 import SnapKit
 
-class SearchResultViewController: BaseViewController {
+final class SearchResultViewController: BaseViewController {
     
-    lazy var resultCollectionView = {
+    private lazy var resultCollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout.searchResultCollectionViewLayout())
         cv.delegate = self
         cv.dataSource = self
@@ -23,7 +23,7 @@ class SearchResultViewController: BaseViewController {
         return cv
     }()
     
-    lazy var totalResultLabel = {
+    private let totalResultLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .heavy)
         label.textColor = .appMainColor
@@ -31,22 +31,22 @@ class SearchResultViewController: BaseViewController {
         return label
     }()
     
-    lazy var simSortButton = SortButton(sortType: .sim)
-    lazy var dateSortButton = SortButton(sortType: .date)
-    lazy var dscSortButton = SortButton(sortType: .dsc)
-    lazy var ascSortButton = SortButton(sortType: .asc)
+    private let simSortButton = SortButton(sortType: .sim)
+    private let dateSortButton = SortButton(sortType: .date)
+    private let dscSortButton = SortButton(sortType: .dsc)
+    private let ascSortButton = SortButton(sortType: .asc)
     
     private let userDefaults = UserDefaultsManager.shared
     private let naverShoppingManager = NaverShoppingManager.shared
     private let errorManager = ErrorManager.shared
+    
+    private let reachability: Reachability = try! Reachability()
     private var sort: SortType = .sim
     private var start = 1
     private var display = 30
-    lazy var navTitle = SetNavigationTitle.search(searchText)
     var searchResults: [Item] = []
     var searchText: String = ""
     var totalResults: Int = 0
-    var reachability: Reachability = try! Reachability()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +56,7 @@ class SearchResultViewController: BaseViewController {
         configureSortButtons()
     }
 
-    func networkReachability() {
+    private func networkReachability() {
         do {
             try reachability.startNotifier()
             print("네트워크 연결 정상")
@@ -72,7 +72,7 @@ class SearchResultViewController: BaseViewController {
     }
     
     override func configureNavigationBar() {
-        navigationItem.title = navTitle.navTitle
+        navigationItem.title = SetNavigationTitle.search(searchText).navTitle
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
         navigationController?.navigationBar.tintColor = .appDarkGray
@@ -208,7 +208,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         cell.item = data
         cell.configureCellUI(item: data)
         cell.isAdd = userDefaults.myShopping.contains(where: { $0 == data }) ? true : false
-        cell.configureSelectButtonUI()
+        cell.configureSelectButton()
         
         return cell
     }

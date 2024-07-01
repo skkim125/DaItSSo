@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PointButton: UIButton {
+final class PointButton: UIButton {
     init(title: String) {
         super.init(frame: .zero)
         var configuration = UIButton.Configuration.bordered()

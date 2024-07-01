@@ -8,7 +8,7 @@
 import UIKit
 
 
-class ProfileButton: UIButton {
+final class ProfileButton: UIButton {
     
     init(profileImgType: ProfileImgType) {
         super.init(frame: .zero)
