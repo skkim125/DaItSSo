@@ -28,7 +28,6 @@
 		042670002C1B4CE0007C8197 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FFF2C1B4CE0007C8197 /* Enum.swift */; };
 		042670022C1C162D007C8197 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670012C1C162D007C8197 /* MainViewController.swift */; };
 		042670042C1C18CD007C8197 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 042670032C1C18CD007C8197 /* .gitignore */; };
-		042670062C1C1941007C8197 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670052C1C1941007C8197 /* APIKey.swift */; };
 		042670082C1C2079007C8197 /* DividerLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042670072C1C2079007C8197 /* DividerLine.swift */; };
 		0426700D2C1C2729007C8197 /* RecentSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426700C2C1C2729007C8197 /* RecentSearchTableViewCell.swift */; };
 		0426700F2C1C2A77007C8197 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426700E2C1C2A77007C8197 /* SearchResultViewController.swift */; };
@@ -48,6 +47,9 @@
 		04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */; };
 		04BFE1EC2C2C354100D741E1 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */; };
 		04C24D5D2C2EEF0F00AFAF9A /* MyShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */; };
+		04C264FF2C393B14009EDDB9 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C264FE2C393B14009EDDB9 /* APIKey.swift */; };
+		04C265022C393BF4009EDDB9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 04C265012C393BF4009EDDB9 /* RealmSwift */; };
+		04C265042C394121009EDDB9 /* MyShoppingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C265032C394121009EDDB9 /* MyShoppingModel.swift */; };
 		04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */; };
 		04C40C902C2549C400052A82 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8F2C2549C400052A82 /* ErrorManager.swift */; };
 /* End PBXBuildFile section */
@@ -72,7 +74,6 @@
 		04266FFF2C1B4CE0007C8197 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		042670012C1C162D007C8197 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		042670032C1C18CD007C8197 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		042670052C1C1941007C8197 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 		042670072C1C2079007C8197 /* DividerLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerLine.swift; sourceTree = "<group>"; };
 		0426700C2C1C2729007C8197 /* RecentSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchTableViewCell.swift; sourceTree = "<group>"; };
 		0426700E2C1C2A77007C8197 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +92,8 @@
 		04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Extension.swift"; sourceTree = "<group>"; };
 		04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyShoppingListView.swift; sourceTree = "<group>"; };
+		04C264FE2C393B14009EDDB9 /* APIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		04C265032C394121009EDDB9 /* MyShoppingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyShoppingModel.swift; sourceTree = "<group>"; };
 		04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverShoppingManager.swift; sourceTree = "<group>"; };
 		04C40C8F2C2549C400052A82 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C265022C393BF4009EDDB9 /* RealmSwift in Frameworks */,
 				04266FDC2C1B3813007C8197 /* Kingfisher in Frameworks */,
 				04266FDF2C1B381A007C8197 /* IQKeyboardManagerSwift in Frameworks */,
 				042E42642C2D07F70024E5A2 /* Reachability in Frameworks */,
@@ -231,11 +235,12 @@
 			isa = PBXGroup;
 			children = (
 				04266FFF2C1B4CE0007C8197 /* Enum.swift */,
+				04C265032C394121009EDDB9 /* MyShoppingModel.swift */,
 				04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */,
 				04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */,
 				04C40C8F2C2549C400052A82 /* ErrorManager.swift */,
 				042670182C1C3747007C8197 /* Shopping.swift */,
-				042670052C1C1941007C8197 /* APIKey.swift */,
+				04C264FE2C393B14009EDDB9 /* APIKey.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 				04266FDB2C1B3813007C8197 /* Kingfisher */,
 				04266FDE2C1B381A007C8197 /* IQKeyboardManagerSwift */,
 				042E42632C2D07F70024E5A2 /* Reachability */,
+				04C265012C393BF4009EDDB9 /* RealmSwift */,
 			);
 			productName = DaItSSo;
 			productReference = 04266FBD2C1B3735007C8197 /* DaItSSo.app */;
@@ -318,6 +324,7 @@
 				04266FDA2C1B3813007C8197 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				04266FDD2C1B381A007C8197 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				042E42622C2D07F70024E5A2 /* XCRemoteSwiftPackageReference "Reachability" */,
+				04C265002C393BF4009EDDB9 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 04266FBE2C1B3735007C8197 /* Products */;
 			projectDirPath = "";
@@ -357,7 +364,6 @@
 				04266FF42C1B3E03007C8197 /* IdProtocol.swift in Sources */,
 				04266FE72C1B3926007C8197 /* PointButton.swift in Sources */,
 				04266FFC2C1B48E0007C8197 /* UserDefaultsManager.swift in Sources */,
-				042670062C1C1941007C8197 /* APIKey.swift in Sources */,
 				042670002C1B4CE0007C8197 /* Enum.swift in Sources */,
 				04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */,
 				042E42612C2C54720024E5A2 /* DateFormatter+Extension.swift in Sources */,
@@ -374,12 +380,14 @@
 				04266FE92C1B3939007C8197 /* ProfileButton.swift in Sources */,
 				042670082C1C2079007C8197 /* DividerLine.swift in Sources */,
 				04266FC32C1B3735007C8197 /* SceneDelegate.swift in Sources */,
+				04C265042C394121009EDDB9 /* MyShoppingModel.swift in Sources */,
 				042670142C1C2CD7007C8197 /* SettingViewController.swift in Sources */,
 				04266FE52C1B390B007C8197 /* DesignResource.swift in Sources */,
 				04266FE12C1B3897007C8197 /* ProfileSettingViewController.swift in Sources */,
 				04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */,
 				04266FE32C1B38B4007C8197 /* OnBoardingViewController.swift in Sources */,
 				042670122C1C2C4D007C8197 /* TabViewController.swift in Sources */,
+				04C264FF2C393B14009EDDB9 /* APIKey.swift in Sources */,
 				0426701C2C1C3A47007C8197 /* SearchResultCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -533,7 +541,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -567,7 +575,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -649,6 +657,14 @@
 				kind = branch;
 			};
 		};
+		04C265002C393BF4009EDDB9 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.52.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -676,6 +692,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 042E42622C2D07F70024E5A2 /* XCRemoteSwiftPackageReference "Reachability" */;
 			productName = Reachability;
+		};
+		04C265012C393BF4009EDDB9 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C265002C393BF4009EDDB9 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
