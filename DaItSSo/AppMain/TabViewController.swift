@@ -18,9 +18,12 @@ final class TabViewController: UITabBarController {
         let main = UINavigationController(rootViewController: MainViewController())
         main.tabBarItem = UITabBarItem(title: "검색", image: UIImage(systemName: "magnifyingglass"), tag: 0)
         
-        let setting = UINavigationController(rootViewController: SettingViewController())
-        setting.tabBarItem = UITabBarItem(title: "설정", image: UIImage(systemName: "person"), tag: 1)
+        let msv = UINavigationController(rootViewController: MyShoppingListView())
+        msv.tabBarItem = UITabBarItem(title: "장바구니", image: UIImage(systemName: "cart.fill"), tag: 1)
         
-        setViewControllers([main, setting], animated: true)
+        let setting = UINavigationController(rootViewController: SettingViewController())
+        setting.tabBarItem = UITabBarItem(title: "설정", image: UIImage(systemName: "person"), tag: 2)
+        
+        setViewControllers([main, msv, setting], animated: true)
     }
 }

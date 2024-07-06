@@ -50,32 +50,7 @@ final class MainViewController: BaseViewController {
         return button
     }()
     
-    private lazy var noRecentSearchView = {
-        let view = UIView()
-        view.backgroundColor = .appWhite
-        view.addSubview(emptyImageView)
-        view.addSubview(emptyLabel)
-        
-        return view
-    }()
-    
-    private let emptyImageView = {
-        let imgView = UIImageView()
-        imgView.image = UIImage(named: "empty")
-        imgView.contentMode = .scaleAspectFit
-        
-        return imgView
-    }()
-    
-    private let emptyLabel = {
-        let label = UILabel()
-        label.text = "최근 검색어가 없어요"
-        label.textColor = .appBlack
-        label.font = .boldSystemFont(ofSize: 16)
-        label.textAlignment = .center
-        
-        return label
-    }()
+    private lazy var noRecentSearchView = EmptyView()
     
     private lazy var recentSearchTableView = {
         let tv = UITableView()
@@ -129,15 +104,15 @@ final class MainViewController: BaseViewController {
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        emptyImageView.snp.makeConstraints { make in
+        noRecentSearchView.emptyImageView.snp.makeConstraints { make in
             make.top.equalTo(noRecentSearchView.snp.top).offset(30)
             make.horizontalEdges.equalTo(noRecentSearchView)
-            make.height.equalTo(emptyImageView.snp.width)
+            make.height.equalTo(noRecentSearchView.emptyImageView.snp.width)
         }
         
-        emptyLabel.snp.makeConstraints { make in
-            make.top.equalTo(emptyImageView.snp.bottom)
-            make.horizontalEdges.equalTo(emptyImageView)
+        noRecentSearchView.emptyLabel.snp.makeConstraints { make in
+            make.top.equalTo(noRecentSearchView.emptyImageView.snp.bottom)
+            make.horizontalEdges.equalTo(noRecentSearchView.emptyImageView)
             make.height.equalTo(30)
         }
         
@@ -163,6 +138,10 @@ final class MainViewController: BaseViewController {
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
         }
+    }
+    
+    override func configureView() {
+        noRecentSearchView.configureEmptyLabel(text: "최근 검색어가 없어요")
     }
     
     private func removeAllButtonAddTarget() {
@@ -275,7 +254,7 @@ extension MainViewController {
         recentSearchTableView.isHidden = isEmptyList ? true : false
     }
     
-    func saveRecentSearch(results: [String], text: String) {
+    private func saveRecentSearch(results: [String], text: String) {
         if !results.isEmpty {
             if let lastIndex = userDefaults.recentSearchList.lastIndex(where: { $0 == results.first ?? "" }) {
                 userDefaults.recentSearchList.remove(at: lastIndex)

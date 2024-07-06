@@ -30,6 +30,18 @@ final class MyShoppingModel: Object {
 final class MyShoppingRepository {
     private let realm = try! Realm()
     
+    func loadMyShopping() -> Results<MyShoppingModel>? {
+        do {
+            try realm.write {
+                return realm.objects(MyShoppingModel.self)
+            }
+        } catch {
+            print("Realm Error")
+        }
+        
+        return nil
+    }
+    
     func addMyShopping(_ myShopping: MyShoppingModel) {
         do {
             try realm.write {

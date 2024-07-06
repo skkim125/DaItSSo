@@ -43,6 +43,7 @@
 		042E425F2C2C54600024E5A2 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E425E2C2C54600024E5A2 /* String+Extension.swift */; };
 		042E42612C2C54720024E5A2 /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E42602C2C54720024E5A2 /* DateFormatter+Extension.swift */; };
 		042E42642C2D07F70024E5A2 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 042E42632C2D07F70024E5A2 /* Reachability */; };
+		043582962C395F180045B1FE /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043582952C395F180045B1FE /* EmptyView.swift */; };
 		04BFE1E62C2C12ED00D741E1 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */; };
 		04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */; };
 		04BFE1EC2C2C354100D741E1 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */; };
@@ -88,6 +89,7 @@
 		042E425A2C2C39A30024E5A2 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		042E425E2C2C54600024E5A2 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		042E42602C2C54720024E5A2 /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
+		043582952C395F180045B1FE /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Extension.swift"; sourceTree = "<group>"; };
 		04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				04266FE82C1B3939007C8197 /* ProfileButton.swift */,
 				04266FF92C1B4263007C8197 /* ProfileSubButton.swift */,
 				042670072C1C2079007C8197 /* DividerLine.swift */,
+				043582952C395F180045B1FE /* EmptyView.swift */,
 				0426701D2C1C4A7B007C8197 /* SortButton.swift */,
 			);
 			path = CustomViews;
@@ -186,6 +189,7 @@
 			children = (
 				042670012C1C162D007C8197 /* MainViewController.swift */,
 				0426700C2C1C2729007C8197 /* RecentSearchTableViewCell.swift */,
+				042670102C1C2A82007C8197 /* SearchResult */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -206,7 +210,6 @@
 				042670132C1C2CD7007C8197 /* SettingViewController.swift */,
 				042670252C1DAE8B007C8197 /* MyProfileTableViewCell.swift */,
 				042670232C1DACAF007C8197 /* SettingTableViewCell.swift */,
-				04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -225,7 +228,7 @@
 			children = (
 				042670112C1C2C4D007C8197 /* TabViewController.swift */,
 				042670092C1C214A007C8197 /* Main */,
-				042670102C1C2A82007C8197 /* SearchResult */,
+				043582922C395A8F0045B1FE /* MyShopping */,
 				042670152C1C2E0E007C8197 /* Setting */,
 			);
 			path = AppMain;
@@ -243,6 +246,15 @@
 				04C264FE2C393B14009EDDB9 /* APIKey.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		043582922C395A8F0045B1FE /* MyShopping */ = {
+			isa = PBXGroup;
+			children = (
+				04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */,
+			);
+			name = MyShopping;
+			path = "ㅡㅛ놰ㅔㅔㅑㅜㅎ";
 			sourceTree = "<group>";
 		};
 		04BFE1E92C2C136E00D741E1 /* Extension */ = {
@@ -377,6 +389,7 @@
 				0426700F2C1C2A77007C8197 /* SearchResultViewController.swift in Sources */,
 				042670262C1DAE8B007C8197 /* MyProfileTableViewCell.swift in Sources */,
 				042670022C1C162D007C8197 /* MainViewController.swift in Sources */,
+				043582962C395F180045B1FE /* EmptyView.swift in Sources */,
 				04266FE92C1B3939007C8197 /* ProfileButton.swift in Sources */,
 				042670082C1C2079007C8197 /* DividerLine.swift in Sources */,
 				04266FC32C1B3735007C8197 /* SceneDelegate.swift in Sources */,
