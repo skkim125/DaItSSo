@@ -81,7 +81,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case .myShopping:
             cell.configureMyShoppingCellHierarchy()
             cell.configureMyShoppingCellLayout()
-            cell.configureMyShoppingCellUI(count: userDefaults.myShopping.count)
+            cell.configureMyShoppingCellUI(count: MyShoppingRepository().loadMyShopping().count)
             cell.showLabel(bool: false)
             
             return cell

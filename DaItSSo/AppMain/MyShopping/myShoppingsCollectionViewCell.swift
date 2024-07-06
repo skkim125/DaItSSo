@@ -1,14 +1,13 @@
 //
-//  SearchResultCollectionViewCell.swift
+//  MyShoppingCollectionVIewCell.swift
 //  DaItSSo
 //
-//  Created by 김상규 on 6/14/24.
+//  Created by 김상규 on 7/6/24.
 //
 
 import UIKit
-import SnapKit
 
-final class SearchResultCollectionViewCell: BaseCollectionViewCell {
+class myShoppingsCollectionViewCell: BaseCollectionViewCell {
     private let shoppingImg = {
         let imgView = UIImageView()
         imgView.image = UIImage(systemName: "arrow.clockwise")
@@ -61,10 +60,11 @@ final class SearchResultCollectionViewCell: BaseCollectionViewCell {
     }()
     
     private let msr = MyShoppingRepository()
-    var image: UIImage?
+    private let userDefaults = UserDefaultsManager.shared
     var myShopping: MyShopping?
-    var isAdd: Bool = false
-
+    var isAdd: Bool = true
+    var myShoppingListView: MyShoppingListView?
+    
     override func configureHierarchy() {
         contentView.addSubview(shoppingImg)
         contentView.addSubview(shoppingMallNameLabel)
@@ -105,68 +105,51 @@ final class SearchResultCollectionViewCell: BaseCollectionViewCell {
     }
     
     func configureCellUI(myShopping: MyShopping) {
-        guard let url = URL(string: myShopping.image) else { return }
-        
-        DispatchQueue.global(qos: .userInteractive).async {
-            do {
-                let data = try Data(contentsOf: url)
-                
-                DispatchQueue.main.async {
-                    self.image = UIImage(data: data)
-                    guard let image = self.image else { return }
-                    self.shoppingImg.image = image
-                    self.shoppingImg.contentMode = .scaleAspectFill
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    self.shoppingImg.image = UIImage(systemName: "xmark")
-                }
-            }
-        }
+        let loadImage = ImageManager.shared.loadImageToDocument(filename: myShopping.productId)
+        self.shoppingImg.image = loadImage
+        self.shoppingImg.contentMode = .scaleAspectFill
         shoppingMallNameLabel.text = myShopping.mallName
         shoppingTitleLabel.text = String.removeTag(title: myShopping.title)
         shoppingPriceLabel.text = String.formatInt(int: myShopping.lprice) + "원"
     }
     
     func configureSelectButton() {
-        selectProductButton.configuration?.background.backgroundColor = isAdd ? .appWhite : .appBlack.withAlphaComponent(0.3)
-        selectProductButton.configuration?.baseForegroundColor = isAdd ? .appBlack : .appWhite
+        selectProductButton.configuration?.background.backgroundColor = .appWhite
+        selectProductButton.configuration?.baseForegroundColor = .appBlack
         
-        selectProductButton.addTarget(self, action: #selector(selectProductButtonClicked), for: .touchUpInside)
+        selectProductButton.addTarget(self, action: #selector(deleteProductButtonClicked), for: .touchUpInside)
     }
     
-    @objc private func selectProductButtonClicked() {
-        isAdd.toggle()
+    @objc private func deleteProductButtonClicked() {
         
         if let i = myShopping {
-            if isAdd {
-                let newShopping = MyShopping(value: i)
-                msr.addMyShopping(newShopping)
-                if let image = self.image {
-                    ImageManager.shared.saveImageToDocument(image: image, filename: i.productId)
+            switch msr.loadMyShopping().isEmpty {
+            case true:
+                let filterdShopping = msr.loadMyShopping().filter { $0.productId == i.productId }
+                if let lastIndex = msr.loadMyShopping().lastIndex(where: {
+                    $0.productId == filterdShopping[filterdShopping.startIndex].productId
+                }) {
+                    ImageManager.shared.removeImageFromDocument(filename: i.productId)
+                    msr.deleteMyShopping(msr.loadMyShopping()[lastIndex])
                 }
-            } else {
-                switch msr.loadMyShopping().isEmpty {
-                case true:
-                    let filterdShopping = msr.loadMyShopping().filter { $0.productId == i.productId }
-                    if let lastIndex = msr.loadMyShopping().lastIndex(where: {
-                        $0.productId == filterdShopping[filterdShopping.startIndex].productId
-                    }) {
-                        ImageManager.shared.removeImageFromDocument(filename: i.productId)
-                        msr.deleteMyShopping(msr.loadMyShopping()[lastIndex])
-                    }
-                case false:
-                    if let lastIndex = msr.loadMyShopping().lastIndex(where: {
-                        $0.productId == i.productId
-                    }) {
-                        ImageManager.shared.removeImageFromDocument(filename: i.productId)
-                        msr.deleteMyShopping(msr.loadMyShopping()[lastIndex])
-                    }
+            case false:
+                if let lastIndex = msr.loadMyShopping().lastIndex(where: {
+                    $0.productId == i.productId
+                }) {
+                    ImageManager.shared.removeImageFromDocument(filename: i.productId)
+                    msr.deleteMyShopping(msr.loadMyShopping()[lastIndex])
                 }
+            }
+            
+            if let vc = myShoppingListView {
+                vc.myShoppings = msr.loadMyShopping()
+                if vc.myShoppings.isEmpty {
+                    vc.setView()
+                }
+                vc.myShoppingsCollectionView.reloadData()
             }
         }
         
-        configureSelectButton()
     }
     
     override func prepareForReuse() {

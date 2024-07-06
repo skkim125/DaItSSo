@@ -86,8 +86,8 @@ final class ErrorManager {
         throw ErrorType.SearchError.isEmptyResult
     }
     
-    func checkLink(item: Item) throws {
-        if item.link.isEmpty {
+    func checkLink(myShopping: MyShopping) throws {
+        if myShopping.link.isEmpty {
             throw ErrorType.SearchError.isEmptyURL
         }
     }

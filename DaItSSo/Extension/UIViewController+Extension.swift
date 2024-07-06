@@ -28,6 +28,12 @@ extension UIViewController {
         alert.addAction(back)
         self.present(alert, animated: true)
     }
+}
+
+class ImageManager {
+    static let shared = ImageManager()
+    
+    private init() { }
     
     func saveImageToDocument(image: UIImage, filename: String) {
         

@@ -12,9 +12,10 @@ import Reachability
 
 final class SearchResultDetailViewController: BaseViewController {
     private let webView = WKWebView()
-    private let userDefaults = UserDefaultsManager.shared
+    private let msr = MyShoppingRepository()
     private let reachability: Reachability = try! Reachability()
-    var item: Item?
+    var image: UIImage?
+    var myShopping: MyShopping?
     var searchText = ""
     var isAdd = false
     
@@ -39,23 +40,30 @@ final class SearchResultDetailViewController: BaseViewController {
     
     @objc private func selectProductButtonClicked() {
         isAdd.toggle()
-        if let i = item {
+        if let i = myShopping {
             if isAdd {
-                userDefaults.myShopping.append(i)
+                
+                let newShopping = MyShopping(value: i)
+                msr.addMyShopping(newShopping)
+                if let image = self.image {
+                    ImageManager.shared.saveImageToDocument(image: image, filename: i.productId)
+                }
             } else {
-                switch userDefaults.myShopping.isEmpty {
+                switch msr.loadMyShopping().isEmpty {
                 case true:
-                    let filterdShopping = userDefaults.myShopping.filter { $0.productId == i.productId }
-                    if let lastIndex = userDefaults.myShopping.lastIndex(where: {
+                    let filterdShopping = msr.loadMyShopping().filter { $0.productId == i.productId }
+                    if let lastIndex = msr.loadMyShopping().lastIndex(where: {
                         $0.productId == filterdShopping[filterdShopping.startIndex].productId
                     }) {
-                        userDefaults.myShopping.remove(at: lastIndex)
+                        ImageManager.shared.removeImageFromDocument(filename: i.productId)
+                        msr.deleteMyShopping(msr.loadMyShopping()[lastIndex])
                     }
                 case false:
-                    if let lastIndex = userDefaults.myShopping.lastIndex(where: {
+                    if let lastIndex = msr.loadMyShopping().lastIndex(where: {
                         $0.productId == i.productId
                     }) {
-                        userDefaults.myShopping.remove(at: lastIndex)
+                        ImageManager.shared.removeImageFromDocument(filename: i.productId)
+                        msr.deleteMyShopping(msr.loadMyShopping()[lastIndex])
                     }
                 }
             }

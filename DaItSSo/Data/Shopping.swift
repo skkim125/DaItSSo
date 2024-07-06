@@ -9,14 +9,6 @@ import Foundation
 
 struct Shopping: Decodable {
     let total: Int
-    let items: [Item]
+    let items: [MyShopping]
 }
 
-struct Item: Hashable, Codable {
-    let title: String
-    let image: String
-    let mallName: String
-    let lprice: String
-    let link: String
-    let productId: String
-}

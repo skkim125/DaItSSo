@@ -103,7 +103,7 @@ final class NaverShoppingManager {
         }
     }
     
-    func returnSearchResults(result: Shopping?, start: Int, searchResults: [Item]) -> [Item] {
+    func returnSearchResults(result: Shopping?, start: Int, searchResults: [MyShopping]) -> [MyShopping] {
         var array = searchResults
         
         if let result = result {

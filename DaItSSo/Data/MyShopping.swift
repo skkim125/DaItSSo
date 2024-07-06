@@ -9,16 +9,18 @@ import Foundation
 import RealmSwift
 
 
-final class MyShoppingModel: Object {
+final class MyShopping: Object, Decodable {
     @Persisted(primaryKey: true) var productId: String
     @Persisted(indexed: true) var title: String
+    @Persisted var image: String
     @Persisted var mallName: String
     @Persisted var lprice: String
     @Persisted var link: String
     
-    convenience init(productId: String, title: String, mallName: String, lprice: String, link: String) {
+    convenience init(productId: String, title: String, image: String, mallName: String, lprice: String, link: String) {
         self.init()
         self.productId = productId
+        self.image = image
         self.title = title
         self.mallName = mallName
         self.lprice = lprice
@@ -30,19 +32,13 @@ final class MyShoppingModel: Object {
 final class MyShoppingRepository {
     private let realm = try! Realm()
     
-    func loadMyShopping() -> Results<MyShoppingModel>? {
-        do {
-            try realm.write {
-                return realm.objects(MyShoppingModel.self)
-            }
-        } catch {
-            print("Realm Error")
-        }
+    func loadMyShopping() -> [MyShopping] {
+        let result = realm.objects(MyShopping.self)
         
-        return nil
+        return Array(result)
     }
     
-    func addMyShopping(_ myShopping: MyShoppingModel) {
+    func addMyShopping(_ myShopping: MyShopping) {
         do {
             try realm.write {
                 realm.add(myShopping)
@@ -52,7 +48,7 @@ final class MyShoppingRepository {
         }
     }
     
-    func deleteMyShopping(_ myShopping: MyShoppingModel) {
+    func deleteMyShopping(_ myShopping: MyShopping) {
         do {
             try realm.write {
                 realm.delete(myShopping)

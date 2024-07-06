@@ -55,38 +55,6 @@ final class UserDefaultsManager {
         }
     }
     
-    var myShopping: [Item] {
-        
-        get {
-            guard let data = defaults.data(forKey: Key.myShopping.rawValue) else {
-                return []
-            }
-            
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            
-            do {
-                let myShopping = try decoder.decode([Item].self, from: data)
-                return myShopping
-            } catch {
-                print("Failed to decode myShopping: \(error)")
-                return []
-            }
-        }
-        
-        set {
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .iso8601
-            
-            do {
-                let data = try encoder.encode(newValue)
-                defaults.setValue(data, forKey: Key.myShopping.rawValue)
-            } catch {
-                print("Failed to encode myShopping: \(error)")
-            }
-        }
-    }
-    
     var loginDate: String {
         get {
             return defaults.string(forKey: Key.loginDate.rawValue) ?? "정보 없음"

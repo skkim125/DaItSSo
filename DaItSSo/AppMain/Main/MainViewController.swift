@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import SnapKit
+import RealmSwift
 
 final class MainViewController: BaseViewController {
     
@@ -65,12 +66,15 @@ final class MainViewController: BaseViewController {
     }()
     
     private let userDefaults = UserDefaultsManager.shared
+    private let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         removeAllButtonAddTarget()
         showView()
+        
+        print(realm.configuration.fileURL)
     }
     
     override func configureNavigationBar() {

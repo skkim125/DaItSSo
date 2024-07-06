@@ -44,13 +44,14 @@
 		042E42612C2C54720024E5A2 /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E42602C2C54720024E5A2 /* DateFormatter+Extension.swift */; };
 		042E42642C2D07F70024E5A2 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 042E42632C2D07F70024E5A2 /* Reachability */; };
 		043582962C395F180045B1FE /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043582952C395F180045B1FE /* EmptyView.swift */; };
+		043582982C3966A10045B1FE /* myShoppingsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043582972C3966A10045B1FE /* myShoppingsCollectionViewCell.swift */; };
 		04BFE1E62C2C12ED00D741E1 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */; };
 		04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */; };
 		04BFE1EC2C2C354100D741E1 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */; };
 		04C24D5D2C2EEF0F00AFAF9A /* MyShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */; };
 		04C264FF2C393B14009EDDB9 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C264FE2C393B14009EDDB9 /* APIKey.swift */; };
 		04C265022C393BF4009EDDB9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 04C265012C393BF4009EDDB9 /* RealmSwift */; };
-		04C265042C394121009EDDB9 /* MyShoppingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C265032C394121009EDDB9 /* MyShoppingModel.swift */; };
+		04C265042C394121009EDDB9 /* MyShopping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C265032C394121009EDDB9 /* MyShopping.swift */; };
 		04C40C8E2C24145E00052A82 /* NaverShoppingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */; };
 		04C40C902C2549C400052A82 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C40C8F2C2549C400052A82 /* ErrorManager.swift */; };
 /* End PBXBuildFile section */
@@ -90,12 +91,13 @@
 		042E425E2C2C54600024E5A2 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		042E42602C2C54720024E5A2 /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
 		043582952C395F180045B1FE /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		043582972C3966A10045B1FE /* myShoppingsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myShoppingsCollectionViewCell.swift; sourceTree = "<group>"; };
 		04BFE1E52C2C12ED00D741E1 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		04BFE1E72C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Extension.swift"; sourceTree = "<group>"; };
 		04BFE1EB2C2C354100D741E1 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyShoppingListView.swift; sourceTree = "<group>"; };
 		04C264FE2C393B14009EDDB9 /* APIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
-		04C265032C394121009EDDB9 /* MyShoppingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyShoppingModel.swift; sourceTree = "<group>"; };
+		04C265032C394121009EDDB9 /* MyShopping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyShopping.swift; sourceTree = "<group>"; };
 		04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverShoppingManager.swift; sourceTree = "<group>"; };
 		04C40C8F2C2549C400052A82 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -238,7 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				04266FFF2C1B4CE0007C8197 /* Enum.swift */,
-				04C265032C394121009EDDB9 /* MyShoppingModel.swift */,
+				04C265032C394121009EDDB9 /* MyShopping.swift */,
 				04C40C8D2C24145E00052A82 /* NaverShoppingManager.swift */,
 				04266FFB2C1B48E0007C8197 /* UserDefaultsManager.swift */,
 				04C40C8F2C2549C400052A82 /* ErrorManager.swift */,
@@ -252,9 +254,9 @@
 			isa = PBXGroup;
 			children = (
 				04C24D5C2C2EEF0F00AFAF9A /* MyShoppingListView.swift */,
+				043582972C3966A10045B1FE /* myShoppingsCollectionViewCell.swift */,
 			);
-			name = MyShopping;
-			path = "ㅡㅛ놰ㅔㅔㅑㅜㅎ";
+			path = MyShopping;
 			sourceTree = "<group>";
 		};
 		04BFE1E92C2C136E00D741E1 /* Extension */ = {
@@ -379,6 +381,7 @@
 				042670002C1B4CE0007C8197 /* Enum.swift in Sources */,
 				04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */,
 				042E42612C2C54720024E5A2 /* DateFormatter+Extension.swift in Sources */,
+				043582982C3966A10045B1FE /* myShoppingsCollectionViewCell.swift in Sources */,
 				04266FFA2C1B4263007C8197 /* ProfileSubButton.swift in Sources */,
 				042670192C1C3747007C8197 /* Shopping.swift in Sources */,
 				04266FC12C1B3735007C8197 /* AppDelegate.swift in Sources */,
@@ -393,7 +396,7 @@
 				04266FE92C1B3939007C8197 /* ProfileButton.swift in Sources */,
 				042670082C1C2079007C8197 /* DividerLine.swift in Sources */,
 				04266FC32C1B3735007C8197 /* SceneDelegate.swift in Sources */,
-				04C265042C394121009EDDB9 /* MyShoppingModel.swift in Sources */,
+				04C265042C394121009EDDB9 /* MyShopping.swift in Sources */,
 				042670142C1C2CD7007C8197 /* SettingViewController.swift in Sources */,
 				04266FE52C1B390B007C8197 /* DesignResource.swift in Sources */,
 				04266FE12C1B3897007C8197 /* ProfileSettingViewController.swift in Sources */,

@@ -36,7 +36,7 @@ final class SearchResultViewController: BaseViewController {
     private let dscSortButton = SortButton(sortType: .dsc)
     private let ascSortButton = SortButton(sortType: .asc)
     
-    private let userDefaults = UserDefaultsManager.shared
+    private let msr = MyShoppingRepository()
     private let naverShoppingManager = NaverShoppingManager.shared
     private let errorManager = ErrorManager.shared
     
@@ -44,7 +44,7 @@ final class SearchResultViewController: BaseViewController {
     private var sort: SortType = .sim
     private var start = 1
     private var display = 30
-    var searchResults: [Item] = []
+    lazy var searchResults: [MyShopping] = []
     var searchText: String = ""
     var totalResults: Int = 0
     
@@ -193,6 +193,7 @@ final class SearchResultViewController: BaseViewController {
         
         networkReachability()
         resultCollectionView.reloadData()
+        
     }
 }
 
@@ -205,9 +206,9 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.id, for: indexPath) as? SearchResultCollectionViewCell else { return UICollectionViewCell() }
         let data = searchResults[indexPath.item]
         
-        cell.item = data
-        cell.configureCellUI(item: data)
-        cell.isAdd = userDefaults.myShopping.contains(where: { $0 == data }) ? true : false
+        cell.myShopping = data
+        cell.configureCellUI(myShopping: data)
+        cell.isAdd = msr.loadMyShopping().contains(where: { $0.productId == data.productId }) ? true : false
         cell.configureSelectButton()
         
         return cell
@@ -219,8 +220,10 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
             let selectedData = searchResults[indexPath.item]
             let vc = SearchResultDetailViewController()
             
-            vc.item = selectedData
+            vc.myShopping = selectedData
             vc.isAdd = cell.isAdd
+            vc.image = cell.image
+            
             vc.searchText = String.removeTag(title: selectedData.title)
             vc.configureWebViewUI(link: selectedData.link)
             navigationController?.pushViewController(vc, animated: true)
