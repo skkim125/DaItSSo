@@ -14,7 +14,7 @@ final class MyShoppingListView: BaseViewController {
         cv.backgroundColor = .appWhite
         cv.delegate = self
         cv.dataSource = self
-        cv.register(myShoppingsCollectionViewCell.self, forCellWithReuseIdentifier: myShoppingsCollectionViewCell.id)
+        cv.register(MyShoppingsCollectionViewCell.self, forCellWithReuseIdentifier: MyShoppingsCollectionViewCell.id)
         
         return cv
     }()
@@ -78,17 +78,13 @@ extension MyShoppingListView: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: myShoppingsCollectionViewCell.id, for: indexPath) as? myShoppingsCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyShoppingsCollectionViewCell.id, for: indexPath) as? MyShoppingsCollectionViewCell else { return UICollectionViewCell() }
         let data = myShoppings[indexPath.item]
         
         cell.myShopping = data
         cell.configureCellUI(myShopping: data)
         cell.configureSelectButton()
-        cell.myShoppingListView = self
-        
-        if !cell.isAdd {
-            collectionView.reloadData()
-        }
+        cell.viewController = self
         
         return cell
     }

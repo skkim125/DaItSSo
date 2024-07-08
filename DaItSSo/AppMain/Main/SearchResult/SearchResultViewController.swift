@@ -13,7 +13,7 @@ import SnapKit
 
 final class SearchResultViewController: BaseViewController {
     
-    private lazy var resultCollectionView = {
+    lazy var resultCollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout.searchResultCollectionViewLayout())
         cv.delegate = self
         cv.dataSource = self
@@ -186,14 +186,12 @@ final class SearchResultViewController: BaseViewController {
             self.resultCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
         }
     }
-
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         networkReachability()
         resultCollectionView.reloadData()
-        
     }
 }
 
@@ -206,8 +204,9 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.id, for: indexPath) as? SearchResultCollectionViewCell else { return UICollectionViewCell() }
         let data = searchResults[indexPath.item]
         
-        cell.myShopping = data
+        cell.shopping = data
         cell.configureCellUI(myShopping: data)
+        cell.viewController = self
         cell.isAdd = msr.loadMyShopping().contains(where: { $0.productId == data.productId }) ? true : false
         cell.configureSelectButton()
         
@@ -220,9 +219,9 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
             let selectedData = searchResults[indexPath.item]
             let vc = SearchResultDetailViewController()
             
-            vc.myShopping = selectedData
+            vc.shopping = selectedData
+            vc.image = cell.shoppingImg.image
             vc.isAdd = cell.isAdd
-            vc.image = cell.image
             
             vc.searchText = String.removeTag(title: selectedData.title)
             vc.configureWebViewUI(link: selectedData.link)

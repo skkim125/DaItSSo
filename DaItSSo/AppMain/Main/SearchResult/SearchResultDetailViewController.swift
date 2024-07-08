@@ -15,7 +15,7 @@ final class SearchResultDetailViewController: BaseViewController {
     private let msr = MyShoppingRepository()
     private let reachability: Reachability = try! Reachability()
     var image: UIImage?
-    var myShopping: MyShopping?
+    var shopping: MyShopping?
     var searchText = ""
     var isAdd = false
     
@@ -40,7 +40,7 @@ final class SearchResultDetailViewController: BaseViewController {
     
     @objc private func selectProductButtonClicked() {
         isAdd.toggle()
-        if let i = myShopping {
+        if let i = shopping {
             if isAdd {
                 
                 let newShopping = MyShopping(value: i)
