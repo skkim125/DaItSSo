@@ -14,6 +14,8 @@ final class SearchResultDetailViewController: BaseViewController {
     private let webView = WKWebView()
     private let msr = MyShoppingRepository()
     private let reachability: Reachability = try! Reachability()
+    
+    var viewController: SearchResultViewController?
     var image: UIImage?
     var shopping: MyShopping?
     var searchText = ""
@@ -40,35 +42,24 @@ final class SearchResultDetailViewController: BaseViewController {
     
     @objc private func selectProductButtonClicked() {
         isAdd.toggle()
+        
         if let i = shopping {
             if isAdd {
-                
-                let newShopping = MyShopping(value: i)
+                let newShopping = MyShopping(productId: i.productId, title: i.title, image: i.image, mallName: i.mallName, lprice: i.lprice, link: i.link)
                 msr.addMyShopping(newShopping)
                 if let image = self.image {
                     ImageManager.shared.saveImageToDocument(image: image, filename: i.productId)
                 }
             } else {
-                switch msr.loadMyShopping().isEmpty {
-                case true:
-                    let filterdShopping = msr.loadMyShopping().filter { $0.productId == i.productId }
-                    if let lastIndex = msr.loadMyShopping().lastIndex(where: {
-                        $0.productId == filterdShopping[filterdShopping.startIndex].productId
-                    }) {
-                        ImageManager.shared.removeImageFromDocument(filename: i.productId)
-                        msr.deleteMyShopping(msr.loadMyShopping()[lastIndex])
-                    }
-                case false:
-                    if let lastIndex = msr.loadMyShopping().lastIndex(where: {
-                        $0.productId == i.productId
-                    }) {
-                        ImageManager.shared.removeImageFromDocument(filename: i.productId)
-                        msr.deleteMyShopping(msr.loadMyShopping()[lastIndex])
-                    }
-                }
+                ImageManager.shared.removeImageFromDocument(filename: i.productId)
+                msr.deleteMyShopping(msr.loadMyShopping().filter{ $0.productId == i.productId}.first!)
             }
         }
-
+        
+        if let vc = viewController {
+            vc.resultCollectionView.reloadData()
+        }
+        
         configureRightBarButtonUI()
     }
     

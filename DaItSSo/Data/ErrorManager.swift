@@ -56,25 +56,6 @@ final class ErrorManager {
     
     static let shared = ErrorManager()
     
-    func checkNicknameCondition(nickname: String) throws {
-        guard nickname.count >= 2 && nickname.count <= 9 else {
-            
-            throw ErrorType.CheckNickname.outRange
-        }
-        
-        guard nickname.rangeOfCharacter(from: .decimalDigits) == nil else {
-            
-            throw ErrorType.CheckNickname.noNumber
-        }
-        
-        for str in String.specialStringArray {
-            guard !nickname.contains(str) else {
-                
-                throw ErrorType.CheckNickname.specialString(str)
-            }
-        }
-    }
-    
     func checkSearchBarText(text: String) throws {
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && text.count > 0 else { throw ErrorType.SearchError.isEmptySearchText }
         

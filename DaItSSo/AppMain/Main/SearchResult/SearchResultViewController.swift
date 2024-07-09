@@ -186,13 +186,6 @@ final class SearchResultViewController: BaseViewController {
             self.resultCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
         }
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        networkReachability()
-        resultCollectionView.reloadData()
-    }
 }
 
 extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -222,6 +215,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
             vc.shopping = selectedData
             vc.image = cell.shoppingImg.image
             vc.isAdd = cell.isAdd
+            vc.viewController = self
             
             vc.searchText = String.removeTag(title: selectedData.title)
             vc.configureWebViewUI(link: selectedData.link)

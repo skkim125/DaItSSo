@@ -49,7 +49,7 @@ final class SearchResultCollectionViewCell: ProductCollectionViewCell {
         
         if let i = shopping {
             if isAdd {
-                let newShopping = MyShopping(value: i)
+                let newShopping = MyShopping(productId: i.productId, title: i.title, image: i.image, mallName: i.mallName, lprice: i.lprice, link: i.link)
                 msr.addMyShopping(newShopping)
                 if let image = shoppingImg.image {
                     ImageManager.shared.saveImageToDocument(image: image, filename: i.productId)

@@ -18,7 +18,7 @@ final class ProfileSettingViewController: BaseViewController {
         let tf = UITextField()
         tf.borderStyle = .none
         tf.placeholder = "닉네임을 입력해주세요"
-        tf.delegate = self
+        tf.addTarget(self, action: #selector(nicknameTextFieldTextChanged), for: .editingChanged)
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         
@@ -40,6 +40,7 @@ final class ProfileSettingViewController: BaseViewController {
     private let userDefaults = UserDefaultsManager.shared
     private let errorManager = ErrorManager.shared
     private let profileList = ProfileImg.allCases
+    private let viewModel = ProfileViewModel()
     var navTitle = SetNavigationTitle.firstProfile
     var text = ""
     var profileImg: String = ""
@@ -77,10 +78,25 @@ final class ProfileSettingViewController: BaseViewController {
     }
     
     @objc private func saveButtonClicked() {
-        guard let nickname = nicknameTextField.text else { return }
+        guard let nickname = viewModel.outputNickname.value else { return }
         userDefaults.nickname = nickname
         userDefaults.profile = editProfileImg
         navigationController?.popViewController(animated: true)
+    }
+    
+    func bindData() {
+        
+        viewModel.outputValidText.bind { str in
+            self.checkNicknameLabel.text =  self.viewModel.outputValidText.value
+        }
+        
+        viewModel.outputButtonEnabled.bind { isEnable in
+            if let isEnable = isEnable {
+                self.setbuttonEnabled(navTitle: self.navTitle)
+            } else {
+                self.setButtonDisable(navTitle: self.navTitle)
+            }
+        }
     }
     
     override func configureHierarchy() {
@@ -150,6 +166,8 @@ final class ProfileSettingViewController: BaseViewController {
         default:
             break
         }
+        
+        bindData()
     }
     
     @objc private func setProfileImgButtonClicked() {
@@ -189,10 +207,7 @@ final class ProfileSettingViewController: BaseViewController {
             case .firstProfile:
                 profileImg = userDefaults.profile
                 profileImgView.image = UIImage(named: profileImg)
-                guard let text = nicknameTextField.text else { return }
-                if !text.isEmpty {
-                    checkNickname(nickname: text)
-                }
+                
             case .editProfile:
                 editProfileImg = userDefaults.editProfile
                 profileImgView.image = UIImage(named: editProfileImg)
@@ -214,31 +229,13 @@ final class ProfileSettingViewController: BaseViewController {
             break
         }
     }
-}
-
-extension ProfileSettingViewController: UITextFieldDelegate {
     
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        
-        if let text = textField.text, !text.trimmingCharacters(in: .whitespaces).isEmpty {
-            checkNickname(nickname: text)
-        }
+    @objc func nicknameTextFieldTextChanged() {
+        viewModel.outputNickname.value = nicknameTextField.text
     }
 }
 
 extension ProfileSettingViewController {
-    
-    private func checkNickname(nickname: String) {
-        do {
-            try errorManager.checkNicknameCondition(nickname: nickname)
-            setbuttonEnabled(navTitle: navTitle)
-        } catch let error as ErrorType.CheckNickname {
-            setButtonDisable(navTitle: navTitle)
-            checkNicknameLabel.text = error.checkNicknameLabelText
-        } catch {
-            print(error)
-        }
-    }
     
     private func setButtonDisable(navTitle: SetNavigationTitle) {
         switch navTitle {
@@ -262,6 +259,5 @@ extension ProfileSettingViewController {
         default:
             break
         }
-        checkNicknameLabel.text = ErrorType.CheckNickname.ok.checkNicknameLabelText
     }
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0425C3D12C3BAF4C00468975 /* CustomItemForCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0425C3D02C3BAF4C00468975 /* CustomItemForCell.swift */; };
+		0425C3EE2C3D269100468975 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0425C3ED2C3D269100468975 /* Observable.swift */; };
+		0425C3F02C3D3BD900468975 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0425C3EF2C3D3BD900468975 /* ProfileViewModel.swift */; };
 		04266FC12C1B3735007C8197 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FC02C1B3735007C8197 /* AppDelegate.swift */; };
 		04266FC32C1B3735007C8197 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266FC22C1B3735007C8197 /* SceneDelegate.swift */; };
 		04266FCA2C1B3736007C8197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04266FC92C1B3736007C8197 /* Assets.xcassets */; };
@@ -59,6 +61,8 @@
 
 /* Begin PBXFileReference section */
 		0425C3D02C3BAF4C00468975 /* CustomItemForCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemForCell.swift; sourceTree = "<group>"; };
+		0425C3ED2C3D269100468975 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		0425C3EF2C3D3BD900468975 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		04266FBD2C1B3735007C8197 /* DaItSSo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DaItSSo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04266FC02C1B3735007C8197 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04266FC22C1B3735007C8197 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -161,6 +165,8 @@
 			isa = PBXGroup;
 			children = (
 				04266FE42C1B390B007C8197 /* DesignResource.swift */,
+				0425C3EF2C3D3BD900468975 /* ProfileViewModel.swift */,
+				0425C3ED2C3D269100468975 /* Observable.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -376,11 +382,13 @@
 				04C40C902C2549C400052A82 /* ErrorManager.swift in Sources */,
 				0426701E2C1C4A7B007C8197 /* SortButton.swift in Sources */,
 				042E425B2C2C39A30024E5A2 /* BaseCell.swift in Sources */,
+				0425C3F02C3D3BD900468975 /* ProfileViewModel.swift in Sources */,
 				04BFE1EC2C2C354100D741E1 /* BaseViewController.swift in Sources */,
 				04266FF12C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift in Sources */,
 				04266FF42C1B3E03007C8197 /* IdProtocol.swift in Sources */,
 				04266FE72C1B3926007C8197 /* PointButton.swift in Sources */,
 				04266FFC2C1B48E0007C8197 /* UserDefaultsManager.swift in Sources */,
+				0425C3EE2C3D269100468975 /* Observable.swift in Sources */,
 				042670002C1B4CE0007C8197 /* Enum.swift in Sources */,
 				04BFE1E82C2C133F00D741E1 /* UICollectionViewLayout+Extension.swift in Sources */,
 				042E42612C2C54720024E5A2 /* DateFormatter+Extension.swift in Sources */,
