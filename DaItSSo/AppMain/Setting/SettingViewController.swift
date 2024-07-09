@@ -102,7 +102,6 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case .myProfile:
             let vc = ProfileSettingViewController()
             vc.navTitle = .editProfile
-            vc.profileImg = self.profileImg
             vc.text = userDefaults.nickname
             navigationController?.pushViewController(vc, animated: true)
             navigationItem.rightBarButtonItem?.action = #selector(saveButtonClicked)

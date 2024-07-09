@@ -24,7 +24,8 @@ final class SelectProfileImgViewController: BaseViewController {
     
     private let userDefaults = UserDefaultsManager.shared
     var navTitle: SetNavigationTitle = .firstProfile
-    var selectedProfile: String = ""
+    var viewModel: ProfileViewModel?
+    var beforeVC: BaseViewController?
     
     override func configureNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
@@ -32,11 +33,10 @@ final class SelectProfileImgViewController: BaseViewController {
     }
     
     @objc private func backButtonClicked() {
-        switch navTitle{
-        case .firstProfile:
-            userDefaults.profile = selectedProfile
-        default:
-            break
+        if let vc = beforeVC as? ProfileSettingViewController {
+            vc.viewModel = self.viewModel ?? ProfileViewModel()
+        } else if let vc = beforeVC as? SettingViewController {
+//            vc.viewModel = self.viewModel
         }
         
         navigationController?.popViewController(animated: true)
@@ -73,21 +73,23 @@ final class SelectProfileImgViewController: BaseViewController {
     }
     
     override func configureView() {
-        profileImgView.image = UIImage(named: selectedProfile)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        switch navTitle{
-        case .firstProfile:
-            userDefaults.profile = selectedProfile
-        case .editProfile:
-            userDefaults.editProfile = selectedProfile
-        default:
-            break
+        if let vm = viewModel, let selectedProfileImg = vm.outputProfileImg.value {
+            profileImgView.image = UIImage(named: selectedProfileImg)
         }
     }
+    
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        
+//        switch navTitle{
+//        case .firstProfile:
+//            userDefaults.profile = viewModel.outputProfileImg.value ?? ""
+//        case .editProfile:
+//            userDefaults.editProfile = viewModel.outputProfileImg.value ?? ""
+//        default:
+//            break
+//        }
+//    }
 }
 
 extension SelectProfileImgViewController {
@@ -115,8 +117,13 @@ extension SelectProfileImgViewController: UICollectionViewDelegate, UICollection
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ProfileImgCollectionViewCell else { return }
         let img = ProfileImg.allCases[indexPath.item]
-        profileImgView.image = UIImage(named: img.rawValue)
-        selectedProfile = img.rawValue
+        if let vm = viewModel {
+            vm.outputProfileImg.value = img.rawValue
+            
+            if let selectedProfileImg = vm.outputProfileImg.value {
+                profileImgView.image = UIImage(named: selectedProfileImg)
+            }
+        }
         
         updateImageView(cell, imageView: profileImgView, defaultImg: img)
         

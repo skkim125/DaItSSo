@@ -40,11 +40,9 @@ final class ProfileSettingViewController: BaseViewController {
     private let userDefaults = UserDefaultsManager.shared
     private let errorManager = ErrorManager.shared
     private let profileList = ProfileImg.allCases
-    private let viewModel = ProfileViewModel()
+    var viewModel = ProfileViewModel()
     var navTitle = SetNavigationTitle.firstProfile
     var text = ""
-    var profileImg: String = ""
-    var editProfileImg: String = ""
     
     override func configureNavigationBar() {
         navigationItem.title = navTitle.navTitle
@@ -67,10 +65,12 @@ final class ProfileSettingViewController: BaseViewController {
             nicknameTextField.text = nil
             checkNicknameLabel.text = nil
             loginButton.isEnabled = false
-            userDefaults.profile = ""
+            viewModel.outputProfileImg.value = nil
         case .editProfile:
-            userDefaults.profile = profileImg
-            userDefaults.editProfile = profileImg
+            if let profileImg = viewModel.outputProfileImg.value {
+                userDefaults.profile = profileImg
+                userDefaults.editProfile = profileImg
+            }
         default:
             break
         }
@@ -78,7 +78,7 @@ final class ProfileSettingViewController: BaseViewController {
     }
     
     @objc private func saveButtonClicked() {
-        guard let nickname = viewModel.outputNickname.value else { return }
+        guard let nickname = viewModel.outputNickname.value, let editProfileImg = viewModel.outputProfileImg.value else { return }
         userDefaults.nickname = nickname
         userDefaults.profile = editProfileImg
         navigationController?.popViewController(animated: true)
@@ -92,9 +92,17 @@ final class ProfileSettingViewController: BaseViewController {
         
         viewModel.outputButtonEnabled.bind { isEnable in
             if let isEnable = isEnable {
-                self.setbuttonEnabled(navTitle: self.navTitle)
-            } else {
-                self.setButtonDisable(navTitle: self.navTitle)
+                if isEnable {
+                    self.setbuttonEnabled(navTitle: self.navTitle)
+                } else {
+                    self.setButtonDisable(navTitle: self.navTitle)
+                }
+            }
+        }
+        
+        viewModel.outputProfileImg.bind { image in
+            if let img = image {
+                self.profileImgView.image = UIImage(named: img)
             }
         }
     }
@@ -152,7 +160,8 @@ final class ProfileSettingViewController: BaseViewController {
     }
     
     override func configureView() {
-        profileImgView.image = UIImage(named: profileImg)
+        viewModel.outputProfileImg.value = ProfileImg.allCases.randomElement()!.rawValue
+        
         setProfileImgButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
         setProfileImgSubButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
         nicknameTextField.text = text
@@ -172,12 +181,11 @@ final class ProfileSettingViewController: BaseViewController {
     
     @objc private func setProfileImgButtonClicked() {
         let vc = SelectProfileImgViewController()
+        vc.beforeVC = self
+        vc.viewModel = self.viewModel
         vc.navTitle = self.navTitle
         switch navTitle{
-        case .firstProfile:
-            vc.selectedProfile = profileImg
         case .editProfile:
-            vc.selectedProfile = editProfileImg
             vc.navTitle = self.navTitle
         default:
             break
@@ -186,7 +194,7 @@ final class ProfileSettingViewController: BaseViewController {
     }
     
     @objc private func logIn() {
-        guard let nickname = nicknameTextField.text else { return }
+        guard let nickname = viewModel.outputNickname.value, let profileImg = viewModel.outputProfileImg.value else { return }
         userDefaults.saveUserInfo(nickname: nickname, profile: profileImg, editProfile: profileImg)
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         let sceneDelegate = windowScene?.delegate as? SceneDelegate
@@ -197,38 +205,24 @@ final class ProfileSettingViewController: BaseViewController {
         sceneDelegate?.window?.makeKeyAndVisible()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if profileImg.isEmpty {
-            profileImg = ProfileImg.allCases.randomElement()!.rawValue
-            profileImgView.image = UIImage(named: profileImg)
-        } else {
-            switch navTitle {
-            case .firstProfile:
-                profileImg = userDefaults.profile
-                profileImgView.image = UIImage(named: profileImg)
-                
-            case .editProfile:
-                editProfileImg = userDefaults.editProfile
-                profileImgView.image = UIImage(named: editProfileImg)
-            default:
-                break
-            }
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        switch navTitle {
-        case .firstProfile:
-            break
-        case .editProfile:
-            editProfileImg = userDefaults.profile
-        default:
-            break
-        }
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        if let profile = viewModel.outputProfileImg.value {
+//                profileImgView.image = UIImage(named: profile)
+//        } else {
+//            switch navTitle {
+//            case .firstProfile:
+//                if let profileImg = viewModel.outputProfileImg.value {
+//                    profileImgView.image = UIImage(named: profileImg)
+//                }
+//                
+//            case .editProfile:
+//                viewModel.outputProfileImg.value = userDefaults.editProfile
+//            default:
+//                break
+//            }
+//        }
+//    }
     
     @objc func nicknameTextFieldTextChanged() {
         viewModel.outputNickname.value = nicknameTextField.text

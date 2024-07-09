@@ -12,6 +12,8 @@ class ProfileViewModel {
     var outputValidText: Observable<String?> = Observable(nil)
     var outputButtonEnabled: Observable<Bool?> = Observable(nil)
     
+    var outputProfileImg: Observable<String?> = Observable(nil)
+    
     init() {
         outputNickname.bind { _ in
             self.validNickname()
