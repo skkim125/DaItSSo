@@ -8,20 +8,21 @@
 import Foundation
 
 class ProfileViewModel {
+    var inputNickname: Observable<String?> = Observable(nil)
     var outputNickname: Observable<String?> = Observable(nil)
     var outputValidText: Observable<String?> = Observable(nil)
-    var outputButtonEnabled: Observable<Bool?> = Observable(nil)
+    var outputButtonEnabled: Observable<Bool?> = Observable(true)
     
     var outputProfileImg: Observable<String?> = Observable(nil)
     
     init() {
-        outputNickname.bind { _ in
+        inputNickname.bind { _ in
             self.validNickname()
         }
     }
     
     private func validNickname() {
-        guard let result = outputNickname.value, !result.trimmingCharacters(in: .whitespaces).isEmpty else {
+        guard let result = inputNickname.value, !result.trimmingCharacters(in: .whitespaces).isEmpty else {
             
             outputButtonEnabled.value = false
             return
@@ -51,6 +52,7 @@ class ProfileViewModel {
         }
         
         outputButtonEnabled.value = true
+        outputNickname.value = result
         outputValidText.value = ErrorType.CheckNickname.ok.checkNicknameLabelText
     }
 }

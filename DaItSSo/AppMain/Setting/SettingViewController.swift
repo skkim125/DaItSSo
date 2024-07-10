@@ -23,7 +23,6 @@ final class SettingViewController: BaseViewController {
     }()
     
     private let userDefaults = UserDefaultsManager.shared
-    private var profileImg = ""
     
     override func configureNavigationBar() {
         navigationItem.title = SetNavigationTitle.setting.navTitle
@@ -43,7 +42,6 @@ final class SettingViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        profileImg = userDefaults.profile
         settingTableView.reloadData()
     }
 }
@@ -73,7 +71,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         switch setting {
         case .myProfile:
             if let myProfileCell = tableView.dequeueReusableCell(withIdentifier: MyProfileTableViewCell.id) as? MyProfileTableViewCell {
-                myProfileCell.configureMyProfileCellUI(image: profileImg, nickName: userDefaults.nickname, date: userDefaults.loginDate)
+                myProfileCell.configureMyProfileCellUI(image: userDefaults.profile, nickName: userDefaults.nickname, date: userDefaults.loginDate)
                 
                 return myProfileCell
             }
@@ -102,9 +100,10 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case .myProfile:
             let vc = ProfileSettingViewController()
             vc.navTitle = .editProfile
-            vc.text = userDefaults.nickname
-            navigationController?.pushViewController(vc, animated: true)
+            vc.beforeVC = self
+            
             navigationItem.rightBarButtonItem?.action = #selector(saveButtonClicked)
+            navigationController?.pushViewController(vc, animated: true)
             
         case .deleteId:
             presentTwoActionsAlert(title: "탈퇴하기", message: "탈퇴를 하면 데이터가 초기화됩니다. 탈퇴하시겠습니까?", act: "탈퇴") { _ in

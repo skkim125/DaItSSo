@@ -25,7 +25,7 @@ final class SelectProfileImgViewController: BaseViewController {
     private let userDefaults = UserDefaultsManager.shared
     var navTitle: SetNavigationTitle = .firstProfile
     var viewModel: ProfileViewModel?
-    var beforeVC: BaseViewController?
+    var moveData: (()->Void)?
     
     override func configureNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
@@ -33,12 +33,8 @@ final class SelectProfileImgViewController: BaseViewController {
     }
     
     @objc private func backButtonClicked() {
-        if let vc = beforeVC as? ProfileSettingViewController {
-            vc.viewModel = self.viewModel ?? ProfileViewModel()
-        } else if let vc = beforeVC as? SettingViewController {
-//            vc.viewModel = self.viewModel
-        }
         
+        moveData?()
         navigationController?.popViewController(animated: true)
     }
     
@@ -77,19 +73,6 @@ final class SelectProfileImgViewController: BaseViewController {
             profileImgView.image = UIImage(named: selectedProfileImg)
         }
     }
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        
-//        switch navTitle{
-//        case .firstProfile:
-//            userDefaults.profile = viewModel.outputProfileImg.value ?? ""
-//        case .editProfile:
-//            userDefaults.editProfile = viewModel.outputProfileImg.value ?? ""
-//        default:
-//            break
-//        }
-//    }
 }
 
 extension SelectProfileImgViewController {

@@ -13,7 +13,6 @@ final class ProfileSettingViewController: BaseViewController {
     private let setProfileImgButton = ProfileButton(profileImgType: .isSelected)
     private let profileImgView = UIImageView()
     private let setProfileImgSubButton = ProfileSubButton()
-    
     private lazy var nicknameTextField = {
         let tf = UITextField()
         tf.borderStyle = .none
@@ -24,9 +23,7 @@ final class ProfileSettingViewController: BaseViewController {
         
         return tf
     }()
-    
     private let dividerLine = DividerLine(color: .appLightGray)
-    
     private let checkNicknameLabel = {
         let label = UILabel()
         label.textColor = .appMainColor
@@ -34,15 +31,15 @@ final class ProfileSettingViewController: BaseViewController {
         
         return label
     }()
-    
     private let loginButton = PointButton(title: "완료")
     
     private let userDefaults = UserDefaultsManager.shared
     private let errorManager = ErrorManager.shared
     private let profileList = ProfileImg.allCases
+    
+    var beforeVC: BaseViewController?
     var viewModel = ProfileViewModel()
     var navTitle = SetNavigationTitle.firstProfile
-    var text = ""
     
     override func configureNavigationBar() {
         navigationItem.title = navTitle.navTitle
@@ -51,29 +48,22 @@ final class ProfileSettingViewController: BaseViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
         navigationController?.navigationBar.tintColor = .appBlack
         
-        switch navTitle {
-        case .editProfile:
+        if beforeVC is SettingViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonClicked))
-        default:
-            break
         }
     }
     
     @objc private func backButtonClicked() {
-        switch navTitle{
-        case .firstProfile:
+        guard beforeVC is SettingViewController else {
             nicknameTextField.text = nil
             checkNicknameLabel.text = nil
             loginButton.isEnabled = false
             viewModel.outputProfileImg.value = nil
-        case .editProfile:
-            if let profileImg = viewModel.outputProfileImg.value {
-                userDefaults.profile = profileImg
-                userDefaults.editProfile = profileImg
-            }
-        default:
-            break
+         
+            navigationController?.popViewController(animated: true)
+            return
         }
+        
         navigationController?.popViewController(animated: true)
     }
     
@@ -81,6 +71,7 @@ final class ProfileSettingViewController: BaseViewController {
         guard let nickname = viewModel.outputNickname.value, let editProfileImg = viewModel.outputProfileImg.value else { return }
         userDefaults.nickname = nickname
         userDefaults.profile = editProfileImg
+        
         navigationController?.popViewController(animated: true)
     }
     
@@ -90,13 +81,9 @@ final class ProfileSettingViewController: BaseViewController {
             self.checkNicknameLabel.text =  self.viewModel.outputValidText.value
         }
         
-        viewModel.outputButtonEnabled.bind { isEnable in
-            if let isEnable = isEnable {
-                if isEnable {
-                    self.setbuttonEnabled(navTitle: self.navTitle)
-                } else {
-                    self.setButtonDisable(navTitle: self.navTitle)
-                }
+        viewModel.outputButtonEnabled.bind { isEnabled in
+            if let isEnabled = isEnabled {
+                self.setButtonUI(isValid: isEnabled)
             }
         }
         
@@ -160,42 +147,40 @@ final class ProfileSettingViewController: BaseViewController {
     }
     
     override func configureView() {
-        viewModel.outputProfileImg.value = ProfileImg.allCases.randomElement()!.rawValue
+        if beforeVC is SettingViewController {
+            viewModel.outputProfileImg.value = userDefaults.profile
+            viewModel.inputNickname.value = userDefaults.nickname
+            nicknameTextField.text = viewModel.inputNickname.value
+            loginButton.isHidden = true
+        } else {
+            viewModel.outputProfileImg.value = ProfileImg.allCases.randomElement()!.rawValue
+            loginButton.addTarget(self, action: #selector(logIn), for: .touchUpInside)
+            loginButton.configuration?.baseBackgroundColor = .appLightGray
+        }
         
         setProfileImgButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
         setProfileImgSubButton.addTarget(self, action: #selector(setProfileImgButtonClicked), for: .touchUpInside)
-        nicknameTextField.text = text
-        
-        switch navTitle{
-        case .firstProfile:
-            loginButton.addTarget(self, action: #selector(logIn), for: .touchUpInside)
-            loginButton.configuration?.baseBackgroundColor = .appLightGray
-        case .editProfile:
-            loginButton.isHidden = true
-        default:
-            break
-        }
         
         bindData()
     }
     
     @objc private func setProfileImgButtonClicked() {
         let vc = SelectProfileImgViewController()
-        vc.beforeVC = self
         vc.viewModel = self.viewModel
         vc.navTitle = self.navTitle
-        switch navTitle{
-        case .editProfile:
-            vc.navTitle = self.navTitle
-        default:
-            break
+        vc.moveData = {
+            self.bindData()
         }
+        if beforeVC is SettingViewController {
+            vc.navTitle = self.navTitle
+        }
+        
         navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func logIn() {
         guard let nickname = viewModel.outputNickname.value, let profileImg = viewModel.outputProfileImg.value else { return }
-        userDefaults.saveUserInfo(nickname: nickname, profile: profileImg, editProfile: profileImg)
+        userDefaults.saveUserInfo(nickname: nickname, profile: profileImg)
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         let sceneDelegate = windowScene?.delegate as? SceneDelegate
         
@@ -205,53 +190,19 @@ final class ProfileSettingViewController: BaseViewController {
         sceneDelegate?.window?.makeKeyAndVisible()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        if let profile = viewModel.outputProfileImg.value {
-//                profileImgView.image = UIImage(named: profile)
-//        } else {
-//            switch navTitle {
-//            case .firstProfile:
-//                if let profileImg = viewModel.outputProfileImg.value {
-//                    profileImgView.image = UIImage(named: profileImg)
-//                }
-//                
-//            case .editProfile:
-//                viewModel.outputProfileImg.value = userDefaults.editProfile
-//            default:
-//                break
-//            }
-//        }
-//    }
-    
     @objc func nicknameTextFieldTextChanged() {
-        viewModel.outputNickname.value = nicknameTextField.text
+        viewModel.inputNickname.value = nicknameTextField.text
     }
 }
 
 extension ProfileSettingViewController {
-    
-    private func setButtonDisable(navTitle: SetNavigationTitle) {
-        switch navTitle {
-        case .firstProfile:
-            loginButton.isEnabled = false
-            loginButton.configuration?.baseBackgroundColor = .appLightGray
-        case .editProfile:
-            navigationItem.rightBarButtonItem?.isEnabled = false
-        default:
-            break
-        }
-    }
-    
-    private func setbuttonEnabled(navTitle: SetNavigationTitle) {
-        switch navTitle {
-        case .firstProfile:
-            loginButton.isEnabled = true
-            loginButton.configuration?.baseBackgroundColor = .appMainColor
-        case .editProfile:
-            navigationItem.rightBarButtonItem?.isEnabled = true
-        default:
-            break
+    private func setButtonUI(isValid: Bool) {
+        if beforeVC is SettingViewController {
+            
+            navigationItem.rightBarButtonItem?.isEnabled = isValid
+        } else {
+            loginButton.isEnabled = isValid
+            loginButton.configuration?.baseBackgroundColor = isValid ? .appMainColor : .appLightGray
         }
     }
 }

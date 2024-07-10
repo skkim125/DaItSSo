@@ -15,7 +15,7 @@ final class UserDefaultsManager {
     let defaults = UserDefaults.standard
     
     enum Key: String, CaseIterable {
-        case nickname, profile, editProfile, recentSearchList, myShopping, isFirst, loginDate
+        case nickname, profile, recentSearchList, myShopping, isFirst, loginDate
     }
     
     var nickname: String {
@@ -33,15 +33,6 @@ final class UserDefaultsManager {
         }
         set {
             defaults.setValue(newValue, forKey: Key.profile.rawValue)
-        }
-    }
-    
-    var editProfile: String {
-        get {
-            return defaults.string(forKey: Key.editProfile.rawValue) ?? ""
-        }
-        set {
-            defaults.setValue(newValue, forKey: "\(Key.editProfile.rawValue)")
         }
     }
     
@@ -74,12 +65,11 @@ final class UserDefaultsManager {
         }
     }
     
-    func saveUserInfo(nickname: String, profile: String, editProfile: String) {
+    func saveUserInfo(nickname: String, profile: String) {
         let userDefaults = UserDefaultsManager.shared
         userDefaults.isStart = true
         userDefaults.nickname = nickname
         userDefaults.profile = profile
-        userDefaults.editProfile = editProfile
         userDefaults.loginDate = DateFormatter.customDateFormatter(date: Date())
     }
     
