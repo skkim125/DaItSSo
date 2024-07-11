@@ -165,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				04266FE42C1B390B007C8197 /* DesignResource.swift */,
-				0425C3EF2C3D3BD900468975 /* ProfileViewModel.swift */,
 				0425C3ED2C3D269100468975 /* Observable.swift */,
 			);
 			path = Resource;
@@ -191,6 +190,7 @@
 				04266FE02C1B3897007C8197 /* ProfileSettingViewController.swift */,
 				04266FEE2C1B3B85007C8197 /* SelectProfileImgViewController.swift */,
 				04266FF02C1B3DD9007C8197 /* ProfileImgCollectionViewCell.swift */,
+				0425C3EF2C3D3BD900468975 /* ProfileViewModel.swift */,
 			);
 			path = ProfileSetting;
 			sourceTree = "<group>";

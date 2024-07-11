@@ -65,10 +65,11 @@ final class MyShoppingListView: BaseViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setView()
         let newShoppings = msr.loadMyShopping()
         myShoppings = newShoppings
         myShoppingsCollectionView.reloadData()
+        
+        setView()
     }
 }
 

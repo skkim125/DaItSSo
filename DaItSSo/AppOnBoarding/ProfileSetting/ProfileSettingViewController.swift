@@ -168,9 +168,6 @@ final class ProfileSettingViewController: BaseViewController {
         let vc = SelectProfileImgViewController()
         vc.viewModel = self.viewModel
         vc.navTitle = self.navTitle
-        vc.moveData = {
-            self.bindData()
-        }
         if beforeVC is SettingViewController {
             vc.navTitle = self.navTitle
         }

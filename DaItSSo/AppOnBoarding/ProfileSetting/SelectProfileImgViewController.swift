@@ -25,7 +25,6 @@ final class SelectProfileImgViewController: BaseViewController {
     private let userDefaults = UserDefaultsManager.shared
     var navTitle: SetNavigationTitle = .firstProfile
     var viewModel: ProfileViewModel?
-    var moveData: (()->Void)?
     
     override func configureNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage.backButtonImg, style: .plain, target: self, action: #selector(backButtonClicked))
@@ -33,8 +32,6 @@ final class SelectProfileImgViewController: BaseViewController {
     }
     
     @objc private func backButtonClicked() {
-        
-        moveData?()
         navigationController?.popViewController(animated: true)
     }
     
